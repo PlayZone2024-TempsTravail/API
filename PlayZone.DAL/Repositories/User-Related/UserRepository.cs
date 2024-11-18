@@ -1,6 +1,4 @@
 ﻿using System.Data.Common;
-using PlayZone.DAL.Entities.User_Related;
-using PlayZone.DAL.Interfaces.User_Related;
 using Dapper;
 using Npgsql;
 
