@@ -1,5 +1,6 @@
 ﻿using System.Data.Common;
 using Dapper;
+using Npgsql;
 using PlayZone.DAL.Entities.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 
@@ -7,9 +8,9 @@ namespace PlayZone.DAL.Repositories.User_Related;
 
 public class RoleRepository : IRoleRepository
 {
-    private readonly DbConnection _connection;
+    private readonly NpgsqlConnection _connection;
 
-    public RoleRepository(DbConnection connection)
+    public RoleRepository(NpgsqlConnection connection)
     {
         this._connection = connection;
     }
