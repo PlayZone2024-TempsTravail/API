@@ -27,10 +27,10 @@ public class RoleRepository : IRoleRepository
         return this._connection.QuerySingleOrDefault<Role>(query, new { Id = id });
     }
 
-    public Role Create(Role role)
+    public int Create(Role role)
     {
         const string query = @"INSERT INTO ""Role"" (""name"") VALUES (@Name) RETURNING *;";
-        return this._connection.QuerySingle<Role>(query, new { Name = role.Name });
+        return this._connection.QuerySingle<Role>(query, new { Name = role.Name }).IdRole;
     }
 
     public bool Update(Role role)
