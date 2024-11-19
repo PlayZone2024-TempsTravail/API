@@ -49,6 +49,21 @@ public class RolePermissionRepository : IRolePermissionRepository
         });
     }
 
+    public bool CheckPermission(int userId, Permission permission)
+    {
+        const string query = @"
+            SELECT CASE WHEN count(*) <> 0 THEN TRUE ELSE FALSE END
+            FROM (
+                SELECT u.id_user, rp.permission_id
+                FROM ""User"" u
+                LEFT JOIN ""Role"" r ON u.id_user = r.id_role
+                LEFT JOIN ""Role_Permission"" rp ON r.id_role = rp.role_id
+                WHERE u.id_user = @UserId AND rp.permission_id = @PermissionId
+            ) data;
+        ";
+        return this._connection.QuerySingle<bool>(query, new {UserId= userId, PermissionId = permission.permission_id});
+    }
+
     public bool Delete(int roleId, int permissionId)
     {
         const string query = @"
