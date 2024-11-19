@@ -1,4 +1,6 @@
 using Npgsql;
+using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.BLL.Services.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.DAL.Repositories.User_Related;
 
@@ -11,7 +13,10 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     return new NpgsqlConnection(connectionString);
 });
 
-// Add services to the container.
+// Injection des Services de la BLL
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Injection des Services de la DAL
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
