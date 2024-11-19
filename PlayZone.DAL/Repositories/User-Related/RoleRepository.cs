@@ -16,7 +16,7 @@ public class RoleRepository : IRoleRepository
 
     public IEnumerable<Role> GetAll()
     {
-        const string query = @"SELECT * FROM ""Role""";
+        const string query = @"SELECT * FROM ""Role"";";
         return this._connection.Query<Role>(query);
     }
 
@@ -28,21 +28,21 @@ public class RoleRepository : IRoleRepository
 
     public Role Create(Role role)
     {
-        const string query = @"INSERT INTO ""Role"" (id_role, name) VALUES (@IdRole, @Name);";
-        return this._connection.QuerySingle<Role>(query, new { IdRole = role.IdRole, Name = role.Name });
+        const string query = @"INSERT INTO ""Role"" (""name"") VALUES (@Name) RETURNING *;";
+        return this._connection.QuerySingle<Role>(query, new { Name = role.Name });
     }
 
     public bool Update(Role role)
     {
-        const string query = @"UPDATE ""Role"" SET name = @Name WHERE id_role = @IdRole";
+        const string query = @"UPDATE ""Role"" SET ""name"" = @Name WHERE ""id_role"" = @IdRole;";
         int affectedRows = this._connection.Execute(query, new { Name = role.Name, IdRole = role.IdRole });
         return affectedRows > 0;
     }
 
     public bool Delete(int id)
     {
-        const string query = @"DELETE FROM ""Role"" WHERE ""id_role"" = @IdRole";
-        int affectedRows = this._connection.Execute(query, new { IdRole = id });
+        const string query = @"DELETE FROM ""Role"" WHERE ""id_role"" = @Id;";
+        int affectedRows = this._connection.Execute(query, new { Id = id });
         return affectedRows > 0;
     }
 }
