@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
       <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
     </ItemGroup>
 
