@@ -5,7 +5,7 @@ namespace PlayZone.API.Mappers.User_Related;
 
 public static class UserMapper
 {
-    public static User ToModels(this UserDTO.UserUpdateFormDTO user)
+    public static User ToModels(this UserDTO user)
     {
         return new User
         {
@@ -22,9 +22,9 @@ public static class UserMapper
         };
     }
 
-    public static UserDTO.UserUpdateFormDTO ToDTO(this User user)
+    public static UserDTO ToDTO(this User user)
     {
-        return new UserDTO.UserUpdateFormDTO
+        return new UserDTO
         {
             RoleId = user.RoleId,
             Nom = user.Nom,

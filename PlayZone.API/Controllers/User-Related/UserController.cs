@@ -4,36 +4,56 @@ using PlayZone.BLL.Interfaces.User_Related;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PlayZone.API.Controllers.User_Related
+namespace PlayZone.API.Controllers.User_Related;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UserController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    private IUserService _userService;
+
+    public UserController(IUserService userService)
     {
-        private IUserService _userService;
+        this._userService = userService;
+    }
 
-        public UserController(IUserService userService)
+    [HttpGet("GetById/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetById(int id)
+    {
+        try
         {
-            this._userService = userService;
+            UserDTO user = this._userService.GetById(id).ToDTO();
+            return this.Ok(user);
         }
-
-        //[Authorize]
-        [HttpPut("Update/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Update(int id, [FromBody] UserDTO.UserUpdateFormDTO user)
+        catch (ArgumentOutOfRangeException ex)
         {
-            if (id <= 0)
-            {
-                return this.BadRequest("Invalid user data");
-            }
-
-            BLL.Models.User_Related.User updatedUser = user.ToModels();
-            updatedUser.IdUser = id;
-            if (this._userService.Update(updatedUser))
-            {
-                return this.Ok();
-            }
-            return this.StatusCode(StatusCodes.Status500InternalServerError);
+            return this.NotFound("L'utilisateur est introuvable.");
+        }
+        catch (Exception ex)
+        {
+            return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+
+    //[Authorize]
+    [HttpPut("Update/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Update(int id, [FromBody] UserDTO user)
+    {
+        if (id <= 0)
+        {
+            return this.BadRequest("Invalid user data");
+        }
+
+        BLL.Models.User_Related.User updatedUser = user.ToModels();
+        updatedUser.IdUser = id;
+        if (this._userService.Update(updatedUser))
+        {
+            return this.Ok();
+        }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
+
+    }
 }
+

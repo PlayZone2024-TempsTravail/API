@@ -1,11 +1,11 @@
-﻿using Entities = PlayZone.DAL.Entities.User_Related;
-using Models = PlayZone.BLL.Models.User_Related;
+﻿using PlayZone.BLL.Models.User_Related;
+using Entities = PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.BLL.Mappers.User_Related;
 
 public static class UserMapper
 {
-    public static Entities.User ToEntities(this Models.User_Related.User user)
+    public static Entities.User ToEntities(this User user)
     {
         return new Entities.User
         {
@@ -23,9 +23,9 @@ public static class UserMapper
         };
     }
 
-    public static Models.User_Related.User ToModels(this Entities.User user)
+    public static User ToModels(this Entities.User user)
     {
-        return new Models.User_Related.User
+        return new User
         {
             IdUser = user.IdUser,
             RoleId = user.RoleId,
