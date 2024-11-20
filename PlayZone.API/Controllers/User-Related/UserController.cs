@@ -17,6 +17,20 @@ public class UserController : ControllerBase
         this._userService = userService;
     }
 
+    [HttpGet("GetAll")]
+    public IActionResult GetAll()
+    {
+        try
+        {
+            IEnumerable<UserDTO> users = this._userService.GetAll().Select(u => u.ToDTO());
+            return this.Ok(users);
+        }
+        catch (Exception)
+        {
+            return this.NotFound("L'utilisateur est introuvable.");
+        }
+    }
+
     [HttpGet("GetById/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetById(int id)
@@ -33,6 +47,20 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpGet("GetByEmail/{email}")]
+    public IActionResult GetByEmail(string email)
+    {
+        try
+        {
+            UserDTO user = this._userService.GetByEmail(email).ToDTO();
+            return this.Ok(user);
+        }
+        catch (Exception)
+        {
+            return this.NotFound("L'utilisateur est introuvable.");
         }
     }
 
