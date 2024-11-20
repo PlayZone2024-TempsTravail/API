@@ -81,7 +81,6 @@ public class UserController : ControllerBase
             return this.Ok();
         }
         return this.StatusCode(StatusCodes.Status500InternalServerError);
-
     }
 }
 
