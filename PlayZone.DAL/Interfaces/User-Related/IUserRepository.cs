@@ -10,4 +10,5 @@ public interface IUserRepository
     public User Create(User user);
     public bool Update(User user);
     public bool Delete(int id);
+    public User Login(string email);
 }

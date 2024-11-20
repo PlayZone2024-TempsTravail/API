@@ -5,4 +5,5 @@ namespace PlayZone.BLL.Interfaces.User_Related;
 public interface IAuthService
 {
     public string GenerateToken(User user);
+
 }

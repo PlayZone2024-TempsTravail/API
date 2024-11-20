@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.BLL.Mappers.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related
 {
@@ -15,7 +16,7 @@ namespace PlayZone.API.Controllers.User_Related
 
         public UserController(IUserService userService)
         {
-            _userService = userService;
+            this._userService = userService;
         }
 
         [HttpPost("login")]
@@ -26,9 +27,9 @@ namespace PlayZone.API.Controllers.User_Related
             try
             {
 
-                string token = _userService.Login(user.ToModels());
+                string token = this._userService.Login(user.ToModels().ToEntities());
 
-                return Ok(new
+                return this.Ok(new
                 {
                     token,
                     email = user.Email,
@@ -37,7 +38,7 @@ namespace PlayZone.API.Controllers.User_Related
 
             catch (ArgumentOutOfRangeException)
             {
-                return NotFound("les crédentials de login sont incorrecto");
+                return this.NotFound("les crédentials de login sont incorrect");
             }
             catch (Exception ex)
             {

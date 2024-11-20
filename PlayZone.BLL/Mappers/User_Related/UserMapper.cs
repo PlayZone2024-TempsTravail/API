@@ -3,8 +3,6 @@ using Entities = PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.BLL.Mappers.User_Related;
 
-// TODO
-// tout rouge je sais pas pourquoi :'(
 public static class UserMapper
 {
     public static Entities.User ToEntities(this User user)

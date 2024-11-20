@@ -74,6 +74,18 @@ namespace PlayZone.DAL.Repositories.User_Related
             return this._connection.QuerySingleOrDefault<User>(query, new { Email = email });
         }
 
+
+        public User? Login(string email)
+        {
+            const string query = @"
+                SELECT
+                    ""email"",
+                    ""password""
+                FROM ""User""
+                WHERE ""email"" = @Email;
+            ";
+            return this._connection.QuerySingleOrDefault<User>(query, new { Email = email });
+        }
         public User Create(User user)
         {
             const string query = @"
@@ -140,3 +152,6 @@ namespace PlayZone.DAL.Repositories.User_Related
         }
     }
 }
+
+
+

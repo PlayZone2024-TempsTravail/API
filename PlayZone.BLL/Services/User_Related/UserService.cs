@@ -1,15 +1,21 @@
 ﻿using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.DAL.Entities.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
+using System;
+using Microsoft.AspNetCore.Http.HttpResults;
+using PlayZone.BLL.Mappers.User_Related;
+
+
 namespace PlayZone.BLL.Services.User_Related;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-
-    public UserService(IUserRepository userRepository)
+    private readonly IAuthService _authService;
+    public UserService(IUserRepository userRepository, IAuthService authService)
     {
-        _userRepository = userRepository;
+        this._userRepository = userRepository;
+        this._authService = authService;
     }
 
     public User Create(User user)
@@ -19,7 +25,7 @@ public class UserService : IUserService
         string passwordAuto = "Test1234=";
         user.Password = passwordAuto;
 
-        return _userRepository.Create(user.Entities()).ToModels();
+        return this._userRepository.Create(user.ToModel().ToEntities());
     }
 
     public IEnumerable<User> GetAll()
@@ -29,7 +35,13 @@ public class UserService : IUserService
 
     public string Login(User user)
     {
-        throw new NotImplementedException();
+        User userDb = this._userRepository.Login(user.Email);
+        if (userDb.Email == user.Email  && userDb.Password == user.Password)
+        {
+            return this._authService.GenerateToken(user.ToModel());
+
+        }
+        throw new InvalidCastException();
     }
 
 
