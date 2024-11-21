@@ -1,4 +1,4 @@
-﻿using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Mappers.User_Related;
 using PlayZone.BLL.Models.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
@@ -32,5 +32,17 @@ public class UserService : IUserService
     public User GetByEmail(string email)
     {
         return this._userRepository.GetByEmail(email).ToModels();
+    }
+    
+    public int Create(User user)
+    {
+        return this._userRepository.Create(user.ToEntities());
+    }
+
+    public bool Delete(int Id)
+    {
+        // TODO
+        // voir pour que au retour il envoie bien le true ou false utiliser le getbyid pour return
+        return _userRepository.Delete(Id);
     }
 }

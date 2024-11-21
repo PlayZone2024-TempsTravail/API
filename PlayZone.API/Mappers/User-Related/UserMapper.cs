@@ -1,13 +1,13 @@
-﻿using PlayZone.API.DTOs.User_Related;
-using PlayZone.BLL.Models.User_Related;
+using PlayZone.API.DTOs.User_Related;
+using Model = PlayZone.BLL.Models.User_Related;
 
 namespace PlayZone.API.Mappers.User_Related;
 
 public static class UserMapper
 {
-    public static User ToModels(this UserDTO user)
+    public static Model.User ToModel(this UserCreateFormDTO user)
     {
-        return new User
+        return new Model.User
         {
             RoleId = user.RoleId,
             Nom = user.Nom,
