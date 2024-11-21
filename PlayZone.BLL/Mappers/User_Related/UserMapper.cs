@@ -10,24 +10,34 @@ public static class UserMapper
         return new Entities.User
         {
             IdUser = user.IdUser,
+            RoleId = user.RoleId,
+            IsActive = user.IsActive,
             Nom = user.Nom,
             Prenom = user.Prenom,
+            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
             Email = user.Email,
             Password = user.Password,
-            RoleId = user.RoleId,
+            VA = user.VA,
+            VAEX = user.VAEX,
+            RC = user.RC
         };
     }
 
-    public static User ToModel(this Entities.User user)
+    public static User ToModels(this Entities.User user)
     {
         return new User
         {
             IdUser = user.IdUser,
+            RoleId = user.RoleId,
+            IsActive = user.IsActive,
             Nom = user.Nom,
             Prenom = user.Prenom,
+            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
             Email = user.Email,
             Password = user.Password,
-            RoleId = user.RoleId,
+            VA = user.VA,
+            VAEX = user.VAEX,
+            RC = user.RC
         };
     }
 }

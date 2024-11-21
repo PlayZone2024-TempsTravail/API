@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\User-Related\" />
+      <Folder Include="Controllers\User_Related\" />
     </ItemGroup>
 
     <ItemGroup>

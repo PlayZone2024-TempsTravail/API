@@ -85,34 +85,36 @@ namespace PlayZone.DAL.Repositories.User_Related
             ";
             return this._connection.QuerySingleOrDefault<User>(query, new { Email = email });
         }
-        
+
         public int Create(User user)
         {
             const string query = @"
                 INSERT INTO ""User"" (
+                    ""id_user"",
                     ""nom"",
                     ""prenom"",
                     ""email"",
+                    ""password"",
                     ""role_id""
-                    -- Include password if necessary
                 )
                 VALUES (
+                    DEFAULT,
                     @Nom,
                     @Prenom,
                     @Email,
+                    @Password,
                     @RoleId
-                    -- Include @Password if necessary
                 )
-                RETURNING *;
+                RETURNING ""id_user"" AS ""IdUser"";
             ";
-            int resultId = this._connection.QuerySingle<User>(query, new
+            int resultId = this._connection.QuerySingle<int>(query, new
             {
                 Nom = user.Nom,
                 Prenom = user.Prenom,
                 Email = user.Email,
+                Password = user.Password,
                 RoleId = user.RoleId
-                // Include Password = user.Password if necessary
-            }).IdUser;
+            });
 
             return resultId;
         }

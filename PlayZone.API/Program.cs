@@ -40,6 +40,7 @@ builder.Services.AddSwaggerGen(c => {
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
+            // TODO Cleanup swagger https://github.com/domaindrivendev/Swashbuckle.AspNetCore?tab=readme-ov-file#add-security-definitions-and-requirements
             new OpenApiSecurityScheme {
                 Reference = new OpenApiReference {
                     Type = ReferenceType.SecurityScheme,

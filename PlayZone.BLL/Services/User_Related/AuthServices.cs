@@ -1,14 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using PlayZone.BLL.Interfaces.User_Related;
-using PlayZone.DAL.Entities.User_Related;
+using PlayZone.BLL.Mappers.User_Related;
+using PlayZone.DAL.Interfaces.User_Related;
 using User = PlayZone.BLL.Models.User_Related.User;
 
 namespace PlayZone.BLL.Services.User_Related;
@@ -17,10 +14,21 @@ public class AuthServices : IAuthService
 {
 
     private readonly IConfiguration _config;
-
-    public AuthServices(IConfiguration config)
+    private readonly IUserRepository _userRepository;
+    public AuthServices(IConfiguration config, IUserRepository userRepository)
     {
         this._config = config;
+        this._userRepository = userRepository;
+    }
+
+    public string Login(User user)
+    {
+        User userDb = this._userRepository.Login(user.Email).ToModels();
+        if (userDb.Email == user.Email  && userDb.Password == user.Password)
+        {
+            return this.GenerateToken(user);
+        }
+        throw new InvalidCastException();
     }
 
     public string GenerateToken(User user)
@@ -52,6 +60,8 @@ public class AuthServices : IAuthService
         // Conversion en une chaine de charactère
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+
 }
 
 
