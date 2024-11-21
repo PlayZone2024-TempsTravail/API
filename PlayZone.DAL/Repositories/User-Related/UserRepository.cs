@@ -19,13 +19,13 @@ namespace PlayZone.DAL.Repositories.User_Related
         {
             const string query = @"
                 SELECT
-                    ""id_user"",
-                    ""role_id"",
+                    ""id_user"" AS ""IdUser"",
+                    ""role_id"" AS ""RoleId"",
                     ""isActive"",
                     ""nom"",
                     ""prenom"",
                     ""email"",
-                    ""heures_annuelles_prestables"",
+                    ""heures_annuelles_prestables"" AS ""HeuresAnnuellesPrestables"",
                     ""VA"",
                     ""VAEX"",
                     ""RC""
@@ -38,13 +38,13 @@ namespace PlayZone.DAL.Repositories.User_Related
         {
             const string query = @"
                 SELECT
-                    ""id_user"",
-                    ""role_id"",
+                    ""id_user"" AS ""IdUser"",
+                    ""role_id"" AS ""RoleId"",
                     ""isActive"",
                     ""nom"",
                     ""prenom"",
                     ""email"",
-                    ""heures_annuelles_prestables"",
+                    ""heures_annuelles_prestables"" AS ""HeuresAnnuellesPrestables"",
                     ""VA"",
                     ""VAEX"",
                     ""RC""
@@ -58,13 +58,13 @@ namespace PlayZone.DAL.Repositories.User_Related
         {
             const string query = @"
                 SELECT
-                    ""id_user"",
-                    ""role_id"",
+                    ""id_user"" AS ""IdUser"",
+                    ""role_id"" AS ""RoleId"",
                     ""isActive"",
                     ""nom"",
                     ""prenom"",
                     ""email"",
-                    ""heures_annuelles_prestables"",
+                    ""heures_annuelles_prestables"" AS ""HeuresAnnuellesPrestables"",
                     ""VA"",
                     ""VAEX"",
                     ""RC""
