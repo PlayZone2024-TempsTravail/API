@@ -15,6 +15,21 @@ public class WorktimeRepository : IWorktimeRepository
         this._connection = connection;
     }
 
+    public IEnumerable<Worktime> GetByDateRange(int userId, DateTime startDate, DateTime endDate)
+    {
+        const string query = @"
+        SELECT w.*, c.""name"" AS ""CategoryName"", p.""name"" AS ""ProjectName""
+        FROM ""WorkTime"" w
+        LEFT JOIN ""WorkTime_Category"" c ON w.""category_id"" = c.""id_workTime_category""
+        LEFT JOIN ""Project"" p ON w.""project_id"" = p.""id_project""
+        WHERE w.""user_id"" = @UserId
+          AND DATE(w.""start"") >= DATE(@StartDate)
+          AND DATE(w.""start"") <= DATE(@EndDate);
+    ";
+        return this._connection.Query<Worktime>(query, new { UserId = userId, StartDate = startDate, EndDate = endDate });
+    }
+
+
     public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth)
     {
         const string query = @"

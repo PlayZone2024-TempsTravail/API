@@ -1,8 +1,8 @@
-﻿using PlayZone.DAL.Entities.Worktime_Related;
+﻿using PlayZone.BLL.Models.Worktime_Related;
 
-namespace PlayZone.DAL.Interfaces.Worktime_Related;
+namespace PlayZone.BLL.Interfaces.Worktime_Related;
 
-public interface IWorktimeRepository
+public interface IWorktimeService
 {
     public IEnumerable<Worktime> GetByDateRange(int userId, DateTime startDate, DateTime endDate);
     public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth);

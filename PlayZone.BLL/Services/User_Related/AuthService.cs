@@ -10,12 +10,12 @@ using User = PlayZone.BLL.Models.User_Related.User;
 
 namespace PlayZone.BLL.Services.User_Related;
 
-public class AuthServices : IAuthService
+public class AuthService : IAuthService
 {
 
     private readonly IConfiguration _config;
     private readonly IUserRepository _userRepository;
-    public AuthServices(IConfiguration config, IUserRepository userRepository)
+    public AuthService(IConfiguration config, IUserRepository userRepository)
     {
         this._config = config;
         this._userRepository = userRepository;
@@ -44,7 +44,7 @@ public class AuthServices : IAuthService
         };
 
         // Création d'une clé symétrique avec le JWT:KEY (appsettings.json)
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._config["Jwt:Key"]));
         // Signe l'algorithme hmacsha256);
         SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
