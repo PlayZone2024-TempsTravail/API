@@ -1,7 +1,7 @@
-﻿using PlayZone.API.DTO;
+﻿using PlayZone.API.DTOs.User_Related;
 using PlayZone.BLL.Models.User_Related;
 
-namespace PlayZone.API.Mappers;
+namespace PlayZone.API.Mappers.User_Related;
 
 public static class RoleMapper
 {

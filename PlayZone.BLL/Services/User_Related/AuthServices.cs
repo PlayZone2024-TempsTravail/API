@@ -16,10 +16,16 @@ public class AuthServices : IAuthService
 
     private readonly IConfiguration _config;
     private readonly IUserRepository _userRepository;
-    public AuthServices(IConfiguration config, IUserRepository userRepository)
+    private readonly IRolePermissionRepository _rolePermissionRepository;
+    public AuthServices(
+        IConfiguration config,
+        IUserRepository userRepository,
+        IRolePermissionRepository rolePermissionRepository
+    )
     {
         this._config = config;
         this._userRepository = userRepository;
+        this._rolePermissionRepository = rolePermissionRepository;
     }
 
     public string Login(User user)
@@ -27,27 +33,28 @@ public class AuthServices : IAuthService
         User userDb = this._userRepository.Login(user.Email).ToModels();
         if (userDb.Email == user.Email  && userDb.Password == user.Password)
         {
-            return this.GenerateToken(user);
+            return this.GenerateToken(userDb);
         }
         throw new InvalidCastException();
     }
 
     public string GenerateToken(User user)
     {
-
-        List<Claim> claims = new List<Claim>()
-        {
+        List<Claim> claims =
+        [
             new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
             new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("o")),
             new Claim("nom", user.Nom),
-            new Claim("prenom", user.Prenom),
-            new Claim("Permissions", Permission.CONSULTER_UTILISATEUR),
-            new Claim("Permissions", Permission.AJOUTER_UTILISATEUR),
-            new Claim("Permissions", Permission.SUPPRIMER_UTILISATEUR)
-        };
+            new Claim("prenom", user.Prenom)
+        ];
+
+        foreach (RolePermission rolePermission in this._rolePermissionRepository.GetByRole(user.RoleId))
+        {
+            claims.Add(new Claim("Permissions", rolePermission.PermissionId.Trim()));
+        }
 
         // Création d'une clé symétrique avec le JWT:KEY (appsettings.json)
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._config["Jwt:Key"]!));
         // Signe l'algorithme hmacsha256);
         SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

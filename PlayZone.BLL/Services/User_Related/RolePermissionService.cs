@@ -1,9 +1,9 @@
+using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Mappers.User_Related;
-using PlayZone.DAL.Entities.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using RolePermission = PlayZone.BLL.Models.User_Related.RolePermission;
 
-namespace PlayZone.BLL.Service.User_Related;
+namespace PlayZone.BLL.Services.User_Related;
 
 public class RolePermissionService : IRolePermissionService
 {

@@ -1,11 +1,12 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PlayZone.API.DTO;
-using PlayZone.API.Mappers;
+using PlayZone.API.Attributes;
+using PlayZone.API.DTOs.User_Related;
+using PlayZone.API.Mappers.User_Related;
+using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.DAL.Entities.User_Related;
 using RolePermission = PlayZone.BLL.Models.User_Related.RolePermission;
 
-namespace PlayZone.API.Controllers;
+namespace PlayZone.API.Controllers.User_Related;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -18,18 +19,21 @@ public class RolePermissionController : ControllerBase
     }
 
     [HttpGet]
+    [PermissionAuthorize(Permission.CONSULTER_ROLES)]
     public IActionResult GetAll()
     {
         return this.Ok(this._rolePermissionService.GetAll());
     }
 
     [HttpGet("{idRole}")]
+    [PermissionAuthorize(Permission.CONSULTER_ROLES)]
     public IActionResult GetByRole(int idRole)
     {
         return this.Ok(this._rolePermissionService.GetByRole(idRole));
     }
 
     [HttpPost]
+    [PermissionAuthorize(Permission.CREER_ROLE)]
     public IActionResult Create(RolePermissionFormDTO rolePermissionFormDTO)
     {
         RolePermission rp = this._rolePermissionService.Create(rolePermissionFormDTO.ToModel());
@@ -41,6 +45,7 @@ public class RolePermissionController : ControllerBase
     }
 
     [HttpDelete("{idRole}/{permissionId}")]
+    [PermissionAuthorize(Permission.SUPPRIMER_ROLE)]
     public IActionResult Delete(int idRole, int permissionId)
     {
         if (this._rolePermissionService.Delete(idRole, permissionId))

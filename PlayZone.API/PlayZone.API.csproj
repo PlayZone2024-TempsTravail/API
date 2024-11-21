@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\User_Related\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
       <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
       <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />

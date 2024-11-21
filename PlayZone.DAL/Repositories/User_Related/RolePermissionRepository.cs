@@ -28,7 +28,9 @@ public class RolePermissionRepository : IRolePermissionRepository
     public IEnumerable<RolePermission> GetByRole(int roleId)
     {
         const string query = @"
-            SELECT ""role_id"", ""permission_id""
+            SELECT
+                ""role_id"" AS ""RoleId"",
+                ""permission_id"" AS ""PermissionId""
             FROM ""Role_Permission""
             WHERE ""role_id"" = @RoleId;
         ";

@@ -9,7 +9,6 @@ using User = PlayZone.BLL.Models.User_Related.User;
 
 namespace PlayZone.API.Controllers.User_Related;
 
-[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
@@ -22,6 +21,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetAll()
     {
         try
@@ -37,6 +37,7 @@ public class UserController : ControllerBase
 
     [HttpGet("id/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetById(int id)
     {
         try
@@ -51,6 +52,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("email/{email}")]
+    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetByEmail(string email)
     {
         try
@@ -67,6 +69,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserCreateFormDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+    [PermissionAuthorize(Permission.AJOUTER_UTILISATEUR)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
     {
         int resultId = this._userService.Create(user.ToModels());
@@ -79,6 +82,7 @@ public class UserController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     public IActionResult Update(int id, [FromBody] UserDTO user)
     {
         if (id <= 0)

@@ -78,8 +78,12 @@ namespace PlayZone.DAL.Repositories.User_Related
         {
             const string query = @"
                 SELECT
+                    ""id_user"" AS ""IdUser"",
+                    ""role_id"" AS ""RoleId"",
                     ""email"",
-                    ""password""
+                    ""password"",
+                    ""nom"",
+                    ""prenom""
                 FROM ""User""
                 WHERE ""email"" = @Email;
             ";
