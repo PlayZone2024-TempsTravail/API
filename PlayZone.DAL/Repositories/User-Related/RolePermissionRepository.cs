@@ -49,7 +49,7 @@ public class RolePermissionRepository : IRolePermissionRepository
         });
     }
 
-    public bool CheckPermission(int userId, Permission permission)
+    public bool CheckPermission(int userId, string permission)
     {
         const string query = @"
             SELECT CASE WHEN count(*) <> 0 THEN TRUE ELSE FALSE END
@@ -61,7 +61,7 @@ public class RolePermissionRepository : IRolePermissionRepository
                 WHERE u.id_user = @UserId AND rp.permission_id = @PermissionId
             ) data;
         ";
-        return this._connection.QuerySingle<bool>(query, new {UserId= userId, PermissionId = permission.permission_id});
+        return this._connection.QuerySingle<bool>(query, new {UserId= userId, PermissionId = permission});
     }
 
     public bool Delete(int roleId, int permissionId)

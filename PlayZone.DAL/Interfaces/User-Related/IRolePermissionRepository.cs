@@ -7,6 +7,6 @@ public interface IRolePermissionRepository
     public IEnumerable<RolePermission> GetAll();
     public IEnumerable<RolePermission> GetByRole(int idRole);
     public RolePermission Create(RolePermission rolePermission);
-    public bool CheckPermission(int idUser, Permission permission);
+    public bool CheckPermission(int idUser, string permission);
     public bool Delete(int id, int permissionId);
 }

@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Service.User_Related;
-using PlayZone.DAL.Entities.User_Related;
+using PlayZone.BLL.Services.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.DAL.Repositories.User_Related;
 

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.BLL.Interfaces.User_Related;
-using PlayZone.BLL.Models.User_Related;
+using PlayZone.DAL.Entities.User_Related;
+using User = PlayZone.BLL.Models.User_Related.User;
 
 namespace PlayZone.API.Controllers.User_Related;
 
@@ -96,6 +98,7 @@ public class UserController : ControllerBase
     [HttpDelete("{idUser:int}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [PermissionAuthorize(Permission.SUPPRIMER_UTILISATEUR)]
     public IActionResult Delete(int idUser)
     {
         try

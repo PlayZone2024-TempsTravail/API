@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Mappers.User_Related;
+using PlayZone.DAL.Entities.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using User = PlayZone.BLL.Models.User_Related.User;
 
@@ -40,7 +41,9 @@ public class AuthServices : IAuthService
             new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("o")),
             new Claim("nom", user.Nom),
             new Claim("prenom", user.Prenom),
-            new Claim("Permissions", "//TODO "),
+            new Claim("Permissions", Permission.CONSULTER_UTILISATEUR),
+            new Claim("Permissions", Permission.AJOUTER_UTILISATEUR),
+            new Claim("Permissions", Permission.SUPPRIMER_UTILISATEUR)
         };
 
         // Création d'une clé symétrique avec le JWT:KEY (appsettings.json)

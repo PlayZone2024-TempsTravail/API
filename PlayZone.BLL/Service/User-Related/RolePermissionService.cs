@@ -28,7 +28,7 @@ public class RolePermissionService : IRolePermissionService
         return this._rolePermissionRepository.Create(rolePermission.ToEntities()).ToModel();
     }
 
-    public bool CheckPermission(int idUser, Permission permission)
+    public bool CheckPermission(int idUser, string permission)
     {
         return this._rolePermissionRepository.CheckPermission(idUser, permission);
     }
