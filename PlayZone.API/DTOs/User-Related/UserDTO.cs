@@ -6,6 +6,8 @@ public class UserCreateFormDTO
 {
     public int IdUser { get; set; }
 
+    public bool IsActive { get; set; } = true
+
     [Required]
     public string Nom { get; set; }
 

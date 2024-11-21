@@ -6,7 +6,7 @@ using PlayZone.BLL.Mappers.User_Related;
 
 namespace PlayZone.BLL.Services.User_Related;
 
-public class UserService : IUserService
+public class UserService
 {
     private readonly IUserRepository _userRepository;
 
