@@ -1,4 +1,5 @@
-﻿using PlayZone.BLL.Interfaces.User_Related;
+
+using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.BLL.Models.User_Related;
 using PlayZone.BLL.Mappers.User_Related;
@@ -12,7 +13,14 @@ public class UserService
 
     public UserService(IUserRepository userRepository)
     {
-        this._userRepository = userRepository;
+        _userRepository = userRepository;
+    }
+
+    public bool Delete(int Id)
+    {
+        // TODO
+        // voir pour que au retour il envoie bien le true ou false utiliser le getbyid pour return
+        return _userRepository.Delete(Id);
     }
 
     public int Create(User user)

@@ -1,9 +1,9 @@
-﻿namespace PlayZone.BLL.Models.User_Related;
+namespace PlayZone.BLL.Models.User_Related;
 
 public class User
 {
     public int IdUser { get; set; }
-    public string RoleId { get; set; }
+    public int RoleId { get; set; }
     public bool IsActive { get; set; }
     public string Nom { get; set; }
     public string Prenom { get; set; }
