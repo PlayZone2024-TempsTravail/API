@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+using System.Data.Common;
 using Dapper;
 using Npgsql;
 using PlayZone.DAL.Entities.User_Related;
@@ -74,7 +74,19 @@ namespace PlayZone.DAL.Repositories.User_Related
             return this._connection.QuerySingleOrDefault<User>(query, new { Email = email });
         }
 
-        public User Create(User user)
+        public User? Login(string email)
+        {
+            const string query = @"
+                SELECT
+                    ""email"",
+                    ""password""
+                FROM ""User""
+                WHERE ""email"" = @Email;
+            ";
+            return this._connection.QuerySingleOrDefault<User>(query, new { Email = email });
+        }
+        
+        public int Create(User user)
         {
             const string query = @"
                 INSERT INTO ""User"" (
@@ -93,14 +105,16 @@ namespace PlayZone.DAL.Repositories.User_Related
                 )
                 RETURNING *;
             ";
-            return this._connection.QuerySingle<User>(query, new
+            int resultId = this._connection.QuerySingle<User>(query, new
             {
                 Nom = user.Nom,
                 Prenom = user.Prenom,
                 Email = user.Email,
                 RoleId = user.RoleId
                 // Include Password = user.Password if necessary
-            });
+            }).IdUser;
+
+            return resultId;
         }
 
         public bool Update(User user)
@@ -140,3 +154,6 @@ namespace PlayZone.DAL.Repositories.User_Related
         }
     }
 }
+
+
+

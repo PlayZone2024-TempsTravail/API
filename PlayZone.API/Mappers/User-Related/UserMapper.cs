@@ -1,0 +1,42 @@
+﻿using PlayZone.API.DTOs.User_Related;
+using PlayZone.DAL.Entities.User_Related;
+using Model = PlayZone.BLL.Models.User_Related;
+
+namespace PlayZone.API.Mappers.User_Related;
+
+public static class UserMapper
+{
+    public static Model.User ToModel(this UserCreateFormDTO user)
+    {
+        return new Model.User
+        {
+            RoleId = user.RoleId,
+            Nom = user.Nom,
+            Prenom = user.Prenom,
+            Email = user.Email,
+            Password = user.Password,
+            IsActive = user.IsActive,
+            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
+            VA = user.VA,
+            VAEX = user.VAEX,
+            RC = user.RC,
+        };
+    }
+
+    public static UserCreateFormDTO ToDTO(this User user)
+    {
+        return new UserCreateFormDTO
+        {
+            RoleId = user.RoleId,
+            Nom = user.Nom,
+            Prenom = user.Prenom,
+            Email = user.Email,
+            Password = user.Password,
+            IsActive = user.IsActive,
+            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
+            VA = user.VA,
+            VAEX = user.VAEX,
+            RC = user.RC,
+        };
+    }
+}
