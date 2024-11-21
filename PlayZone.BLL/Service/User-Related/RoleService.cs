@@ -20,17 +20,17 @@ public class RoleService : IRoleService
 
     public Role? GetById(int id)
     {
-        return this._roleRepository.GetById(id).ToModel();
+        return this._roleRepository.GetById(id)?.ToModel();
     }
 
     public int Create(Role role)
     {
-        return this._roleRepository.Create(role.ToModel());
+        return this._roleRepository.Create(role.ToEntities());
     }
 
     public bool Update(Role role)
     {
-        return this._roleRepository.Update(role.ToModel());
+        return this._roleRepository.Update(role.ToEntities());
     }
 
     public bool Delete(int id)
