@@ -4,9 +4,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.BLL.Interfaces.Wortime_Related;
 using PlayZone.BLL.Services.User_Related;
+using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.User_Related;
+using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.DAL.Repositories.User_Related;
+using PlayZone.DAL.Repositories.Worktime_Related;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +24,12 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthServices>();
+builder.Services.AddScoped<IWorktimeService, WorktimeService>(); // TEST
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>(); //test
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
