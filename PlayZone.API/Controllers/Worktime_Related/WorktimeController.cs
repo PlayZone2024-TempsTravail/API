@@ -35,14 +35,14 @@ public class WorktimeController : ControllerBase
         }
     }
 
-    [HttpGet("day/{userId:int}/{dayOfMonth:int}")]
+    [HttpGet("day/{userId:int}/{dayOfMonth:int}/{monthOfYear:int}/{year:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
-    public IActionResult GetByDay(int userId, int dayOfMonth)
+    public IActionResult GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
         try
         {
             IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByDay(userId, dayOfMonth)
+                .GetByDay(userId, dayOfMonth, monthOfYear, year)
                 .Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
@@ -52,14 +52,14 @@ public class WorktimeController : ControllerBase
         }
     }
 
-    [HttpGet("week/{userId:int}/{weekOfYear:int}")]
+    [HttpGet("week/{userId:int}/{weekOfYear:int}/{year:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
-    public IActionResult GetByWeek(int userId, int weekOfYear)
+    public IActionResult GetByWeek(int userId, int weekOfYear, int year)
     {
         try
         {
             IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByWeek(userId, weekOfYear)
+                .GetByWeek(userId, weekOfYear, year)
                 .Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
@@ -69,14 +69,14 @@ public class WorktimeController : ControllerBase
         }
     }
 
-    [HttpGet("month/{userId:int}/{monthOfYear:int}")]
+    [HttpGet("month/{userId:int}/{monthOfYear:int}/{year:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
-    public IActionResult GetByMonth(int userId, int monthOfYear)
+    public IActionResult GetByMonth(int userId, int monthOfYear, int year)
     {
         try
         {
             IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByMonth(userId, monthOfYear)
+                .GetByMonth(userId, monthOfYear, year)
                 .Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }

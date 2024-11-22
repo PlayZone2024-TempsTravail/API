@@ -19,18 +19,18 @@ public class WorktimeService : IWorktimeService
         return this._worktimeRepository.GetByDateRange(userId, startDate, endDate).Select(w => w.ToModels());
     }
 
-    public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth)
+    public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
-        return this._worktimeRepository.GetByDay(userId, dayOfMonth).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByDay(userId, dayOfMonth, monthOfYear, year).Select(w => w.ToModels());
     }
 
-    public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear)
+    public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear, int year)
     {
-        return this._worktimeRepository.GetByWeek(userId, weekOfYear).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByWeek(userId, weekOfYear, year).Select(w => w.ToModels());
     }
 
-    public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear)
+    public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear, int year)
     {
-        return this._worktimeRepository.GetByMonth(userId, monthOfYear).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByMonth(userId, monthOfYear, year).Select(w => w.ToModels());
     }
 }
