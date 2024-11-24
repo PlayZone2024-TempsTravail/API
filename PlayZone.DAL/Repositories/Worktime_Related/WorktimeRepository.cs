@@ -66,16 +66,15 @@ public class WorktimeRepository : IWorktimeRepository
     public bool Update(Worktime worktime)
     {
         const string query = @"
-        UPDATE ""WorkTime""
-        SET
-            ""start"" = @Start,
-            ""end"" = @End,
-            ""category_id"" = @CategoryId,
-            ""project_id"" = @ProjectId,
-            ""user_id"" = @UserId
-        WHERE
-            ""id_WorkTime"" = @Id;
-    ";
-    return this._connection.Execute(query, worktime) > 0;
+            UPDATE ""WorkTime""
+            SET
+                ""start"" = @Start,
+                ""end"" = @End,
+                ""category_id"" = @CategoryId,
+                ""project_id"" = @ProjectId
+            WHERE
+                ""id_WorkTime"" = @Id;
+        ";
+        return this._connection.Execute(query, worktime) > 0;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PlayZone.DAL.Entities.Worktime_Related;
+﻿namespace PlayZone.BLL.Models.Worktime_Related;
 
 public class Worktime
 {
