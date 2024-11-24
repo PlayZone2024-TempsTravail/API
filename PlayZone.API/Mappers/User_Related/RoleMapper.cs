@@ -13,4 +13,21 @@ public static class RoleMapper
             Name = roleDTO.Name
         };
     }
+
+    public static Role ToModel(this RoleCreateDTO roleCreateDTO)
+    {
+        return new Role
+        {
+            Name = roleCreateDTO.Name
+        };
+    }
+
+    public static RoleDTO ToDTO(this Role role)
+    {
+        return new RoleDTO
+        {
+            IdRole = role.IdRole,
+            Name = role.Name
+        };
+    }
 }

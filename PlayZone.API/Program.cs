@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
@@ -20,13 +21,15 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthServices>();
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<JwtService>();
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
-builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

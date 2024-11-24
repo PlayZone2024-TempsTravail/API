@@ -20,41 +20,71 @@ public class RolePermissionController : ControllerBase
 
     [HttpGet]
     [PermissionAuthorize(Permission.CONSULTER_ROLES)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RolePermissionDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
     {
-        return this.Ok(this._rolePermissionService.GetAll());
+        try
+        {
+            IEnumerable<RolePermissionDTO> rolePermissions = this._rolePermissionService.GetAll().Select(rp => rp.ToDTO());
+            return this.Ok(rolePermissions);
+        }
+        catch (Exception)
+        {
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpGet("{idRole}")]
     [PermissionAuthorize(Permission.CONSULTER_ROLES)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<string>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetByRole(int idRole)
     {
-        return this.Ok(this._rolePermissionService.GetByRole(idRole));
+        try
+        {
+            IEnumerable<string> rolePermissions = this._rolePermissionService.GetByRole(idRole).Select(rp => rp.PermissionId);
+            return this.Ok(rolePermissions);
+        }
+        catch (Exception)
+        {
+            return this.NotFound("Le role est introuvable.");
+        }
     }
 
     [HttpPost]
     [PermissionAuthorize(Permission.CREER_ROLE)]
-    public IActionResult Create(RolePermissionFormDTO rolePermissionFormDTO)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult Create(RolePermissionDTO rolePermissionFormDTO)
     {
-        RolePermission rp = this._rolePermissionService.Create(rolePermissionFormDTO.ToModel());
-        if (rp.RoleId == rolePermissionFormDTO.RoleId && rp.PermissionId == rolePermissionFormDTO.PermissionId)
+        try
         {
-            return this.Ok();
+            RolePermission rp = this._rolePermissionService.Create(rolePermissionFormDTO.ToModel());
+            if (rp.RoleId == rolePermissionFormDTO.RoleId && rp.PermissionId == rolePermissionFormDTO.PermissionId)
+            {
+                return this.Ok();
+            }
         }
+        catch (Exception) { /* ignored */}
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
-    [HttpDelete("{idRole}/{permissionId}")]
+    [HttpDelete]
     [PermissionAuthorize(Permission.SUPPRIMER_ROLE)]
-    public IActionResult Delete(int idRole, int permissionId)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult Delete(RolePermissionDTO rolePermissionDTO)
     {
-        if (this._rolePermissionService.Delete(idRole, permissionId))
+        try
         {
-            return this.Ok();
+            if (this._rolePermissionService.Delete(rolePermissionDTO.RoleId, rolePermissionDTO.PermissionId))
+            {
+                return this.Ok();
+            }
         }
+        catch (Exception) { /* ignored */}
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
-
-
 }
 

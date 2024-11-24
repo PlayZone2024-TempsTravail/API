@@ -16,7 +16,6 @@ public class AuthServices : IAuthService
 
     private readonly IConfiguration _config;
     private readonly IUserRepository _userRepository;
-    private readonly IRolePermissionRepository _rolePermissionRepository;
     public AuthServices(
         IConfiguration config,
         IUserRepository userRepository,
@@ -25,51 +24,19 @@ public class AuthServices : IAuthService
     {
         this._config = config;
         this._userRepository = userRepository;
-        this._rolePermissionRepository = rolePermissionRepository;
     }
 
-    public string Login(User user)
+    public User? Login(User user)
     {
         User userDb = this._userRepository.Login(user.Email).ToModels();
         if (userDb.Email == user.Email  && userDb.Password == user.Password)
         {
-            return this.GenerateToken(userDb);
+            return userDb;
         }
-        throw new InvalidCastException();
+        return null;
     }
 
-    public string GenerateToken(User user)
-    {
-        List<Claim> claims =
-        [
-            new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
-            new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("o")),
-            new Claim("nom", user.Nom),
-            new Claim("prenom", user.Prenom)
-        ];
 
-        foreach (RolePermission rolePermission in this._rolePermissionRepository.GetByRole(user.RoleId))
-        {
-            claims.Add(new Claim("Permissions", rolePermission.PermissionId.Trim()));
-        }
-
-        // Création d'une clé symétrique avec le JWT:KEY (appsettings.json)
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._config["Jwt:Key"]!));
-        // Signe l'algorithme hmacsha256);
-        SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        // Rassemblement de l'issuer, l'audience, des claims, de la date d'expiration, de la signature
-        JwtSecurityToken token = new JwtSecurityToken(
-            this._config["Jwt:Issuer"],
-            this._config["Jwt:Audience"],
-            claims,
-            expires: DateTime.UtcNow.AddDays(1),
-            signingCredentials: creds
-        );
-
-        // Conversion en une chaine de charactère
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
 
 
 }

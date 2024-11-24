@@ -67,4 +67,16 @@ public static class UserMapper
             RC = user.RC,
         };
     }
+
+    public static UserLoginDTO ToLoginDTO(this Models.User user)
+    {
+        return new UserLoginDTO
+        {
+            IdUser = user.IdUser,
+            RoleId = user.RoleId,
+            Email = user.Email,
+            Nom = user.Nom,
+            Prenom = user.Prenom,
+        };
+    }
 }

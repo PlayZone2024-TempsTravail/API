@@ -19,7 +19,9 @@ public class RolePermissionRepository : IRolePermissionRepository
     public IEnumerable<RolePermission> GetAll()
     {
         const string query = @"
-            SELECT ""role_id"", ""permission_id""
+            SELECT
+                ""role_id"" AS ""RoleId"",
+                ""permission_id"" AS ""PermissionId""
             FROM ""Role_Permission"";
         ";
         return this._connection.Query<RolePermission>(query);
@@ -42,7 +44,7 @@ public class RolePermissionRepository : IRolePermissionRepository
         const string query = @"
             INSERT INTO ""Role_Permission"" (""role_id"", ""permission_id"")
             VALUES (@RoleId, @PermissionId)
-            RETURNING ""role_id"", ""permission_id"";
+            RETURNING ""role_id"" AS ""roleId"", ""permission_id"" AS ""permissionId"";
         ";
         return this._connection.QuerySingle<RolePermission>(query, new
         {
@@ -66,7 +68,7 @@ public class RolePermissionRepository : IRolePermissionRepository
         return this._connection.QuerySingle<bool>(query, new {UserId= userId, PermissionId = permission});
     }
 
-    public bool Delete(int roleId, int permissionId)
+    public bool Delete(int roleId, string permissionId)
     {
         const string query = @"
             DELETE FROM ""Role_Permission""

@@ -33,8 +33,8 @@ public class RolePermissionService : IRolePermissionService
         return this._rolePermissionRepository.CheckPermission(idUser, permission);
     }
 
-    public bool Delete(int id, int permissionId)
+    public bool Delete(int idRole, string permissionId)
     {
-        return this._rolePermissionRepository.Delete(id, permissionId);
+        return this._rolePermissionRepository.Delete(idRole, permissionId);
     }
 }

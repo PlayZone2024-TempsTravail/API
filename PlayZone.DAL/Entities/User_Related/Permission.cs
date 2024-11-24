@@ -21,4 +21,6 @@ public static class Permission
     public const string CREER_ROLE = "AJOUTER_ROLE";
     public const string MODIFIER_ROLE = "MODIFIER_ROLE";
     public const string SUPPRIMER_ROLE = "SUPPRIMER_ROLE";
+
+    public const string DEBUG_PERMISSION = "DEBUG_PERMISSION";
 }

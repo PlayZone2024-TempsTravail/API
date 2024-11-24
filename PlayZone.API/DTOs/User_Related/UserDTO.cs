@@ -53,3 +53,11 @@ public class UserCreateFormDTO
     public int RC { get; set; }
 }
 
+public class UserLoginDTO
+{
+    public int IdUser { get; set; }
+    public int RoleId { get; set; }
+    public string Email { get; set; }
+    public string Nom { get; set; }
+    public string Prenom { get; set; }
+}
