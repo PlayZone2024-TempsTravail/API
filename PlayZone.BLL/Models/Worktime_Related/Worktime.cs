@@ -2,10 +2,11 @@
 
 public class Worktime
 {
-    public int IdWorktime { get; set; } // Primary key
+    public int IdWorktime { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public required string WorktimeCategoryId { get; set; } //Foreign key
-    public int? ProjectId { get; set; } //Foreign key
-    public int UserId { get; set; } //Foreign key
+    public bool IsOnSite { get; set; }
+    public required string WorktimeCategoryId { get; set; }
+    public int? ProjectId { get; set; }
+    public int UserId { get; set; }
 }

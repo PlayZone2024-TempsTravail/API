@@ -13,8 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Entities\Worktime_Related\" />
-      <Folder Include="Interfaces\Worktime_Related\" />
-      <Folder Include="Repositories\Worktime_Related\" />
     </ItemGroup>
 
 </Project>

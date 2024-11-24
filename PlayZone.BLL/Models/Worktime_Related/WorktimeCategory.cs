@@ -2,6 +2,7 @@
 
 public class WorktimeCategory
 {
-    public required string IdWorktimeCategory { get; set; } // Primary key
+    public string IdWorktimeCategory { get; set; }
     public required string Name { get; set; }
+    public required string Color { get; set; }
 }

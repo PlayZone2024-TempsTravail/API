@@ -30,8 +30,7 @@ public class WorktimeController : ControllerBase
         }
         catch (Exception)
         {
-            return this.StatusCode(StatusCodes.Status500InternalServerError,
-                "An error occurred while retrieving worktimes.");
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 

@@ -10,7 +10,8 @@ public static class WorktimeCategoryMapper
         return new Entities.WorktimeCategory
         {
             IdWorktimeCategory = worktimeCategory.IdWorktimeCategory,
-            Name = worktimeCategory.Name
+            Name = worktimeCategory.Name,
+            Color = worktimeCategory.Color
         };
     }
 
@@ -19,7 +20,8 @@ public static class WorktimeCategoryMapper
         return new WorktimeCategory
         {
             IdWorktimeCategory = worktimeCategory.IdWorktimeCategory,
-            Name = worktimeCategory.Name
+            Name = worktimeCategory.Name,
+            Color = worktimeCategory.Color
         };
     }
 }

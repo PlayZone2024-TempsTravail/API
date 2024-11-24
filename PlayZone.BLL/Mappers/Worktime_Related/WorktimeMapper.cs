@@ -12,6 +12,7 @@ public static class WorktimeMapper
             IdWorktime = worktime.IdWorktime,
             StartTime = worktime.StartTime,
             EndTime = worktime.EndTime,
+            IsOnSite = worktime.IsOnSite,
             WorktimeCategoryId = worktime.WorktimeCategoryId,
             ProjectId = worktime.ProjectId,
             UserId = worktime.UserId
@@ -25,6 +26,7 @@ public static class WorktimeMapper
             IdWorktime = worktime.IdWorktime,
             StartTime = worktime.StartTime,
             EndTime = worktime.EndTime,
+            IsOnSite = worktime.IsOnSite,
             WorktimeCategoryId = worktime.WorktimeCategoryId,
             ProjectId = worktime.ProjectId,
             UserId = worktime.UserId
