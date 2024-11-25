@@ -25,6 +25,12 @@ public class OrganismeRepository : IOrganismeRepository
         return this._connection.Query<Organisme>(query);
     }
 
+    // Requête SQL pour récupérer tous les enregistrements "Organisme"
+    // 1. Mapper les colonnes de la table "Organisme" à la classe Organisme.
+    // 2. Déterminer le type de chaque "Organisme" en fonction de l'existence de projets associés :
+    //    - Si des projets associés existent, c'est un "Fournisseur".
+    //    - Sinon, c'est un "Client".
+    // 3. Trier les résultats pour afficher d'abord les Fournisseurs, puis les Clients, triés par ordre alphabétique sur le nom.
     public IEnumerable<Organisme> GetAllFournisseursFirst()
     {
         const string query = @"
@@ -54,6 +60,12 @@ public class OrganismeRepository : IOrganismeRepository
         return this._connection.Query<Organisme>(query);
     }
 
+    // Requête SQL pour récupérer tous les enregistrements "Organisme"
+    // 1. Mapper les colonnes de la table "Organisme" à la classe Organisme.
+    // 2. Déterminer le type de chaque "Organisme" en fonction de l'existence de projets associés :
+    //    - Si des projets associés existent, c'est un "Fournisseur".
+    //    - Sinon, c'est un "Client".
+    // 3. Trier les résultats pour afficher d'abord les Clients, puis les Fournisseurs, triés par ordre alphabétique sur le nom.
     public IEnumerable<Organisme> GetAllClientsFirst()
     {
         const string query = @"
