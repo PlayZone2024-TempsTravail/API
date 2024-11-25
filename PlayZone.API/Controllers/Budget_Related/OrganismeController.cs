@@ -36,7 +36,7 @@ public class OrganismeController : ControllerBase
 
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet]
+    [HttpGet("fournisseursFirst")]
     public IActionResult GetAllFournisseursFirst()
     {
         try
@@ -52,7 +52,7 @@ public class OrganismeController : ControllerBase
 
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet]
+    [HttpGet("clientsFirst")]
     public IActionResult GetAllClientsFirst()
     {
         try
