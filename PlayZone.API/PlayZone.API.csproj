@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Controllers\Configuration_Related\" />
       <Folder Include="Controllers\User_Related\" />
     </ItemGroup>
 

@@ -12,8 +12,12 @@ public class ConfigurationDTO
 
 public class ConfigurationCreateFormDTO
 {
-    public bool IsActive { get; set; }
+    [Required]
     public int Date { get; set; }
+
+    [Required]
     public int ParameterName { get; set; }
+
+    [Required]
     public int ParameterValue { get; set; }
 }

@@ -36,7 +36,6 @@ public class ConfigurationService : IConfigurationService
 
     public bool Delete(int idConfiguration)
     {
-        this._configurationRepository.Delete(idConfiguration);
-        return this._configurationRepository.GetById(idConfiguration)?.IsActive == false;
+        return this._configurationRepository.Delete(idConfiguration);
     }
 }
