@@ -13,7 +13,8 @@ public static class WorktimeMapper
             Start = worktime.Start,
             End = worktime.End,
             CategoryId = worktime.CategoryId,
-            ProjectId = worktime.ProjectId
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
         };
     }
 
@@ -26,7 +27,8 @@ public static class WorktimeMapper
             Start = worktime.Start,
             End = worktime.End,
             CategoryId = worktime.CategoryId,
-            ProjectId = worktime.ProjectId
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
         };
     }
 }

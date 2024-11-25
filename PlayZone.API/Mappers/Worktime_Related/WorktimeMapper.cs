@@ -5,19 +5,20 @@ namespace PlayZone.API.Mappers.Worktime_Related;
 
 public static class WorktimeMapper
 {
-    public static WorktimeDTO ToDto(this Models.Worktime worktime)
+    public static WorktimeDto ToDto(this Models.Worktime worktime)
     {
-        return new WorktimeDTO
+        return new WorktimeDto
         {
             IdWorktime = worktime.IdWorktime,
             Start = worktime.Start,
             End = worktime.End,
             CategoryId = worktime.CategoryId,
-            ProjectId = worktime.ProjectId
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
         };
     }
 
-    public static Models.Worktime ToModels(this WorktimeDTO worktime)
+    public static Models.Worktime ToModels(this WorktimeDto worktime)
     {
         return new Models.Worktime
         {
@@ -25,7 +26,21 @@ public static class WorktimeMapper
             Start = worktime.Start,
             End = worktime.End,
             CategoryId = worktime.CategoryId,
-            ProjectId = worktime.ProjectId
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
         };
+    }
+
+    public static Models.Worktime ToModels(this WorktimeUpdateFormDto worktime)
+    {
+        return new Models.Worktime
+        {
+            Start = worktime.Start,
+            End = worktime.End,
+            CategoryId = worktime.CategoryId,
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
+        };
+
     }
 }

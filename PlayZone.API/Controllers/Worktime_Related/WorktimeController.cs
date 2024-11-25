@@ -16,24 +16,22 @@ public class WorktimeController : ControllerBase
         this._worktimeService = worktimeServices;
     }
 
-    [HttpGet]
-    public IEnumerable<Worktime> GetAll()
+    [HttpPut("{id}")]
+    [ProducesResponseType(statusCode: 200, type: typeof(Worktime))]
+    [ProducesResponseType(statusCode: StatusCodes.Status500InternalServerError)]
+    public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDto worktime)
     {
-        return this._worktimeService.GeTAll();
-    }
-
-    public IActionResult Update(WorktimeDTO worktime)
-    {
-        try
+        if (id <= 0)
         {
-            this._worktimeService.Update(worktime.ToModel());
+            return this.BadRequest("Invalid user data");
+        }
+
+        Worktime updatedWorktime = worktime.ToModels();
+        updatedWorktime.IdWorktime = id;
+        if (this._worktimeService.Update(updatedWorktime))
+        {
             return this.Ok();
         }
-        catch (Exception)
-        {
-            return this.StatusCode(StatusCodes.Status500InternalServerError);
-        }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
-
-

@@ -8,6 +8,5 @@ public interface IWorktimeRepository
     public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth);
     public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear);
     public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear);
-
     public bool Update (Worktime worktime);
 }

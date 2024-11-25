@@ -7,4 +7,5 @@ public class Worktime
     public DateTime End { get; set; }
     public required string CategoryId { get; set; }
     public int? ProjectId { get; set; }
+    public int UserId { get; set; }
 }

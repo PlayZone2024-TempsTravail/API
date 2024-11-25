@@ -3,13 +3,14 @@ using PlayZone.BLL.Models.Worktime_Related;
 
 namespace PlayZone.API.DTOs.Worktime_Related;
 
-public class WorktimeDTO
+public class WorktimeDto
 {
     public int IdWorktime { get; set; }
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public required string CategoryId { get; set; }
     public int? ProjectId { get; set; }
+    public int UserId { get; set; }
 
     public Worktime ToModel()
     {
@@ -19,20 +20,10 @@ public class WorktimeDTO
             Start = this.Start,
             End = this.End,
             CategoryId = this.CategoryId,
-            ProjectId = this.ProjectId
+            ProjectId = this.ProjectId,
+            UserId = this.UserId
         };
     }
-}
-
-public class WorktimeCreateFormDto
-{
-    [Required]
-    public DateTime Start { get; set; }
-    [Required]
-    public DateTime End { get; set; }
-    [Required]
-    public string CategoryId { get; set; }
-    public int? ProjectId { get; set; }
 }
 
 public class WorktimeUpdateFormDto
@@ -41,4 +32,5 @@ public class WorktimeUpdateFormDto
     public DateTime End { get; set; }
     public string CategoryId { get; set; }
     public int? ProjectId { get; set; }
+    public int UserId { get; set; }
 }
