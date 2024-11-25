@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <Folder Include="Controllers\User_Related\" />
+      <Folder Include="Controllers\Worktime_Related\" />
     </ItemGroup>
 
     <ItemGroup>
