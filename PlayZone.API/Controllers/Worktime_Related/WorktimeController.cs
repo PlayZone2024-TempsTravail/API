@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Worktime_Related;
 using PlayZone.API.Mappers.Worktime_Related;
 using PlayZone.BLL.Exceptions;
 using PlayZone.BLL.Interfaces.Worktime_Related;
+using PlayZone.DAL.Entities.User_Related;
 using Models = PlayZone.BLL.Models.Worktime_Related;
 
 namespace PlayZone.API.Controllers.Worktime_Related;
@@ -19,16 +21,14 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("range")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetByDateRange([FromQuery] int userId, [FromQuery] DateTime startDate,
-        [FromQuery] DateTime endDate)
+    public IActionResult GetByDateRange([FromQuery] int userId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByDateRange(userId, startDate, endDate)
-                .Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByDateRange(userId, startDate, endDate).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -38,14 +38,13 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("day/{userId:int}/{dayOfMonth:int}/{monthOfYear:int}/{year:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
     public IActionResult GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByDay(userId, dayOfMonth, monthOfYear, year)
-                .Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByDay(userId, dayOfMonth, monthOfYear, year).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -55,14 +54,13 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("week/{userId:int}/{weekOfYear:int}/{year:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
     public IActionResult GetByWeek(int userId, int weekOfYear, int year)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByWeek(userId, weekOfYear, year)
-                .Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByWeek(userId, weekOfYear, year).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -72,14 +70,13 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("month/{userId:int}/{monthOfYear:int}/{year:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
     public IActionResult GetByMonth(int userId, int monthOfYear, int year)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService
-                .GetByMonth(userId, monthOfYear, year)
-                .Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByMonth(userId, monthOfYear, year).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -88,41 +85,28 @@ public class WorktimeController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("{id:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeDTO))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDTO worktime)
-    {
-        if (id <= 0)
-        {
-            return this.BadRequest("Invalid user data");
-        }
-
-        Models.Worktime updatedWorktime = worktime.ToModel();
-        updatedWorktime.IdWorktime = id;
-        if (this._worktimeService.Update(updatedWorktime))
-        {
-            return this.Ok();
-        }
-        return this.StatusCode(StatusCodes.Status500InternalServerError);
-    }
-
-    [HttpGet("id/{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetById(int id)
     {
         try
         {
-            WorktimeDTO worktime = this._worktimeService.GetById(id).ToDTO();
-            return this.Ok(worktime);
+            WorktimeDTO? worktime = this._worktimeService.GetById(id)?.ToDTO();
+            if (worktime != null)
+                return this.Ok(worktime);
+            return this.NotFound("La plage horaire est introuvable.");
         }
         catch (Exception)
         {
-            return this.NotFound("La plage horaire est introuvable.");
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 
-    [HttpPost("create")]
+    [HttpPost]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] WorktimeUpdateFormDTO worktime)
@@ -144,7 +128,28 @@ public class WorktimeController : ControllerBase
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
+    [HttpPut("{id}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDTO worktime)
+    {
+        if (id <= 0)
+        {
+            return this.BadRequest("Invalid user data");
+        }
+
+        Models.Worktime updatedWorktime = worktime.ToModel();
+        updatedWorktime.IdWorktime = id;
+        if (this._worktimeService.Update(updatedWorktime))
+        {
+            return this.Ok();
+        }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
     [HttpDelete("{idWorktime:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int idWorktime)

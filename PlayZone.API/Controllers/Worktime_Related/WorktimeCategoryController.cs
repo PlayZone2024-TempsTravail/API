@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Worktime_Related;
 using PlayZone.API.Mappers.Worktime_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Models.Worktime_Related;
+using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Controllers.Worktime_Related
 {
@@ -17,9 +19,10 @@ namespace PlayZone.API.Controllers.Worktime_Related
             this._worktimeCategoryService = worktimeCategoryService;
         }
 
+        [HttpGet]
+        [PermissionAuthorize(Permission.AJOUTER_POINTAGE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeCategoryDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpGet]
         public IActionResult GetAll()
         {
             try
@@ -34,6 +37,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet("{id}")]
+        [PermissionAuthorize(Permission.AJOUTER_POINTAGE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
@@ -50,6 +54,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpPost]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] WorktimeCategoryCreateFormDTO worktimeCategory)
@@ -63,6 +68,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpPut("{id}")]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] WorktimeCategoryUpdateFormDTO worktimeCategory)
@@ -77,6 +83,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpDelete("{id}")]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)
