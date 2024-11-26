@@ -8,7 +8,7 @@ public class WorktimeDTO
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public bool IsOnSite { get; set; }
-    public string CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public int? ProjectId { get; set; }
     public int UserId { get; set; }
 }
@@ -18,7 +18,7 @@ public class WorktimeCreateFormDTO
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public bool IsOnSite { get; set; }
-    public string CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public int? ProjectId { get; set; }
     public int UserId { get; set; }
 }
@@ -28,7 +28,7 @@ public class WorktimeUpdateFormDTO
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public bool IsOnSite { get; set; }
-    public string CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public int? ProjectId { get; set; }
     public int UserId { get; set; }
 }

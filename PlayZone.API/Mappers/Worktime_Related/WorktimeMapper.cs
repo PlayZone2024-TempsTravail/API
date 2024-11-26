@@ -13,7 +13,7 @@ public static class WorktimeMapper
             Start = worktime.Start,
             End = worktime.End,
             IsOnSite = worktime.IsOnSite,
-            CategoryId = worktime.CategoryId.Trim(),
+            CategoryId = worktime.CategoryId,
             ProjectId = worktime.ProjectId,
             UserId = worktime.UserId
         };

@@ -18,10 +18,10 @@ public class WorktimeRepository : IWorktimeRepository
         const string query = @"
         SELECT
         ""id_WorkTime"" AS ""IdWorktime"",
-        ""start"" AS ""StartTime"",
-        ""end"" AS ""EndTime"",
+        ""start"" AS ""Start"",
+        ""end"" AS ""End"",
         ""isOnSite"" AS ""IsOnsite"",
-        ""category_id"" AS ""WorktimeCategoryId"",
+        ""category_id"" AS ""CategoryId"",
         ""project_id"" AS ""ProjectId"",
         ""user_id"" AS ""UserId""
         FROM ""WorkTime""
@@ -37,10 +37,10 @@ public class WorktimeRepository : IWorktimeRepository
         const string query = @"
             SELECT
             ""id_WorkTime"" AS ""IdWorktime"",
-            ""start"" AS ""StartTime"",
-            ""end"" AS ""EndTime"",
+            ""start"" AS ""Start"",
+            ""end"" AS ""End"",
             ""isOnSite"" AS ""IsOnsite"",
-            ""category_id"" AS ""WorktimeCategoryId"",
+            ""category_id"" AS ""CategoryId"",
             ""project_id"" AS ""ProjectId"",
             ""user_id"" AS ""UserId""
             FROM ""WorkTime""
@@ -57,10 +57,10 @@ public class WorktimeRepository : IWorktimeRepository
         const string query = @"
             SELECT
             ""id_WorkTime"" AS ""IdWorktime"",
-            ""start"" AS ""StartTime"",
-            ""end"" AS ""EndTime"",
+            ""start"" AS ""Start"",
+            ""end"" AS ""End"",
             ""isOnSite"" AS ""IsOnsite"",
-            ""category_id"" AS ""WorktimeCategoryId"",
+            ""category_id"" AS ""CategoryId"",
             ""project_id"" AS ""ProjectId"",
             ""user_id"" AS ""UserId""
             FROM ""WorkTime""
@@ -74,10 +74,10 @@ public class WorktimeRepository : IWorktimeRepository
         const string query = @"
             SELECT
             ""id_WorkTime"" AS ""IdWorktime"",
-            ""start"" AS ""StartTime"",
-            ""end"" AS ""EndTime"",
+            ""start"" AS ""Start"",
+            ""end"" AS ""End"",
             ""isOnSite"" AS ""IsOnsite"",
-            ""category_id"" AS ""WorktimeCategoryId"",
+            ""category_id"" AS ""CategoryId"",
             ""project_id"" AS ""ProjectId"",
             ""user_id"" AS ""UserId""
             FROM ""WorkTime""
