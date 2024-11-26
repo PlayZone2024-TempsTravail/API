@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using PlayZone.BLL.Interfaces.User_Related;
-using PlayZone.BLL.Interfaces.Wortime_Related;
+using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.User_Related;
@@ -21,15 +21,30 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     return new NpgsqlConnection(connectionString);
 });
 
+/*-----------------------------------------*/
 
+//Injection des services BLL - User_Related
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthServices>();
 builder.Services.AddScoped<IWorktimeService, WorktimeService>(); // TEST
 
+//Injection des services BLL - Worktime_Related
+builder.Services.AddScoped<IWorktimeService, WorktimeService>();
+builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
+
+/*-----------------------------------------*/
+
+//Injection des services DAL - User_Related
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>(); //test
+
+//Injection des services DAL - Worktime_Related
+builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
+builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
+
+/*-----------------------------------------*/
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
