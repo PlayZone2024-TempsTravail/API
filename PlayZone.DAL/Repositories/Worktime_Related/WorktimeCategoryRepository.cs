@@ -47,14 +47,12 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
     {
         const string query = @"
                 INSERT INTO ""WorkTime_Category"" (
-                   ""id_workTime_category"",
                    ""isActive"",
                    ""abreviation"",
                    ""name"",
                    ""color""
                    )
                 VALUES (
-                    @IdWorktimeCategory,
                     @IsActive,
                     @Abreviation,
                     @Name,
