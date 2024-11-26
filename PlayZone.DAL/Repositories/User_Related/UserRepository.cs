@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Dapper;
 using Npgsql;
 using PlayZone.DAL.Entities.User_Related;
@@ -20,15 +19,10 @@ namespace PlayZone.DAL.Repositories.User_Related
             const string query = @"
                 SELECT
                     ""id_user"" AS ""IdUser"",
-                    ""role_id"" AS ""RoleId"",
                     ""isActive"",
                     ""nom"",
                     ""prenom"",
-                    ""email"",
-                    ""heures_annuelles_prestables"" AS ""HeuresAnnuellesPrestables"",
-                    ""VA"",
-                    ""VAEX"",
-                    ""RC""
+                    ""email""
                 FROM ""User"";
             ";
             return this._connection.Query<User>(query);
@@ -39,15 +33,10 @@ namespace PlayZone.DAL.Repositories.User_Related
             const string query = @"
                 SELECT
                     ""id_user"" AS ""IdUser"",
-                    ""role_id"" AS ""RoleId"",
                     ""isActive"",
                     ""nom"",
                     ""prenom"",
-                    ""email"",
-                    ""heures_annuelles_prestables"" AS ""HeuresAnnuellesPrestables"",
-                    ""VA"",
-                    ""VAEX"",
-                    ""RC""
+                    ""email""
                 FROM ""User""
                 WHERE ""id_user"" = @IdUser;
             ";
@@ -59,15 +48,10 @@ namespace PlayZone.DAL.Repositories.User_Related
             const string query = @"
                 SELECT
                     ""id_user"" AS ""IdUser"",
-                    ""role_id"" AS ""RoleId"",
                     ""isActive"",
                     ""nom"",
                     ""prenom"",
-                    ""email"",
-                    ""heures_annuelles_prestables"" AS ""HeuresAnnuellesPrestables"",
-                    ""VA"",
-                    ""VAEX"",
-                    ""RC""
+                    ""email""
                 FROM ""User""
                 WHERE ""email"" = @Email;
             ";
@@ -78,8 +62,11 @@ namespace PlayZone.DAL.Repositories.User_Related
         {
             const string query = @"
                 SELECT
+                    ""id_user"" AS ""IdUser"",
                     ""email"",
-                    ""password""
+                    ""password"",
+                    ""nom"",
+                    ""prenom""
                 FROM ""User""
                 WHERE ""email"" = @Email;
             ";
@@ -94,26 +81,23 @@ namespace PlayZone.DAL.Repositories.User_Related
                     ""nom"",
                     ""prenom"",
                     ""email"",
-                    ""password"",
-                    ""role_id""
+                    ""password""
                 )
                 VALUES (
                     DEFAULT,
                     @Nom,
                     @Prenom,
                     @Email,
-                    @Password,
-                    @RoleId
+                    @Password
                 )
                 RETURNING ""id_user"" AS ""IdUser"";
             ";
             int resultId = this._connection.QuerySingle<int>(query, new
             {
-                Nom = user.Nom,
-                Prenom = user.Prenom,
-                Email = user.Email,
-                Password = user.Password,
-                RoleId = user.RoleId
+                user.Nom,
+                user.Prenom,
+                user.Email,
+                user.Password,
             });
 
             return resultId;
@@ -125,25 +109,15 @@ namespace PlayZone.DAL.Repositories.User_Related
                 UPDATE ""User"" SET
                     ""nom"" = @Nom,
                     ""prenom"" = @Prenom,
-                    ""email"" = @Email,
-                    ""role_id"" = @RoleId,
-                    ""heures_annuelles_prestables"" = @HeuresAnnuellesPrestables,
-                    ""VA"" = @VA,
-                    ""VAEX"" = @VAEX,
-                    ""RC"" = @RC
+                    ""email"" = @Email
                 WHERE ""id_user"" = @IdUser;
             ";
             int affectedRows = this._connection.Execute(query, new
             {
-                IdUser = user.IdUser,
-                Nom = user.Nom,
-                Prenom = user.Prenom,
-                Email = user.Email,
-                RoleId = user.RoleId,
-                HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
-                VA = user.VA,
-                VAEX = user.VAEX,
-                RC = user.RC
+                user.IdUser,
+                user.Nom,
+                user.Prenom,
+                user.Email
             });
             return affectedRows > 0;
         }

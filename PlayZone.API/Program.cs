@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.User_Related;
@@ -26,10 +27,16 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
 //Injection des services BLL - User_Related
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
 
 //Injection des services BLL - Worktime_Related
 builder.Services.AddScoped<IWorktimeService, WorktimeService>();
 builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
+
+//Injection des services API
+builder.Services.AddScoped<JwtService>();
 
 /*-----------------------------------------*/
 
@@ -37,6 +44,7 @@ builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
 
 //Injection des services DAL - Worktime_Related

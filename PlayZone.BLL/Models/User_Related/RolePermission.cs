@@ -1,4 +1,4 @@
-﻿namespace PlayZone.DAL.Entities.User_Related;
+namespace PlayZone.BLL.Models.User_Related;
 
 public class RolePermission
 {

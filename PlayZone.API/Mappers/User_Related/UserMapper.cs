@@ -11,16 +11,11 @@ public static class UserMapper
         return new UserDTO
         {
             IdUser = user.IdUser,
-            RoleId = user.RoleId,
             Nom = user.Nom,
             Prenom = user.Prenom,
             Email = user.Email,
             //Password = user.Password,
             IsActive = user.IsActive,
-            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
-            VA = user.VA,
-            VAEX = user.VAEX,
-            RC = user.RC,
         };
     }
 
@@ -28,16 +23,11 @@ public static class UserMapper
     {
         return new Models.User
         {
-            RoleId = user.RoleId,
             Nom = user.Nom,
             Prenom = user.Prenom,
             Email = user.Email,
             Password = user.Password,
             IsActive = user.IsActive,
-            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
-            VA = user.VA,
-            VAEX = user.VAEX,
-            RC = user.RC,
         };
     }
 
@@ -55,16 +45,22 @@ public static class UserMapper
         return new Models.User
         {
             IdUser = user.IdUser,
-            RoleId = user.RoleId,
             Nom = user.Nom,
             Prenom = user.Prenom,
             Email = user.Email,
             //Password = user.Password,
             IsActive = user.IsActive,
-            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
-            VA = user.VA,
-            VAEX = user.VAEX,
-            RC = user.RC,
+        };
+    }
+
+    public static UserLoginDTO ToLoginDTO(this Models.User user)
+    {
+        return new UserLoginDTO
+        {
+            IdUser = user.IdUser,
+            Email = user.Email,
+            Nom = user.Nom,
+            Prenom = user.Prenom,
         };
     }
 }

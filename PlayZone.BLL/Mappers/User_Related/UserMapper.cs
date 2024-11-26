@@ -10,16 +10,11 @@ public static class UserMapper
         return new Entities.User
         {
             IdUser = user.IdUser,
-            RoleId = user.RoleId,
             IsActive = user.IsActive,
             Nom = user.Nom,
             Prenom = user.Prenom,
-            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
             Email = user.Email,
             Password = user.Password,
-            VA = user.VA,
-            VAEX = user.VAEX,
-            RC = user.RC
         };
     }
 
@@ -28,16 +23,11 @@ public static class UserMapper
         return new User
         {
             IdUser = user.IdUser,
-            RoleId = user.RoleId,
             IsActive = user.IsActive,
             Nom = user.Nom,
             Prenom = user.Prenom,
-            HeuresAnnuellesPrestables = user.HeuresAnnuellesPrestables,
             Email = user.Email,
             Password = user.Password,
-            VA = user.VA,
-            VAEX = user.VAEX,
-            RC = user.RC
         };
     }
 }

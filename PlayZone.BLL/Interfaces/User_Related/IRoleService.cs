@@ -1,8 +1,8 @@
-﻿using PlayZone.DAL.Entities.User_Related;
+using PlayZone.BLL.Models.User_Related;
 
-namespace PlayZone.DAL.Interfaces.User_Related;
+namespace PlayZone.BLL.Interfaces.User_Related;
 
-public interface IRoleRepository
+public interface IRoleService
 {
     public IEnumerable<Role> GetAll();
     public Role? GetById(int id);

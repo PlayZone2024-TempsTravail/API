@@ -1,12 +1,12 @@
-﻿using PlayZone.DAL.Entities.User_Related;
+using RolePermission = PlayZone.BLL.Models.User_Related.RolePermission;
 
-namespace PlayZone.DAL.Interfaces.User_Related;
+namespace PlayZone.BLL.Interfaces.User_Related;
 
-public interface IRolePermissionRepository
+public interface IRolePermissionService
 {
     public IEnumerable<RolePermission> GetAll();
     public IEnumerable<RolePermission> GetByRole(int idRole);
     public RolePermission Create(RolePermission rolePermission);
     public bool CheckPermission(int idUser, string permission);
-    public bool Delete(int roleId, string permissionId);
+    public bool Delete(int id, string permissionId);
 }
