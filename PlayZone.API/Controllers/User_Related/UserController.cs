@@ -21,6 +21,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetAll()
     {
@@ -36,7 +38,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetById(int id)
     {
@@ -52,6 +55,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("email/{email}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetByEmail(string email)
     {
@@ -69,6 +74,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserCreateFormDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.AJOUTER_UTILISATEUR)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
     {
@@ -82,6 +88,8 @@ public class UserController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     public IActionResult Update(int id, [FromBody] UserDTO user)
     {
@@ -100,8 +108,8 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{idUser:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [PermissionAuthorize(Permission.SUPPRIMER_UTILISATEUR)]
     public IActionResult Delete(int idUser)
     {

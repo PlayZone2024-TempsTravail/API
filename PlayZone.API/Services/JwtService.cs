@@ -12,10 +12,16 @@ public class JwtService
 {
     private readonly IConfiguration _config;
     private readonly IRolePermissionService _rolePermissionService;
-    public JwtService(IConfiguration config, IRolePermissionService rolePermissionService)
+    private readonly IUserRoleService _userRoleService;
+    public JwtService(
+        IConfiguration config,
+        IRolePermissionService rolePermissionService,
+        IUserRoleService userRoleService
+    )
     {
         this._config = config;
         this._rolePermissionService = rolePermissionService;
+        this._userRoleService = userRoleService;
     }
 
     public string GenerateToken(UserLoginDTO user)
@@ -29,9 +35,12 @@ public class JwtService
             new Claim("email", user.Email)
         ];
 
-        foreach (RolePermission rolePermission in this._rolePermissionService.GetByRole(user.RoleId))
+        foreach (int roleId in this._userRoleService.GetByUser(user.IdUser))
         {
-            claims.Add(new Claim("Permissions", rolePermission.PermissionId));
+            foreach (RolePermission rolePermission in this._rolePermissionService.GetByRole(roleId))
+            {
+                claims.Add(new Claim("Permissions", rolePermission.PermissionId));
+            }
         }
 
         SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._config["Jwt:Key"]!));

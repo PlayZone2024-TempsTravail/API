@@ -1,38 +1,56 @@
-﻿using PlayZone.DAL.Entities.User_Related;
+﻿using Dapper;
+using Npgsql;
+using PlayZone.DAL.Entities.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 
 namespace PlayZone.DAL.Repositories.User_Related;
 
 public class UserRoleRepository : IUserRoleRepository
 {
-    // public IEnumerable<UserRole> GetAll()
-    // {
-    //     const string query = @"
-    //         SELECT
-    //             ""role_id"" AS ""RoleId"",
-    //             ""user_id"" AS ""UserId""
-    //         FROM ""User_Role"";
-    //     ";
-    //     return this._connection.Query<RolePermission>(query);
-    // }
+    private readonly NpgsqlConnection _connection;
+    public UserRoleRepository(NpgsqlConnection connection)
+    {
+        this._connection = connection;
+    }
 
     public IEnumerable<UserRole> GetAll()
     {
-        throw new NotImplementedException();
+        const string query = @"
+            SELECT
+                ""role_id"" AS ""RoleId"",
+                ""user_id"" AS ""UserId""
+            FROM ""User_Role"";
+        ";
+        return this._connection.Query<UserRole>(query);
     }
 
-    public IEnumerable<UserRole> GetByUser(int idRole)
+    public IEnumerable<int> GetByUser(int idUser)
     {
-        throw new NotImplementedException();
+        const string query = @"
+            SELECT role_id
+            FROM ""User_Role""
+            WHERE user_id = @userId;
+        ";
+        return this._connection.Query<int>(query, new {userId = idUser});
     }
 
-    public int Create(UserRole userRole)
+    public UserRole Create(UserRole userRole)
     {
-        throw new NotImplementedException();
+        const string query = @"
+            INSERT INTO ""User_Role""
+            VALUES (@userId, @roleId)
+            RETURNING ""role_id"" AS ""roleId"", ""user_id"" AS ""userId"";
+        ";
+        return this._connection.QuerySingle<UserRole>(query, new { userId = userRole.UserId, roleId = userRole.RoleId });
     }
 
     public bool Delete(int roleId, int userId)
     {
-        throw new NotImplementedException();
+        const string query = @"
+            DELETE FROM ""User_Role""
+            WHERE ""role_id"" = @roleId AND ""user_id"" = @userId
+        ";
+        int affectedRows = this._connection.Execute(query, new { userId = userId, roleId = roleId });
+        return affectedRows > 0;
     }
 }

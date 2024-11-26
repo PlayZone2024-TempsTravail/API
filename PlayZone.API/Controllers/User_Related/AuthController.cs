@@ -37,9 +37,9 @@ public class AuthController : ControllerBase
             }
             return this.NotFound("les crédentials de login sont incorrect");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return this.BadRequest();
+            return this.BadRequest(ex.Message);
         }
     }
 }
