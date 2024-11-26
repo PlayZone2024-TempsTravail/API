@@ -1,3 +1,5 @@
+using Microsoft.Build.Framework;
+
 namespace PlayZone.API.DTOs.Worktime_Related;
 
 public class WorktimeDTO
@@ -29,4 +31,10 @@ public class WorktimeUpdateFormDTO
     public string CategoryId { get; set; }
     public int? ProjectId { get; set; }
     public int UserId { get; set; }
+}
+
+public class worktimeDeleteFormDTO
+{
+    [Required]
+    public int idWorktime { get; set; }
 }

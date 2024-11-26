@@ -25,8 +25,7 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
 
 //Injection des services BLL - User_Related
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthService, AuthServices>();
-builder.Services.AddScoped<IWorktimeService, WorktimeService>(); // TEST
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Injection des services BLL - Worktime_Related
 builder.Services.AddScoped<IWorktimeService, WorktimeService>();
@@ -38,7 +37,7 @@ builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
-builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>(); //test
+
 
 //Injection des services DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();

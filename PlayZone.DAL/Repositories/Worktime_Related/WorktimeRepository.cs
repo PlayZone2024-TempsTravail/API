@@ -8,8 +8,6 @@ namespace PlayZone.DAL.Repositories.Worktime_Related;
 public class WorktimeRepository : IWorktimeRepository
 {
     private readonly NpgsqlConnection _connection;
-    private IWorktimeRepository _worktimeRepositoryImplementation;
-
     public WorktimeRepository(NpgsqlConnection connection)
     {
         this._connection = connection;
@@ -22,7 +20,7 @@ public class WorktimeRepository : IWorktimeRepository
         ""id_WorkTime"" AS ""IdWorktime"",
         ""start"" AS ""StartTime"",
         ""end"" AS ""EndTime"",
-        ""isonsite"" AS ""IsOnsite"",
+        ""isOnSite"" AS ""IsOnsite"",
         ""category_id"" AS ""WorktimeCategoryId"",
         ""project_id"" AS ""ProjectId"",
         ""user_id"" AS ""UserId""
@@ -41,7 +39,7 @@ public class WorktimeRepository : IWorktimeRepository
             ""id_WorkTime"" AS ""IdWorktime"",
             ""start"" AS ""StartTime"",
             ""end"" AS ""EndTime"",
-            ""isonsite"" AS ""IsOnsite"",
+            ""isOnSite"" AS ""IsOnsite"",
             ""category_id"" AS ""WorktimeCategoryId"",
             ""project_id"" AS ""ProjectId"",
             ""user_id"" AS ""UserId""
@@ -61,7 +59,7 @@ public class WorktimeRepository : IWorktimeRepository
             ""id_WorkTime"" AS ""IdWorktime"",
             ""start"" AS ""StartTime"",
             ""end"" AS ""EndTime"",
-            ""isonsite"" AS ""IsOnsite"",
+            ""isOnSite"" AS ""IsOnsite"",
             ""category_id"" AS ""WorktimeCategoryId"",
             ""project_id"" AS ""ProjectId"",
             ""user_id"" AS ""UserId""
@@ -109,7 +107,7 @@ public class WorktimeRepository : IWorktimeRepository
             INSERT INTO ""WorkTime""(
                 ""start"",
                 ""end"",
-                ""isonsite"",
+                ""isOnSite"",
                 ""category_id"",
                 ""project_id"",
                 ""user_id""
@@ -143,7 +141,7 @@ public class WorktimeRepository : IWorktimeRepository
                 ""id_WorkTime"" AS ""IdWorkTime"",
                 ""start"" AS ""Start"",
                 ""end"" AS ""End"",
-                ""isonsite"" AS ""IsOnSite"",
+                ""isOnSite"" AS ""IsOnSite"",
                 ""category_id"" AS ""CategoryId"",
                 ""project_id"" AS ""ProjectId"",
                 ""user_id"" AS ""UserId""
@@ -165,4 +163,16 @@ public class WorktimeRepository : IWorktimeRepository
         ";
         return this._connection.QuerySingle<int>(query, new { UserId = idUser, start = start, end = end }) > 0;
     }
+
+    public bool Delete(int idWorktime)
+    {
+        const string query = @"
+            DELETE
+            FROM ""WorkTime""
+            WHERE ""id_WorkTime"" = @idWorktime;
+        ";
+        int affectedRows = this._connection.Execute(query, new { idWorktime = idWorktime });
+        return affectedRows > 0;
+    }
+
 }

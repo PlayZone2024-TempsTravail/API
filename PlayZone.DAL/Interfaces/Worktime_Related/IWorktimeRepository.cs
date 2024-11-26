@@ -11,5 +11,6 @@ public interface IWorktimeRepository
     public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear, int year);
     public int Create(Worktime worktime);
     public bool Update (Worktime worktime);
+    public bool Delete(int idWorktime);
     public bool CheckIfWorktimeExists(int idUser, DateTime start, DateTime end);
 }
