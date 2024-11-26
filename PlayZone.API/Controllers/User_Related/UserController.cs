@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -21,9 +20,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
     public IActionResult GetAll()
     {
         try
@@ -38,44 +37,58 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetById(int id)
     {
         try
         {
-            UserDTO user = this._userService.GetById(id).ToDTO();
-            return this.Ok(user);
+            UserDTO? user = this._userService.GetById(id)?.ToDTO();
+
+            if (user != default)
+            {
+                return this.Ok(user);
+            }
+
+            return this.NotFound("L'utilisateur est introuvable.");
         }
         catch (Exception)
         {
-            return this.NotFound("L'utilisateur est introuvable.");
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 
     [HttpGet("email/{email}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByEmail(string email)
     {
         try
         {
-            UserDTO user = this._userService.GetByEmail(email).ToDTO();
-            return this.Ok(user);
+            UserDTO? user = this._userService.GetByEmail(email)?.ToDTO();
+
+            if (user != default)
+            {
+                return this.Ok(user);
+            }
+
+            return this.NotFound("L'utilisateur est introuvable.");
         }
         catch (Exception)
         {
-            return this.NotFound("L'utilisateur est introuvable.");
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 
     [HttpPost]
+    [PermissionAuthorize(Permission.AJOUTER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserCreateFormDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [PermissionAuthorize(Permission.AJOUTER_UTILISATEUR)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
     {
         int resultId = this._userService.Create(user.ToModels());
@@ -83,14 +96,15 @@ public class UserController : ControllerBase
         {
             return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, user);
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
     }
 
     [HttpPut("{id}")]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     public IActionResult Update(int id, [FromBody] UserDTO user)
     {
         if (id <= 0)
@@ -104,13 +118,14 @@ public class UserController : ControllerBase
         {
             return this.Ok();
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpDelete("{idUser:int}")]
+    [PermissionAuthorize(Permission.SUPPRIMER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [PermissionAuthorize(Permission.SUPPRIMER_UTILISATEUR)]
     public IActionResult Delete(int idUser)
     {
         try
