@@ -22,6 +22,7 @@ public class WorktimeRepository : IWorktimeRepository
         ""id_WorkTime"" AS ""IdWorktime"",
         ""start"" AS ""StartTime"",
         ""end"" AS ""EndTime"",
+        ""isonsite"" AS ""IsOnsite"",
         ""category_id"" AS ""WorktimeCategoryId"",
         ""project_id"" AS ""ProjectId"",
         ""user_id"" AS ""UserId""
@@ -33,30 +34,54 @@ public class WorktimeRepository : IWorktimeRepository
         return this._connection.Query<Worktime>(query, new { UserId = userId, StartDate = startDate, EndDate = endDate });
     }
 
-    public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth)
+    public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
         const string query = @"
-            SELECT *
+            SELECT
+            ""id_WorkTime"" AS ""IdWorktime"",
+            ""start"" AS ""StartTime"",
+            ""end"" AS ""EndTime"",
+            ""isonsite"" AS ""IsOnsite"",
+            ""category_id"" AS ""WorktimeCategoryId"",
+            ""project_id"" AS ""ProjectId"",
+            ""user_id"" AS ""UserId""
             FROM ""WorkTime""
-            WHERE EXTRACT(DAY FROM ""start"") = @DayOfMonth AND ""user_id"" = @UserId;
+            WHERE EXTRACT(DAY FROM ""start"") = @DayOfMonth
+            AND EXTRACT(MONTH FROM ""start"") = @MonthOfYear
+            AND EXTRACT(YEAR FROM ""start"") = @Year
+            AND ""user_id"" = @UserId;
         ";
-        return this._connection.Query<Worktime>(query, new { DayOfMonth = dayOfMonth, UserId = userId });
+        return this._connection.Query<Worktime>(query, new { DayOfMonth = dayOfMonth, MonthOfYear = monthOfYear, Year = year, UserId = userId });
     }
 
-    public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear)
+    public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear, int year)
     {
         const string query = @"
-            SELECT *
+            SELECT
+            ""id_WorkTime"" AS ""IdWorktime"",
+            ""start"" AS ""StartTime"",
+            ""end"" AS ""EndTime"",
+            ""isonsite"" AS ""IsOnsite"",
+            ""category_id"" AS ""WorktimeCategoryId"",
+            ""project_id"" AS ""ProjectId"",
+            ""user_id"" AS ""UserId""
             FROM ""WorkTime""
             WHERE EXTRACT(WEEK FROM ""start"") = @WeekOfYear AND ""user_id"" = @UserId;
         ";
         return this._connection.Query<Worktime>(query, new { WeekOfYear = weekOfYear, UserId = userId });
     }
 
-    public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear)
+    public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear, int year)
     {
         const string query = @"
-            SELECT *
+            SELECT
+            ""id_WorkTime"" AS ""IdWorktime"",
+            ""start"" AS ""StartTime"",
+            ""end"" AS ""EndTime"",
+            ""isonsite"" AS ""IsOnsite"",
+            ""category_id"" AS ""WorktimeCategoryId"",
+            ""project_id"" AS ""ProjectId"",
+            ""user_id"" AS ""UserId""
             FROM ""WorkTime""
             WHERE EXTRACT(MONTH FROM ""start"") = @MonthOfYear AND ""user_id"" = @UserId;
         ";

@@ -1,8 +1,8 @@
-﻿namespace PlayZone.DAL.Entities.Worktime_Related;
+﻿namespace PlayZone.BLL.Models.Worktime_Related;
 
 public class WorktimeCategory
 {
-    public required string IdWorktimeCategory { get; set; }
+    public string IdWorktimeCategory { get; set; }
     public required string Name { get; set; }
     public required string Color { get; set; }
 }
