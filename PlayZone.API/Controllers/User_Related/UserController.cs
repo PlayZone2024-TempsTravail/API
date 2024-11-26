@@ -7,7 +7,6 @@ using PlayZone.BLL.Models.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related;
 
-[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase

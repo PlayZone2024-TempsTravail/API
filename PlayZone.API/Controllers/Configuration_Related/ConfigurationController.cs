@@ -10,7 +10,6 @@ using PlayZone.BLL.Models.Configuration_Related;
 
 namespace PlayZone.API.Controllers.Configuration_Related
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ConfigurationController : ControllerBase
