@@ -11,7 +11,9 @@ public static class WorktimeCategoryMapper
     {
         return new WorktimeCategoryDTO
         {
-            IdWorktimeCategory = worktimeCategory.IdWorktimeCategory.Trim(),
+            IdWorktimeCategory = worktimeCategory.IdWorktimeCategory,
+            IsActive = worktimeCategory.IsActive,
+            Abreviation = worktimeCategory.Abreviation,
             Name = worktimeCategory.Name,
             Color = worktimeCategory.Color
         };
@@ -22,6 +24,8 @@ public static class WorktimeCategoryMapper
         return new Models.WorktimeCategory
         {
             IdWorktimeCategory = worktimeCategory.IdWorktimeCategory,
+            IsActive = worktimeCategory.IsActive,
+            Abreviation = worktimeCategory.Abreviation,
             Name = worktimeCategory.Name,
             Color = worktimeCategory.Color
         };
@@ -31,6 +35,19 @@ public static class WorktimeCategoryMapper
     {
         return new Models.WorktimeCategory
         {
+            IsActive = worktimeCategory.IsActive,
+            Abreviation = worktimeCategory.Abreviation,
+            Name = worktimeCategory.Name,
+            Color = worktimeCategory.Color
+        };
+    }
+
+    public static Models.WorktimeCategory ToModels(this WorktimeCategoryCreateFormDTO worktimeCategory)
+    {
+        return new Models.WorktimeCategory
+        {
+            IsActive = worktimeCategory.IsActive,
+            Abreviation = worktimeCategory.Abreviation,
             Name = worktimeCategory.Name,
             Color = worktimeCategory.Color
         };

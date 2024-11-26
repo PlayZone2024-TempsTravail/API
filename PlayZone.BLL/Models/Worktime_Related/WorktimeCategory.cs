@@ -2,7 +2,9 @@
 
 public class WorktimeCategory
 {
-    public string IdWorktimeCategory { get; set; }
+    public int IdWorktimeCategory { get; set; }
+    public bool IsActive { get; set; }
+    public string Abreviation { get; set; }
     public required string Name { get; set; }
     public required string Color { get; set; }
 }

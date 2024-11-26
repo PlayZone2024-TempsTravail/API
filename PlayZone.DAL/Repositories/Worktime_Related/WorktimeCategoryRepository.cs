@@ -19,6 +19,8 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
         const string query = @"
             SELECT
                 ""id_workTime_category"" AS ""IdWorktimeCategory"",
+                ""isActive"",
+                ""abreviation"",
                 ""name"",
                 ""color""
             FROM ""WorkTime_Category"";
@@ -26,11 +28,13 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
         return this._connection.Query<WorktimeCategory>(query);
     }
 
-    public WorktimeCategory? GetById(string id)
+    public WorktimeCategory? GetById(int id)
     {
         const string query = @"
             SELECT
                 ""id_workTime_category"" AS ""IdWorktimeCategory"",
+                ""isActive"",
+                ""abreviation"",
                 ""name"",
                 ""color""
             FROM ""WorkTime_Category""
@@ -39,24 +43,30 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
         return this._connection.QuerySingleOrDefault<WorktimeCategory>(query, new { IdWorktimeCategory = id });
     }
 
-    public string Create(WorktimeCategory worktimeCategory)
+    public int Create(WorktimeCategory worktimeCategory)
     {
         const string query = @"
                 INSERT INTO ""WorkTime_Category"" (
                    ""id_workTime_category"",
+                   ""isActive"",
+                   ""abreviation"",
                    ""name"",
                    ""color""
                    )
                 VALUES (
                     @IdWorktimeCategory,
+                    @IsActive,
+                    @Abreviation,
                     @Name,
                     @Color
                     )
                 RETURNING ""id_workTime_category"";
         ";
-        string resultId = this._connection.QuerySingle<string>(query, new
+        int resultId = this._connection.QuerySingle<int>(query, new
         {
             IdWorktimeCategory = worktimeCategory.IdWorktimeCategory,
+            IsActive = worktimeCategory.IsActive,
+            Abreviation = worktimeCategory.Abreviation,
             Name = worktimeCategory.Name,
             Color = worktimeCategory.Color
         });
@@ -68,6 +78,8 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
     {
         const string query = @"
             UPDATE ""WorkTime_Category"" SET
+                ""isActive"" = @IsActive,
+                ""abreviation"" = @Abreviation,
                 ""name"" = @Name,
                 ""color"" = @Color
             WHERE ""id_workTime_category"" = @IdWorktimeCategory;
@@ -75,13 +87,15 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
         int affectedRows = this._connection.Execute(query, new
         {
             IdWorktimeCategory = worktimeCategory.IdWorktimeCategory,
+            IsActive = worktimeCategory.IsActive,
+            Abreviation = worktimeCategory.Abreviation,
             Name = worktimeCategory.Name,
             Color = worktimeCategory.Color
         });
         return affectedRows > 0;
     }
 
-    public bool Delete(string id)
+    public bool Delete(int id)
     {
         const string query = @"DELETE FROM ""WorkTime_Category"" WHERE ""id_workTime_category"" = @IdWorktimeCategory;";
         int affectedRows = this._connection.Execute(query, new { IdWorktimeCategory = id });

@@ -19,12 +19,12 @@ public class WorktimeCategoryService : IWorktimeCategoryService
         return this._worktimeCategoryRepository.GetAll().Select(w => w.ToModels());
     }
 
-    public WorktimeCategory? GetById(string id)
+    public WorktimeCategory? GetById(int id)
     {
         return this._worktimeCategoryRepository.GetById(id)?.ToModels();
     }
 
-    public string Create(WorktimeCategory worktimeCategory)
+    public int Create(WorktimeCategory worktimeCategory)
     {
         return this._worktimeCategoryRepository.Create(worktimeCategory.ToEntities());
     }
@@ -34,7 +34,7 @@ public class WorktimeCategoryService : IWorktimeCategoryService
         return this._worktimeCategoryRepository.Update(worktimeCategory.ToEntities());
     }
 
-    public bool Delete(string id)
+    public bool Delete(int id)
     {
         return this._worktimeCategoryRepository.Delete(id);
     }

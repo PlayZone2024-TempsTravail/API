@@ -36,7 +36,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetById(string id)
+        public IActionResult GetById(int id)
         {
             try
             {
@@ -52,10 +52,10 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Create([FromBody] WorktimeCategoryDTO worktimeCategory)
+        public IActionResult Create([FromBody] WorktimeCategoryCreateFormDTO worktimeCategory)
         {
-            string resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModels());
-            if (resultId != "")
+            int resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModels());
+            if (resultId != null)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, worktimeCategory);
             }
@@ -65,7 +65,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Update(string id, [FromBody] WorktimeCategoryUpdateFormDTO worktimeCategory)
+        public IActionResult Update(int id, [FromBody] WorktimeCategoryUpdateFormDTO worktimeCategory)
         {
             WorktimeCategory updatedWorktimeCategory = worktimeCategory.ToModels();
             updatedWorktimeCategory.IdWorktimeCategory = id;
@@ -79,7 +79,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Delete(string id)
+        public IActionResult Delete(int id)
         {
             try
             {
