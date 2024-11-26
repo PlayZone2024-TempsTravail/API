@@ -1,10 +1,9 @@
-﻿using System.Data.Common;
-using Dapper;
+﻿using Dapper;
 using Npgsql;
-using PlayZone.DAL.Entities.Libele_Related;
-using PlayZone.DAL.Interfaces.Libele_Related;
+using PlayZone.DAL.Entities.Budget_Related;
+using PlayZone.DAL.Interfaces.Budget_Related;
 
-namespace PlayZone.DAL.Repositories.Libele_Related;
+namespace PlayZone.DAL.Repositories.Budget_Related;
 
 public class LibeleRepository : ILibeleRepository
 {

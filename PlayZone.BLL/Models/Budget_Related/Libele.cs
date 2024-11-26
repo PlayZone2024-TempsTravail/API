@@ -1,4 +1,4 @@
-﻿namespace PlayZone.DAL.Entities.Libele_Related;
+﻿namespace PlayZone.BLL.Models.Budget_Related;
 
 public class Libele
 {

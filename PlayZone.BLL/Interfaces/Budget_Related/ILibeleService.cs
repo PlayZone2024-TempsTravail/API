@@ -1,6 +1,6 @@
-﻿using PlayZone.BLL.Models.Libele_Related;
+﻿using PlayZone.BLL.Models.Budget_Related;
 
-namespace PlayZone.BLL.Interfaces.Libele_Related;
+namespace PlayZone.BLL.Interfaces.Budget_Related;
 
 public interface ILibeleService
 {

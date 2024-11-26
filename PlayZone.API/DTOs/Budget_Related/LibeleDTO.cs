@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PlayZone.API.DTOs.Libele_Related;
+﻿namespace PlayZone.API.DTOs.Budget_Related;
 
 public class LibeleDTO
 {

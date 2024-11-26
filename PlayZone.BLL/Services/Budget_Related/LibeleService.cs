@@ -1,9 +1,9 @@
-﻿using PlayZone.BLL.Interfaces.Libele_Related;
-using PlayZone.DAL.Interfaces.Libele_Related;
-using PlayZone.BLL.Mappers.Libele_Related;
-using PlayZone.BLL.Models.Libele_Related;
+﻿using PlayZone.BLL.Interfaces.Budget_Related;
+using PlayZone.BLL.Mappers.Budget_Related;
+using PlayZone.BLL.Models.Budget_Related;
+using PlayZone.DAL.Interfaces.Budget_Related;
 
-namespace PlayZone.BLL.Services.Libele_Related;
+namespace PlayZone.BLL.Services.Budget_Related;
 
 public class LibeleService : ILibeleService
 {
@@ -28,9 +28,9 @@ public class LibeleService : ILibeleService
         return this._libeleRepository.Create(libele.ToEntities());
     }
 
-    public bool Update(Libele user)
+    public bool Update(Libele libele)
     {
-        return this._libeleRepository.Update(user.ToEntities());
+        return this._libeleRepository.Update(libele.ToEntities());
     }
 
     public bool Delete(int idLibele)

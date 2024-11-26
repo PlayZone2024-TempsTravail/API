@@ -1,6 +1,6 @@
-﻿using PlayZone.DAL.Entities.Libele_Related;
+﻿using PlayZone.DAL.Entities.Budget_Related;
 
-namespace PlayZone.DAL.Interfaces.Libele_Related;
+namespace PlayZone.DAL.Interfaces.Budget_Related;
 
 public interface ILibeleRepository
 {
