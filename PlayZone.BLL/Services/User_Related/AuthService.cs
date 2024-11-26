@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Mappers.User_Related;
-using PlayZone.DAL.Entities.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using User = PlayZone.BLL.Models.User_Related.User;
 
