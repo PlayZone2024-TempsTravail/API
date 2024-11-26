@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using PlayZone.BLL.Models.Configuration_Related;
+﻿using PlayZone.BLL.Models.Configuration_Related;
 
 namespace PlayZone.BLL.Interfaces.Configuration_Related;
 
