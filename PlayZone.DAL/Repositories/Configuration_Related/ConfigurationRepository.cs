@@ -19,10 +19,10 @@ public class ConfigurationRepository : IConfigurationRepository
     {
         const string query = @"
             SELECT
-                 ""id_configuration"" AS IdConfiguration,
-                ""date"" AS Date,
-                ""parameter_name"" AS ParameterName,
-                ""parameter_value"" AS ParameterValue
+                 ""id_configuration"" AS ""IdConfiguration"",
+                ""date"" AS ""Date"",
+                ""parameter_name"" AS ""ParameterName"",
+                ""parameter_value"" AS ""ParameterValue""
             FROM ""Configuration""
         ";
         return this._connection.Query<Configuration>(query);
@@ -39,17 +39,7 @@ public class ConfigurationRepository : IConfigurationRepository
                 FROM ""Configuration""
                 WHERE ""id_configuration"" = @IdConfiguration;
             ";
-        //Configuration? config = this._connection.QueryFirstOrDefault<Configuration>(query, new { IdConfiguration = id });
-        try
-        {
-
-        return this._connection.QueryFirstOrDefault<Configuration>(query, new { IdConfiguration = id });
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+            return this._connection.QueryFirstOrDefault<Configuration>(query, new { IdConfiguration = id });
     }
 
     public int Create(Configuration configuration)
@@ -75,31 +65,5 @@ public class ConfigurationRepository : IConfigurationRepository
         });
 
         return resultId;
-    }
-
-    public bool Update(Configuration configuration)
-    {
-        const string query = @"
-                UPDATE ""Configuration"" SET
-                    ""date"" = @Date,
-                    ""parameter_name"" = @ParameterName,
-                    ""parameter_value"" = @ParamaterValue
-                WHERE ""id_configuration"" = @IdConfiguration;
-            ";
-        int affectedRows = this._connection.Execute(query, new
-        {
-            IdConfiguration = configuration.IdConfiguration,
-            Date = configuration.Date,
-            ParameterName = configuration.ParameterName,
-            ParameterValue = configuration.ParameterValue
-        });
-        return affectedRows > 0;
-    }
-
-    public bool Delete(int id)
-    {
-        const string query = @"DELETE FROM ""Configuration"" WHERE ""id_configuration"" = @IdConfiguration;";
-        int affectedRows = this._connection.Execute(query, new { IdConfiguration = id });
-        return affectedRows > 0;
     }
 }

@@ -6,8 +6,8 @@ public class ConfigurationDTO
 {
     public int IdConfiguration { get; set; }
     public DateTime Date { get; set; }
-    public int ParameterName { get; set; }
-    public int ParameterValue { get; set; }
+    public string? ParameterName { get; set; }
+    public string? ParameterValue { get; set; }
 }
 
 public class ConfigurationCreateFormDTO
@@ -16,15 +16,8 @@ public class ConfigurationCreateFormDTO
     public DateTime Date { get; set; }
 
     [Required]
-    public int ParameterName { get; set; }
+    public string? ParameterName { get; set; }
 
     [Required]
-    public int ParameterValue { get; set; }
-}
-
-public class ConfigurationUpdateFormDTO
-{
-    public DateTime Date { get; set; }
-    public int ParameterName { get; set; }
-    public int ParameterValue { get; set; }
+    public string? ParameterValue { get; set; }
 }

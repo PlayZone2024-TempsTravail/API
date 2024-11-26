@@ -28,14 +28,4 @@ public class ConfigurationService : IConfigurationService
     {
         return this._configurationRepository.Create(configuration.ToEntities());
     }
-
-    public bool Update(Configuration configuration)
-    {
-        return this._configurationRepository.Update(configuration.ToEntities());
-    }
-
-    public bool Delete(int idConfiguration)
-    {
-        return this._configurationRepository.Delete(idConfiguration);
-    }
 }
