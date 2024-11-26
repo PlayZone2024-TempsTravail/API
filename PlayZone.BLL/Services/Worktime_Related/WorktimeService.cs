@@ -14,6 +14,11 @@ public class WorktimeService : IWorktimeService
         this._worktimeRepository = worktimeRepository;
     }
 
+    public bool Update(Worktime worktime)
+    {
+        return this._worktimeRepository.Update(worktime.ToEntities());
+    }
+
     public IEnumerable<Worktime> GetByDateRange(int userId, DateTime startDate, DateTime endDate)
     {
         return this._worktimeRepository.GetByDateRange(userId, startDate, endDate).Select(w => w.ToModels());
@@ -32,5 +37,15 @@ public class WorktimeService : IWorktimeService
     public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear, int year)
     {
         return this._worktimeRepository.GetByMonth(userId, monthOfYear, year).Select(w => w.ToModels());
+    }
+
+    public int Create(Models.Worktime_Related.Worktime worktime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool Delete(int id)
+    {
+        throw new NotImplementedException();
     }
 }

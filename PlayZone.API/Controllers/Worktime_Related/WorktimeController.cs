@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.DTOs.Worktime_Related;
 using PlayZone.API.Mappers.Worktime_Related;
@@ -83,5 +83,24 @@ public class WorktimeController : ControllerBase
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(statusCode: 200, type: typeof(Worktime))]
+    [ProducesResponseType(statusCode: StatusCodes.Status500InternalServerError)]
+    public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDto worktime)
+    {
+        if (id <= 0)
+        {
+            return this.BadRequest("Invalid user data");
+        }
+
+        Worktime updatedWorktime = worktime.ToModels();
+        updatedWorktime.IdWorktime = id;
+        if (this._worktimeService.Update(updatedWorktime))
+        {
+            return this.Ok();
+        }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 }

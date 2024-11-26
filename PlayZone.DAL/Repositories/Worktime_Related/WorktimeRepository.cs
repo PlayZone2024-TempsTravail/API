@@ -34,7 +34,6 @@ public class WorktimeRepository : IWorktimeRepository
         return this._connection.Query<Worktime>(query, new { UserId = userId, StartDate = startDate, EndDate = endDate });
     }
 
-
     public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
         const string query = @"
@@ -87,5 +86,21 @@ public class WorktimeRepository : IWorktimeRepository
             WHERE EXTRACT(MONTH FROM ""start"") = @MonthOfYear AND ""user_id"" = @UserId;
         ";
         return this._connection.Query<Worktime>(query, new { MonthOfYear = monthOfYear, UserId = userId });
+    }
+
+    public bool Update(Worktime worktime)
+    {
+        const string query = @"
+        UPDATE ""WorkTime""
+        SET
+            ""start"" = @Start,
+            ""end"" = @End,
+            ""category_id"" = @CategoryId,
+            ""project_id"" = @ProjectId,
+            ""user_id"" = @UserId
+        WHERE
+            ""id_WorkTime"" = @IdWorktime;
+    ";
+    return this._connection.Execute(query, worktime) > 0;
     }
 }
