@@ -78,7 +78,7 @@ public class WorktimeRepository : IWorktimeRepository
             ""id_WorkTime"" AS ""IdWorktime"",
             ""start"" AS ""StartTime"",
             ""end"" AS ""EndTime"",
-            ""isonsite"" AS ""IsOnsite"",
+            ""isOnSite"" AS ""IsOnsite"",
             ""category_id"" AS ""WorktimeCategoryId"",
             ""project_id"" AS ""ProjectId"",
             ""user_id"" AS ""UserId""

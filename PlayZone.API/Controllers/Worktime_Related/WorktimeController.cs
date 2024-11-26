@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.DTOs.Worktime_Related;
 using PlayZone.API.Mappers.Worktime_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
+using Models = PlayZone.BLL.Models.Worktime_Related;
 
 namespace PlayZone.API.Controllers.Worktime_Related;
 
@@ -86,8 +87,8 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [ProducesResponseType(statusCode: 200, type: typeof(Worktime))]
-    [ProducesResponseType(statusCode: StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDto worktime)
     {
         if (id <= 0)
@@ -95,7 +96,7 @@ public class WorktimeController : ControllerBase
             return this.BadRequest("Invalid user data");
         }
 
-        Worktime updatedWorktime = worktime.ToModels();
+        Models.Worktime updatedWorktime = worktime.ToModels();
         updatedWorktime.IdWorktime = id;
         if (this._worktimeService.Update(updatedWorktime))
         {
