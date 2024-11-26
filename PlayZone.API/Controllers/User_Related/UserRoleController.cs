@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -13,6 +12,7 @@ namespace PlayZone.API.Controllers.User_Related
     public class UserRoleController : ControllerBase
     {
         private readonly IUserRoleService _userRoleService;
+
         public UserRoleController(IUserRoleService userRoleService)
         {
             this._userRoleService = userRoleService;
@@ -57,17 +57,21 @@ namespace PlayZone.API.Controllers.User_Related
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Create(UserRoleDTO userRoleDTO)
+        public IActionResult Create(UserRoleDTO userRoleDto)
         {
             try
             {
-                UserRoleDTO ur = this._userRoleService.Create(userRoleDTO.ToModel()).ToDTO();
-                if (userRoleDTO.RoleId == ur.RoleId && userRoleDTO.UserId == ur.UserId)
+                UserRoleDTO ur = this._userRoleService.Create(userRoleDto.ToModel()).ToDTO();
+                if (userRoleDto.RoleId == ur.RoleId && userRoleDto.UserId == ur.UserId)
                 {
                     return this.Ok();
                 }
             }
-            catch (Exception) { /* ignored */}
+            catch (Exception)
+            {
+                /* ignored */
+            }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
@@ -75,18 +79,21 @@ namespace PlayZone.API.Controllers.User_Related
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Delete(UserRoleDTO userRoleDTO)
+        public IActionResult Delete(UserRoleDTO userRoleDto)
         {
             try
             {
-                if (this._userRoleService.Delete(userRoleDTO.RoleId, userRoleDTO.UserId))
+                if (this._userRoleService.Delete(userRoleDto.RoleId, userRoleDto.UserId))
                 {
                     return this.Ok();
                 }
             }
-            catch (Exception) { /* ignored */}
+            catch (Exception)
+            {
+                /* ignored */
+            }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
-
     }
 }

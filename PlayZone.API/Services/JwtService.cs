@@ -13,6 +13,7 @@ public class JwtService
     private readonly IConfiguration _config;
     private readonly IRolePermissionService _rolePermissionService;
     private readonly IUserRoleService _userRoleService;
+
     public JwtService(
         IConfiguration config,
         IRolePermissionService rolePermissionService,

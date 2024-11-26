@@ -4,7 +4,6 @@ using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.DAL.Entities.User_Related;
-using Models = PlayZone.BLL.Models.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related;
 
@@ -13,6 +12,7 @@ namespace PlayZone.API.Controllers.User_Related;
 public class RoleController : ControllerBase
 {
     private readonly IRoleService _roleService;
+
     public RoleController(IRoleService roleService)
     {
         this._roleService = roleService;
@@ -74,6 +74,7 @@ public class RoleController : ControllerBase
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
@@ -91,6 +92,7 @@ public class RoleController : ControllerBase
             {
                 return this.Ok();
             }
+
             return this.NotFound();
         }
         catch (Exception)
@@ -112,13 +114,12 @@ public class RoleController : ControllerBase
             {
                 return this.Ok();
             }
+
             return this.NotFound();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
-
 }
-

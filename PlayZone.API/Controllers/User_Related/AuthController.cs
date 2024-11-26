@@ -3,7 +3,6 @@ using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.User_Related;
-using Models = PlayZone.BLL.Models.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related;
 
@@ -35,6 +34,7 @@ public class AuthController : ControllerBase
                 string token = this._jwtService.GenerateToken(userLoginDto);
                 return this.Ok(new { token });
             }
+
             return this.NotFound("les crédentials de login sont incorrect");
         }
         catch (Exception ex)

@@ -5,20 +5,20 @@ namespace PlayZone.API.Mappers.User_Related;
 
 public static class RoleMapper
 {
-    public static Role ToModel(this RoleDTO roleDTO)
+    public static Role ToModel(this RoleDTO roleDto)
     {
         return new Role
         {
-            IdRole = roleDTO.IdRole,
-            Name = roleDTO.Name
+            IdRole = roleDto.IdRole,
+            Name = roleDto.Name
         };
     }
 
-    public static Role ToModel(this RoleCreateDTO roleCreateDTO)
+    public static Role ToModel(this RoleCreateDTO roleCreateDto)
     {
         return new Role
         {
-            Name = roleCreateDTO.Name
+            Name = roleCreateDto.Name
         };
     }
 

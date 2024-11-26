@@ -13,6 +13,7 @@ namespace PlayZone.API.Controllers.User_Related;
 public class RolePermissionController : ControllerBase
 {
     private readonly IRolePermissionService _rolePermissionService;
+
     public RolePermissionController(IRolePermissionService rolePermissionService)
     {
         this._rolePermissionService = rolePermissionService;
@@ -26,7 +27,8 @@ public class RolePermissionController : ControllerBase
     {
         try
         {
-            IEnumerable<RolePermissionDTO> rolePermissions = this._rolePermissionService.GetAll().Select(rp => rp.ToDTO());
+            IEnumerable<RolePermissionDTO> rolePermissions =
+                this._rolePermissionService.GetAll().Select(rp => rp.ToDTO());
             return this.Ok(rolePermissions);
         }
         catch (Exception)
@@ -56,17 +58,21 @@ public class RolePermissionController : ControllerBase
     [PermissionAuthorize(Permission.CREER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Create(RolePermissionDTO rolePermissionFormDTO)
+    public IActionResult Create(RolePermissionDTO rolePermissionFormDto)
     {
         try
         {
-            RolePermission rp = this._rolePermissionService.Create(rolePermissionFormDTO.ToModel());
-            if (rp.RoleId == rolePermissionFormDTO.RoleId && rp.PermissionId == rolePermissionFormDTO.PermissionId)
+            RolePermission rp = this._rolePermissionService.Create(rolePermissionFormDto.ToModel());
+            if (rp.RoleId == rolePermissionFormDto.RoleId && rp.PermissionId == rolePermissionFormDto.PermissionId)
             {
                 return this.Ok();
             }
         }
-        catch (Exception) { /* ignored */}
+        catch (Exception)
+        {
+            /* ignored */
+        }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
@@ -74,17 +80,20 @@ public class RolePermissionController : ControllerBase
     [PermissionAuthorize(Permission.SUPPRIMER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Delete(RolePermissionDTO rolePermissionDTO)
+    public IActionResult Delete(RolePermissionDTO rolePermissionDto)
     {
         try
         {
-            if (this._rolePermissionService.Delete(rolePermissionDTO.RoleId, rolePermissionDTO.PermissionId))
+            if (this._rolePermissionService.Delete(rolePermissionDto.RoleId, rolePermissionDto.PermissionId))
             {
                 return this.Ok();
             }
         }
-        catch (Exception) { /* ignored */}
+        catch (Exception)
+        {
+            /* ignored */
+        }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
-
