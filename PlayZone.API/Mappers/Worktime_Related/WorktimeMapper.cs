@@ -10,23 +10,49 @@ public static class WorktimeMapper
         return new WorktimeDTO
         {
             IdWorktime = worktime.IdWorktime,
-            StartTime = worktime.StartTime,
-            EndTime = worktime.EndTime,
+            Start = worktime.Start,
+            End = worktime.End,
             IsOnSite = worktime.IsOnSite,
-            WorktimeCategoryId = worktime.WorktimeCategoryId,
+            CategoryId = worktime.CategoryId.Trim(),
             ProjectId = worktime.ProjectId,
-            UserId = worktime.UserId,
+            UserId = worktime.UserId
         };
     }
 
+    public static Models.Worktime ToModels(this WorktimeDTO worktime)
+    {
+        return new Models.Worktime
+        {
+            IdWorktime = worktime.IdWorktime,
+            Start = worktime.Start,
+            End = worktime.End,
+            IsOnSite = worktime.IsOnSite,
+            CategoryId = worktime.CategoryId,
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
+        };
+    }
+
+    public static Models.Worktime ToModels(this WorktimeUpdateFormDto worktime)
+    {
+        return new Models.Worktime
+        {
+            Start = worktime.Start,
+            End = worktime.End,
+            CategoryId = worktime.CategoryId,
+            ProjectId = worktime.ProjectId,
+            UserId = worktime.UserId
+        };
+
+    }
     public static Models.Worktime ToModels(this WorktimeCreateDTO worktime)
     {
         return new Models.Worktime
         {
-            StartTime = worktime.StartTime,
-            EndTime = worktime.EndTime,
+            Start = worktime.StartTime,
+            End = worktime.EndTime,
             IsOnSite = worktime.IsOnSite,
-            WorktimeCategoryId = worktime.WorktimeCategoryId,
+            CategoryId = worktime.CategoryId,
             ProjectId = worktime.ProjectId,
             UserId = worktime.UserId,
         };

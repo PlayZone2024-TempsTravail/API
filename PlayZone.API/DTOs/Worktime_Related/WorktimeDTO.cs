@@ -1,21 +1,22 @@
-﻿namespace PlayZone.API.DTOs.Worktime_Related;
+namespace PlayZone.API.DTOs.Worktime_Related;
 
 public class WorktimeDTO
 {
     public int IdWorktime { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
     public bool IsOnSite { get; set; }
-    public required string WorktimeCategoryId { get; set; }
+    public required string CategoryId { get; set; }
     public int? ProjectId { get; set; }
     public int UserId { get; set; }
 }
 
-public class WorktimeCreateDTO
+public class WorktimeUpdateFormDto
 {
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
     public bool IsOnSite { get; set; }
+    public string CategoryId { get; set; }
     public required string WorktimeCategoryId { get; set; }
     public int? ProjectId { get; set; }
     public int UserId { get; set; }

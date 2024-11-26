@@ -10,23 +10,24 @@ public static class WorktimeMapper
         return new Entities.Worktime
         {
             IdWorktime = worktime.IdWorktime,
-            StartTime = worktime.StartTime,
-            EndTime = worktime.EndTime,
+            Start = worktime.Start,
+            End = worktime.End,
             IsOnSite = worktime.IsOnSite,
-            WorktimeCategoryId = worktime.WorktimeCategoryId,
+            CategoryId = worktime.CategoryId,
             ProjectId = worktime.ProjectId,
             UserId = worktime.UserId
         };
     }
+
     public static Worktime ToModels(this Entities.Worktime worktime)
     {
         return new Worktime
         {
             IdWorktime = worktime.IdWorktime,
-            StartTime = worktime.StartTime,
-            EndTime = worktime.EndTime,
+            Start = worktime.Start,
+            End = worktime.End,
             IsOnSite = worktime.IsOnSite,
-            WorktimeCategoryId = worktime.WorktimeCategoryId,
+            CategoryId = worktime.CategoryId,
             ProjectId = worktime.ProjectId,
             UserId = worktime.UserId
         };

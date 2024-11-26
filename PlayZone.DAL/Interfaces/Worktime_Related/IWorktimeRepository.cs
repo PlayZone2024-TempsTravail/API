@@ -4,13 +4,12 @@ namespace PlayZone.DAL.Interfaces.Worktime_Related;
 
 public interface IWorktimeRepository
 {
-    public int Create(Worktime worktime);
-
     public Worktime? GetById(int id);
-    public IEnumerable<Worktime> GetByDay(int idUser, int dayOfMonth);
-    public IEnumerable<Worktime> GetByWeek(int idUser, int weekOfYear);
-    public IEnumerable<Worktime> GetByMonth(int idUser, int monthOfYear);
-
+    public IEnumerable<Worktime> GetByDateRange(int userId, DateTime startDate, DateTime endDate);
+    public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth, int monthOfYear, int year);
+    public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear, int year);
+    public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear, int year);
+    public int Create(Worktime worktime);
+    public bool Update (Worktime worktime);
     public bool CheckIfWorktimeExists(int idUser, DateTime start, DateTime end);
-
 }
