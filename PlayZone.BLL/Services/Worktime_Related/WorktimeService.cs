@@ -1,5 +1,7 @@
-﻿using PlayZone.BLL.Interfaces.Worktime_Related;
+using PlayZone.BLL.Exceptions;
+using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Mappers.Worktime_Related;
+using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Models.Worktime_Related;
 using PlayZone.DAL.Interfaces.Worktime_Related;
 
@@ -36,7 +38,16 @@ public class WorktimeService : IWorktimeService
 
     public int Create(Worktime worktime)
     {
-        throw new NotImplementedException();
+        if (!this._worktimeRepository.CheckIfWorktimeExists(worktime.UserId, worktime.Start, worktime.End))
+        {
+            return this._worktimeRepository.Create(worktime.ToEntities());
+        }
+        throw new WorktimeAlreadyExistException();
+    }
+
+    public Worktime? GetById(int id)
+    {
+        return this._worktimeRepository.GetById(id)?.ToModels();
     }
 
     public bool Update(Worktime worktime)
