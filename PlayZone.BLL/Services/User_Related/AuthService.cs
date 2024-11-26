@@ -6,12 +6,12 @@ using User = PlayZone.BLL.Models.User_Related.User;
 
 namespace PlayZone.BLL.Services.User_Related;
 
-public class AuthServices : IAuthService
+public class AuthService : IAuthService
 {
 
     private readonly IConfiguration _config;
     private readonly IUserRepository _userRepository;
-    public AuthServices(
+    public AuthService(
         IConfiguration config,
         IUserRepository userRepository,
         IRolePermissionRepository rolePermissionRepository
