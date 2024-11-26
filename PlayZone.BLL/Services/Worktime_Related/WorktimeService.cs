@@ -38,7 +38,7 @@ public class WorktimeService : IWorktimeService
 
     public int Create(Worktime worktime)
     {
-        if (!this._worktimeRepository.CheckIfWorktimeExists(worktime.UserId, worktime.StartTime, worktime.EndTime))
+        if (!this._worktimeRepository.CheckIfWorktimeExists(worktime.UserId, worktime.Start, worktime.End))
         {
             return this._worktimeRepository.Create(worktime.ToEntities());
         }

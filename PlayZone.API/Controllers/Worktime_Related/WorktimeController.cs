@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PlayZone.API.DTOs.Worktime_Related;
 using PlayZone.API.Mappers.Worktime_Related;
 using PlayZone.BLL.Exceptions;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using Models = PlayZone.BLL.Models.Worktime_Related;
-using PlayZone.BLL.Mappers.Worktime_Related;
 
 namespace PlayZone.API.Controllers.Worktime_Related;
 
@@ -94,7 +91,7 @@ public class WorktimeController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDto worktime)
+    public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDTO worktime)
     {
         if (id <= 0)
         {
@@ -109,6 +106,7 @@ public class WorktimeController : ControllerBase
         }
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
+
     [HttpGet("id/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetById(int id)
@@ -127,7 +125,7 @@ public class WorktimeController : ControllerBase
     [HttpPost("create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Create([FromBody] WorktimeCreateDTO worktime)
+    public IActionResult Create([FromBody] WorktimeUpdateFormDTO worktime)
     {
         try
         {
