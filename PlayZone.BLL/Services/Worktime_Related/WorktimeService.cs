@@ -55,8 +55,8 @@ public class WorktimeService : IWorktimeService
         return this._worktimeRepository.Update(worktime.ToEntities());
     }
 
-    public bool Delete(int id)
+    public bool Delete(int worktimeId)
     {
-        throw new NotImplementedException();
+        return this._worktimeRepository.Delete(worktimeId);
     }
 }

@@ -38,6 +38,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
+
 //Injection des services DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
 builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();

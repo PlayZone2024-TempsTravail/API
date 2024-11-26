@@ -143,4 +143,19 @@ public class WorktimeController : ControllerBase
 
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
+
+    [HttpDelete("{idWorktime:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult Delete(int idWorktime)
+    {
+        try
+        {
+            return this.Ok(this._worktimeService.Delete(idWorktime));
+        }
+        catch (Exception ex)
+        {
+            return this.StatusCode(StatusCodes.Status500InternalServerError, ex);
+        }
+    }
 }
