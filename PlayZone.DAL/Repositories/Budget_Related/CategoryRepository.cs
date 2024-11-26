@@ -79,7 +79,8 @@ public class CategoryRepository : ICategoryRepository
         {
             Name = category.Name,
             IsIncome = category.IsIncome,
-            EstimationParCategorie = category.EstimationParCategorie
+            EstimationParCategorie = category.EstimationParCategorie,
+            IdCategory = category.IdCategory
         });
         return affectedRows > 0;
     }
