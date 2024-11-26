@@ -22,7 +22,8 @@ namespace PlayZone.API.Controllers.Configuration_Related
         {
             try
             {
-                IEnumerable<ConfigurationDTO> configurations = this._configurationService.GetAll().Select(c => c.ToDTO());
+                IEnumerable<ConfigurationDTO> configurations =
+                    this._configurationService.GetAll().Select(c => c.ToDTO());
                 return this.Ok(configurations);
             }
             catch (Exception)
@@ -39,7 +40,7 @@ namespace PlayZone.API.Controllers.Configuration_Related
                 ConfigurationDTO configurations = this._configurationService.GetById(id).ToDTO();
                 return this.Ok(configurations);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -47,49 +48,46 @@ namespace PlayZone.API.Controllers.Configuration_Related
 
 
         [HttpPost]
-            [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ConfigurationCreateFormDTO))]
-            [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
-            public IActionResult Create([FromBody] ConfigurationCreateFormDTO user)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ConfigurationCreateFormDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        public IActionResult Create([FromBody] ConfigurationCreateFormDTO user)
+        {
+            int resultId = this._configurationService.Create(user.ToModels());
+            if (resultId > 0)
             {
-                int resultId = this._configurationService.Create(user.ToModels());
-                if (resultId > 0)
-                {
-                    return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, user);
-                }
-                return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
+                return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, user);
             }
 
-            [HttpPut("{id}")]
-            [ProducesResponseType(StatusCodes.Status200OK)]
-            public IActionResult Update(int id, [FromBody] ConfigurationDTO configuration)
-            {
-                if (id <= 0)
-                {
-                    return this.BadRequest("Invalid user data");
-                }
+            return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
+        }
 
-                Configuration updatedConfiguration = configuration.ToModels();
-                updatedConfiguration.IdConfiguration = id;
-                if (this._configurationService.Update(updatedConfiguration))
-                {
-                    return this.Ok();
-                }
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Update(int id, [FromBody] ConfigurationUpdateFormDTO configuration)
+        {
+            Configuration updatedConfiguration = configuration.ToModels();
+            updatedConfiguration.IdConfiguration = id;
+            if (this._configurationService.Update(updatedConfiguration))
+            {
+                return this.Ok();
+            }
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+        [HttpDelete("{idUser:int}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(int idConfiguration)
+        {
+            try
+            {
+                return this.Ok(this._configurationService.Delete(idConfiguration));
+            }
+            catch (Exception)
+            {
                 return this.StatusCode(StatusCodes.Status500InternalServerError);
             }
-
-            [HttpDelete("{idUser:int}")]
-            [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-            [ProducesResponseType(StatusCodes.Status200OK)]
-            public IActionResult Delete(int idConfiguration)
-            {
-                try
-                {
-                    return this.Ok(this._configurationService.Delete(idConfiguration));
-                }
-                catch (Exception)
-                {
-                    return this.StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
+        }
     }
 }

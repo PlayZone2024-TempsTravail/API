@@ -9,5 +9,4 @@ public interface IConfigurationRepository
         public int Create(Configuration configuration);
         public bool Update(Configuration configuration);
         public bool Delete(int id);
-
 }

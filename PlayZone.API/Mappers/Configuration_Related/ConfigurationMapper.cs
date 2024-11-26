@@ -26,11 +26,10 @@ public static class ConfigurationMapper
         };
     }
 
-    public static Models.Configuration ToModels(this ConfigurationDTO configuration)
+    public static Models.Configuration ToModels(this ConfigurationUpdateFormDTO configuration)
     {
         return new Models.Configuration
         {
-            IdConfiguration = configuration.IdConfiguration,
             Date = configuration.Date,
             ParameterName = configuration.ParameterName,
             ParameterValue = configuration.ParameterValue

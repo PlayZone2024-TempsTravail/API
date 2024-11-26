@@ -2,7 +2,6 @@
 using Entities = PlayZone.DAL.Entities.Configuration_Related;
 
 namespace PlayZone.BLL.Mappers.Configuration_Related;
-
 public static class ConfigurationMapper
 {
     public static Entities.Configuration ToEntities(this Configuration configuration)

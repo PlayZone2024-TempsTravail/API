@@ -4,7 +4,6 @@ using Npgsql;
 using PlayZone.DAL.Entities.Configuration_Related;
 using PlayZone.DAL.Interfaces.Configuration_Related;
 
-
 namespace PlayZone.DAL.Repositories.Configuration_Related;
 
 public class ConfigurationRepository : IConfigurationRepository
@@ -33,27 +32,35 @@ public class ConfigurationRepository : IConfigurationRepository
     {
         const string query = @"
                 SELECT
-                    ""id_configuration"" AS IdConfiguration,
-                    ""date"" AS Date,
-                    ""parameter_name"" AS ParameterName,
-                    ""parameter_value"" AS ParameterValue
+                    ""id_configuration"" AS ""IdConfiguration"",
+                    ""date"" AS ""Date"",
+                    ""parameter_name"" AS ""ParameterName"",
+                    ""parameter_value"" AS ""ParameterValue""
                 FROM ""Configuration""
                 WHERE ""id_configuration"" = @IdConfiguration;
             ";
+        //Configuration? config = this._connection.QueryFirstOrDefault<Configuration>(query, new { IdConfiguration = id });
+        try
+        {
+
         return this._connection.QueryFirstOrDefault<Configuration>(query, new { IdConfiguration = id });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public int Create(Configuration configuration)
     {
         const string query = @"
                 INSERT INTO ""Configuration"" (
-                    ""id_configuration"",
                     ""date"",
                     ""parameter_name"",
                     ""parameter_value""
                 )
                 VALUES (
-                    DEFAULT,
                     @Date,
                     @ParameterName,
                     @ParameterValue
@@ -92,7 +99,7 @@ public class ConfigurationRepository : IConfigurationRepository
     public bool Delete(int id)
     {
         const string query = @"DELETE FROM ""Configuration"" WHERE ""id_configuration"" = @IdConfiguration;";
-        int affectedRows = this._connection.Execute(query, new { IdUser = id });
+        int affectedRows = this._connection.Execute(query, new { IdConfiguration = id });
         return affectedRows > 0;
     }
 }
