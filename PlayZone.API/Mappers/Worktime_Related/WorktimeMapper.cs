@@ -19,7 +19,7 @@ public static class WorktimeMapper
         };
     }
 
-    public static Models.Worktime ToModels(this WorktimeDTO worktime)
+    public static Models.Worktime ToModel(this WorktimeDTO worktime)
     {
         return new Models.Worktime
         {
@@ -33,7 +33,7 @@ public static class WorktimeMapper
         };
     }
 
-    public static Models.Worktime ToModels(this WorktimeCreateFormDTO worktime)
+    public static Models.Worktime ToModel(this WorktimeCreateFormDTO worktime)
     {
         return new Models.Worktime
         {
@@ -46,7 +46,7 @@ public static class WorktimeMapper
         };
     }
 
-    public static Models.Worktime ToModels(this WorktimeUpdateFormDTO worktime)
+    public static Models.Worktime ToModel(this WorktimeUpdateFormDTO worktime)
     {
         return new Models.Worktime
         {

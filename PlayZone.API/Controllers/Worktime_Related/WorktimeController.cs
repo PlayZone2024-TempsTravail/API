@@ -98,7 +98,7 @@ public class WorktimeController : ControllerBase
             return this.BadRequest("Invalid user data");
         }
 
-        Models.Worktime updatedWorktime = worktime.ToModels();
+        Models.Worktime updatedWorktime = worktime.ToModel();
         updatedWorktime.IdWorktime = id;
         if (this._worktimeService.Update(updatedWorktime))
         {
@@ -129,7 +129,7 @@ public class WorktimeController : ControllerBase
     {
         try
         {
-            int resultId = this._worktimeService.Create(worktime.ToModels());
+            int resultId = this._worktimeService.Create(worktime.ToModel());
             if (resultId > 0)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, worktime);

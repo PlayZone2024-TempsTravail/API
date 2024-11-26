@@ -5,7 +5,7 @@ namespace PlayZone.BLL.Mappers.User_Related;
 
 public static class UserMapper
 {
-    public static Entities.User ToEntities(this User user)
+    public static Entities.User ToEntity(this User user)
     {
         return new Entities.User
         {
@@ -18,7 +18,7 @@ public static class UserMapper
         };
     }
 
-    public static User ToModels(this Entities.User user)
+    public static User ToModel(this Entities.User user)
     {
         return new User
         {

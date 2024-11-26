@@ -23,7 +23,7 @@ public class AuthService : IAuthService
 
     public User? Login(User user)
     {
-        User userDb = this._userRepository.Login(user.Email).ToModels();
+        User userDb = this._userRepository.Login(user.Email).ToModel();
         if (userDb.Email == user.Email  && userDb.Password == user.Password)
         {
             return userDb;

@@ -19,7 +19,7 @@ public static class WorktimeCategoryMapper
         };
     }
 
-    public static Models.WorktimeCategory ToModels(this WorktimeCategoryDTO worktimeCategory)
+    public static Models.WorktimeCategory ToModel(this WorktimeCategoryDTO worktimeCategory)
     {
         return new Models.WorktimeCategory
         {
@@ -31,7 +31,7 @@ public static class WorktimeCategoryMapper
         };
     }
 
-    public static Models.WorktimeCategory ToModels(this WorktimeCategoryUpdateFormDTO worktimeCategory)
+    public static Models.WorktimeCategory ToModel(this WorktimeCategoryUpdateFormDTO worktimeCategory)
     {
         return new Models.WorktimeCategory
         {
@@ -42,7 +42,7 @@ public static class WorktimeCategoryMapper
         };
     }
 
-    public static Models.WorktimeCategory ToModels(this WorktimeCategoryCreateFormDTO worktimeCategory)
+    public static Models.WorktimeCategory ToModel(this WorktimeCategoryCreateFormDTO worktimeCategory)
     {
         return new Models.WorktimeCategory
         {

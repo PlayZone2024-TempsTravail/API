@@ -91,7 +91,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
     {
-        int resultId = this._userService.Create(user.ToModels());
+        int resultId = this._userService.Create(user.ToModel());
         if (resultId > 0)
         {
             return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, user);
@@ -112,7 +112,7 @@ public class UserController : ControllerBase
             return this.BadRequest("Invalid user data");
         }
 
-        User updatedUser = user.ToModels();
+        User updatedUser = user.ToModel();
         updatedUser.IdUser = id;
         if (this._userService.Update(updatedUser))
         {

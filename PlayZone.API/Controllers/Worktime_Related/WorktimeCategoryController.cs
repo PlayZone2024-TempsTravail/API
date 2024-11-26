@@ -54,7 +54,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] WorktimeCategoryCreateFormDTO worktimeCategory)
         {
-            int resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModels());
+            int resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModel());
             if (resultId != null)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, worktimeCategory);
@@ -67,7 +67,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] WorktimeCategoryUpdateFormDTO worktimeCategory)
         {
-            WorktimeCategory updatedWorktimeCategory = worktimeCategory.ToModels();
+            WorktimeCategory updatedWorktimeCategory = worktimeCategory.ToModel();
             updatedWorktimeCategory.IdWorktimeCategory = id;
             if (this._worktimeCategoryService.Update(updatedWorktimeCategory))
             {

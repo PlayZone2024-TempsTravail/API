@@ -18,41 +18,41 @@ public class WorktimeService : IWorktimeService
 
     public IEnumerable<Worktime> GetByDateRange(int userId, DateTime startDate, DateTime endDate)
     {
-        return this._worktimeRepository.GetByDateRange(userId, startDate, endDate).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByDateRange(userId, startDate, endDate).Select(w => w.ToModel());
     }
 
     public IEnumerable<Worktime> GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
-        return this._worktimeRepository.GetByDay(userId, dayOfMonth, monthOfYear, year).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByDay(userId, dayOfMonth, monthOfYear, year).Select(w => w.ToModel());
     }
 
     public IEnumerable<Worktime> GetByWeek(int userId, int weekOfYear, int year)
     {
-        return this._worktimeRepository.GetByWeek(userId, weekOfYear, year).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByWeek(userId, weekOfYear, year).Select(w => w.ToModel());
     }
 
     public IEnumerable<Worktime> GetByMonth(int userId, int monthOfYear, int year)
     {
-        return this._worktimeRepository.GetByMonth(userId, monthOfYear, year).Select(w => w.ToModels());
+        return this._worktimeRepository.GetByMonth(userId, monthOfYear, year).Select(w => w.ToModel());
     }
 
     public int Create(Worktime worktime)
     {
         if (!this._worktimeRepository.CheckIfWorktimeExists(worktime.UserId, worktime.Start, worktime.End))
         {
-            return this._worktimeRepository.Create(worktime.ToEntities());
+            return this._worktimeRepository.Create(worktime.ToEntity());
         }
         throw new WorktimeAlreadyExistException();
     }
 
     public Worktime? GetById(int id)
     {
-        return this._worktimeRepository.GetById(id)?.ToModels();
+        return this._worktimeRepository.GetById(id)?.ToModel();
     }
 
     public bool Update(Worktime worktime)
     {
-        return this._worktimeRepository.Update(worktime.ToEntities());
+        return this._worktimeRepository.Update(worktime.ToEntity());
     }
 
     public bool Delete(int worktimeId)

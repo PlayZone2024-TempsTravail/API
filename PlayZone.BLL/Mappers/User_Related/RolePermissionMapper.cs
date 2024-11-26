@@ -14,7 +14,7 @@ public static class RolePermissionMapper
         };
     }
 
-    public static Entities.RolePermission ToEntities(this RolePermission rolePermission)
+    public static Entities.RolePermission ToEntity(this RolePermission rolePermission)
     {
         return new Entities.RolePermission
         {

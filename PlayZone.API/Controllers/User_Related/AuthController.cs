@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            UserLoginDTO? userLoginDto = this._authService.Login(userLoginFormDto.ToModels())?.ToLoginDTO();
+            UserLoginDTO? userLoginDto = this._authService.Login(userLoginFormDto.ToModel())?.ToLoginDTO();
 
             if (userLoginDto != null)
             {

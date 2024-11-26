@@ -16,22 +16,22 @@ public class WorktimeCategoryService : IWorktimeCategoryService
 
     public IEnumerable<WorktimeCategory> GetAll()
     {
-        return this._worktimeCategoryRepository.GetAll().Select(w => w.ToModels());
+        return this._worktimeCategoryRepository.GetAll().Select(w => w.ToModel());
     }
 
     public WorktimeCategory? GetById(int id)
     {
-        return this._worktimeCategoryRepository.GetById(id)?.ToModels();
+        return this._worktimeCategoryRepository.GetById(id)?.ToModel();
     }
 
     public int Create(WorktimeCategory worktimeCategory)
     {
-        return this._worktimeCategoryRepository.Create(worktimeCategory.ToEntities());
+        return this._worktimeCategoryRepository.Create(worktimeCategory.ToEntity());
     }
 
     public bool Update(WorktimeCategory worktimeCategory)
     {
-        return this._worktimeCategoryRepository.Update(worktimeCategory.ToEntities());
+        return this._worktimeCategoryRepository.Update(worktimeCategory.ToEntity());
     }
 
     public bool Delete(int id)

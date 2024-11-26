@@ -19,7 +19,7 @@ public static class UserMapper
         };
     }
 
-    public static Models.User ToModels(this UserCreateFormDTO user)
+    public static Models.User ToModel(this UserCreateFormDTO user)
     {
         return new Models.User
         {
@@ -31,7 +31,7 @@ public static class UserMapper
         };
     }
 
-    public static Models.User ToModels(this UserLoginFormDTO user)
+    public static Models.User ToModel(this UserLoginFormDTO user)
     {
         return new Models.User
         {
@@ -40,7 +40,7 @@ public static class UserMapper
         };
     }
 
-    public static Models.User ToModels(this UserDTO user)
+    public static Models.User ToModel(this UserDTO user)
     {
         return new Models.User
         {

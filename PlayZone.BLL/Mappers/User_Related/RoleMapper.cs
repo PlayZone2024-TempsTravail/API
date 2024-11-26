@@ -14,7 +14,7 @@ public static class RoleMapper
         };
     }
 
-    public static Entities.Role ToEntities(this Role role)
+    public static Entities.Role ToEntity(this Role role)
     {
         return new Entities.Role
         {

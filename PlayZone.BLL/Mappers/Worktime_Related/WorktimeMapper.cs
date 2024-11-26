@@ -5,7 +5,7 @@ namespace PlayZone.BLL.Mappers.Worktime_Related;
 
 public static class WorktimeMapper
 {
-    public static Entities.Worktime ToEntities(this Worktime worktime)
+    public static Entities.Worktime ToEntity(this Worktime worktime)
     {
         return new Entities.Worktime
         {
@@ -19,7 +19,7 @@ public static class WorktimeMapper
         };
     }
 
-    public static Worktime ToModels(this Entities.Worktime worktime)
+    public static Worktime ToModel(this Entities.Worktime worktime)
     {
         return new Worktime
         {

@@ -25,12 +25,12 @@ public class RoleService : IRoleService
 
     public int Create(Role role)
     {
-        return this._roleRepository.Create(role.ToEntities());
+        return this._roleRepository.Create(role.ToEntity());
     }
 
     public bool Update(Role role)
     {
-        return this._roleRepository.Update(role.ToEntities());
+        return this._roleRepository.Update(role.ToEntity());
     }
 
     public bool Delete(int id)
