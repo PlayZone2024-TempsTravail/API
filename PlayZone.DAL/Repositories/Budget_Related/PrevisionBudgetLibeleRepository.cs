@@ -14,24 +14,88 @@ public class PrevisionBudgetLibeleRepository : IPrevisionBudgetLibeleRepository
         this._connection = connection;
     }
 
-
-    public PrevisionBudgetLibele GetById(int id)
+    public IEnumerable<PrevisionBudgetLibele> GetByIdProject(int IdProject)
     {
-        throw new NotImplementedException();
+        const string query = @"
+            SELECT
+                ""id_prevision_budget_libele"" AS ""IdPrevisionBudgetLibele"" ,
+                ""project_id"" AS ""IdProject"",
+                ""libele_id"" AS ""IdLibele"",
+                ""date"" AS ""Date"",
+                ""motif"" AS ""Motif"",
+                ""montant"" AS ""Montant""
+            FROM ""Prevision_Budget_Libele""
+            WHERE ""project_id"" = @IdProject;
+        ";
+        return this._connection.Query<PrevisionBudgetLibele>(query, new { IdProject = IdProject });
+    }
+
+    public PrevisionBudgetLibele? GetById(int id)
+    {
+        const string query = @"
+            SELECT
+                ""id_prevision_budget_libele"" AS ""IdPrevisionBudgetLibele"" ,
+                ""project_id"" AS ""IdProject"",
+                ""libele_id"" AS ""IdLibele"",
+                ""date"" AS ""Date"",
+                ""motif"" AS ""Motif"",
+                ""montant"" AS ""Montant""
+            FROM ""Prevision_Budget_Libele""
+            WHERE ""id_prevision_budget_libele"" = @id;
+        ";
+        return this._connection.QuerySingleOrDefault<PrevisionBudgetLibele>(query, new { id = id });
     }
 
     public int Create(PrevisionBudgetLibele previsionBudgetLibele)
     {
-        throw new NotImplementedException();
+        const string query = @"
+                INSERT INTO ""Prevision_Budget_Libele"" (
+                    ""project_id"",
+                    ""libele_id"",
+                    ""date"",
+                    ""motif"",
+                    ""montant""
+                    )
+                VALUES (
+                    @Name
+                    )
+                RETURNING ""id_prevision_budget_libele"";
+        ";
+        int resultId = this._connection.QuerySingle<int>(query, new
+        {
+            IdProject = previsionBudgetLibele.IdProject,
+            IdLibele = previsionBudgetLibele.IdLibele,
+            Date = previsionBudgetLibele.Date,
+            Motif = previsionBudgetLibele.Motif,
+            Montant = previsionBudgetLibele.Montant,
+
+        });
+
+        return resultId;
     }
 
     public bool Update(PrevisionBudgetLibele previsionBudgetLibele)
     {
-        throw new NotImplementedException();
+        const string query = @"
+            UPDATE ""Prevision_Budget_Libele"" SET
+                ""date"" = @Date,
+                ""motif"" = @Motif,
+                ""montant"" = @Montant
+            WHERE ""id_prevision_budget_libele"" = @IdPrevisionBudgetLibele
+        ";
+        int affectedRows = this._connection.Execute(query, new
+        {
+            Date = previsionBudgetLibele.Date,
+            Motif = previsionBudgetLibele.Motif,
+            Montant = previsionBudgetLibele.Montant
+        });
+        return affectedRows > 0;
     }
 
     public bool Delete(int id)
     {
-        throw new NotImplementedException();
+        const string query = @"DELETE FROM ""Prevision_Budget_Libele"" WHERE ""id_prevision_budget_libele"" = @IdPrevisionBudgetLibele;";
+        int affectedRows = this._connection.Execute(query, new { IdPrevisionBudgetLibele = id });
+        return affectedRows > 0;
     }
 }
