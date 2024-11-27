@@ -64,7 +64,22 @@ public class PrevisionBudgetCategoryRepository : IPrevisionBudgetCategoryReposit
 
     public bool Update(PrevisionBudgetCategory previsionBudgetCategory)
     {
-        throw new NotImplementedException();
+        const string query = @"
+            UPDATE ""Prevision_Budget_Category""
+            SET
+                ""date"" = @date,
+                ""montant"" = @montant,
+                ""motif"" = @motif
+            WHERE ""id_prevision_budget_category"" = @id;
+        ";
+        int affectedRows = this._connection.Execute(query, new
+        {
+            id = previsionBudgetCategory.idPrevisionBudgetCategory,
+            date = previsionBudgetCategory.date,
+            montant = previsionBudgetCategory.montant,
+            motif = previsionBudgetCategory.motif
+        });
+        return affectedRows > 0;
     }
 
     public bool Delete(int id)
