@@ -14,7 +14,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Controllers\Budget_Related\" />
       <Folder Include="Controllers\User_Related\" />
+      <Folder Include="DTOs\Budget_Related\" />
+      <Folder Include="Mappers\Budget_Related\" />
     </ItemGroup>
 
     <ItemGroup>
