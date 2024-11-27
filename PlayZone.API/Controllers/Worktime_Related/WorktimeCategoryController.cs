@@ -60,9 +60,10 @@ namespace PlayZone.API.Controllers.Worktime_Related
         public IActionResult Create([FromBody] WorktimeCategoryCreateFormDTO worktimeCategory)
         {
             int resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModel());
-            if (resultId != null)
+            if (resultId > 0)
             {
-                return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, worktimeCategory);
+                WorktimeCategoryDTO wc = this._worktimeCategoryService.GetById(resultId)!.ToDTO();
+                return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, wc);
             }
             return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
         }
