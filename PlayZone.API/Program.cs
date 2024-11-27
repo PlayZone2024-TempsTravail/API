@@ -111,16 +111,18 @@ builder.Services.AddAuthentication(option =>
 // Configuration des requetes "Cross Origin"
 builder.Services.AddCors(options =>
 {
-    // - Par default
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("CorsPolicy", policy =>
     {
-        // Config : Tout est autorisé
-        /*
-        policy.AllowAnyMethod(); // Toutes les méthodes (PUT, DELETE, HEAD, ...) en plus de GET, POST
-        policy.AllowAnyOrigin(); // Toutes les source possibles (N'importe quelle application Web)
-        policy.AllowAnyHeader(); // Pas de restriction dans le Header de la requete
-        */
-        policy.WithOrigins("http://localhost:4200");
+        // policy
+        //     .WithOrigins("http://localhost:4200")
+        //     .AllowAnyHeader()
+        //     .AllowAnyMethod()
+        //     .AllowCredentials();
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 
     // - Regle nommé
@@ -132,7 +134,6 @@ builder.Services.AddCors(options =>
         // - Avec la presence d'une clef
         policy.WithExposedHeaders("app-key");
     });
-
 });
 
 var app = builder.Build();
