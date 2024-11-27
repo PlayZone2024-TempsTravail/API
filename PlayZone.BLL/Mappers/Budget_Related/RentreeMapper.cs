@@ -1,14 +1,14 @@
 ﻿using System.Reflection.Metadata;
 using PlayZone.BLL.Models.Budget_Related;
-using Entity = PlayZone.DAL.Entities.Budget_Related;
+using Entities = PlayZone.DAL.Entities.Budget_Related;
 
 namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class RentreeMapper
 {
-    public static Entity.Rentree ToEntity(this Rentree rentree)
+    public static Entities.Rentree ToEntity(this Rentree rentree)
     {
-        return new Entity.Rentree
+        return new Entities.Rentree
         {
             IdRentree = rentree.IdRentree,
             IdLibele = rentree.IdLibele,
@@ -20,7 +20,7 @@ public static class RentreeMapper
         };
     }
 
-    public static Rentree ToModel(this Entity.Rentree rentree)
+    public static Rentree ToModel(this Entities.Rentree rentree)
     {
         return new Rentree
         {

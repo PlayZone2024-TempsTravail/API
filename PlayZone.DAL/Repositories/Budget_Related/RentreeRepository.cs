@@ -30,6 +30,23 @@ public class RentreeRepository : IRentreeRepository
         return this._connection.Query<Rentree>(query);
     }
 
+    public IEnumerable<Rentree> GetByProject(int id)
+    {
+        const string query = @"
+            SELECT
+                ""id_rentree"" AS ""IdRentree"",
+                ""libele_id"" AS ""IdLibele"",
+                ""project_id"" AS ""IdProject"",
+                ""organisme_id"" AS ""IdOrganisme"",
+                ""montant"" AS ""Montant"",
+                ""date_facturation"" AS ""DateFacturation"",
+                ""motif"" AS ""Motif""
+            FROM ""Rentree""
+            WHERE ""organisme_id"" = @OrganismeId;
+        ";
+        return this._connection.Query<Rentree>(query, new { OrganismeId = id });
+    }
+
     public Rentree? GetById(int id)
     {
         const string query = @"

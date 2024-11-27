@@ -1,11 +1,11 @@
 ﻿using PlayZone.API.DTOs.Budget_Related;
-using Model = PlayZone.BLL.Models.Budget_Related;
+using Models = PlayZone.BLL.Models.Budget_Related;
 
 namespace PlayZone.API.Mappers.Budget_Related;
 
 public static class RentreeMapper
 {
-    public static RentreeDTO ToDTO(this Model.Rentree rentree)
+    public static RentreeDTO ToDTO(this Models.Rentree rentree)
     {
         return new RentreeDTO
         {
@@ -20,9 +20,9 @@ public static class RentreeMapper
     }
 
 
-    public static Model.Rentree ToModel(this RentreeDTO rentree)
+    public static Models.Rentree ToModel(this RentreeDTO rentree)
     {
-        return new Model.Rentree
+        return new Models.Rentree
         {
             IdRentree = rentree.IdRentree,
             IdLibele = rentree.IdLibele,
@@ -34,9 +34,9 @@ public static class RentreeMapper
         };
     }
 
-    public static Model.Rentree ToModels(this RentreeCreateFormDTO rentree)
+    public static Models.Rentree ToModel(this RentreeCreateFormDTO rentree)
     {
-        return new Model.Rentree
+        return new Models.Rentree
         {
             IdLibele = rentree.IdLibele,
             IdProject = rentree.IdProject,
@@ -47,9 +47,9 @@ public static class RentreeMapper
         };
     }
 
-    public static Model.Rentree ToModels(this RentreeUpdateFormDTO rentree)
+    public static Models.Rentree ToModel(this RentreeUpdateFormDTO rentree)
     {
-        return new Model.Rentree
+        return new Models.Rentree
         {
             IdLibele = rentree.IdLibele,
             IdProject = rentree.IdProject,

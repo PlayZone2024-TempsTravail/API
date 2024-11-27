@@ -1,4 +1,5 @@
-﻿using PlayZone.BLL.Interfaces.Budget_Related;
+﻿using System.Collections;
+using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
 using PlayZone.BLL.Mappers.Budget_Related;
 using PlayZone.BLL.Models.Budget_Related;
@@ -17,6 +18,12 @@ public class RentreeService : IRentreeService
     {
         return this._rentreeRepository.GetAll().Select(u => u.ToModel());
     }
+
+    public IEnumerable<Rentree> GetByProject(int id)
+    {
+        return this._rentreeRepository.GetByProject(id).Select(u => u.ToModel());
+    }
+
 
     public Rentree? GetById(int idRentree)
     {

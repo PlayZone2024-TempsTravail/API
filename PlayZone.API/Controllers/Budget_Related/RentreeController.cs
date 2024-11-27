@@ -34,6 +34,22 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
         }
 
+        [HttpGet("idorganisme/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetByProject(int id)
+        {
+            try
+            {
+                IEnumerable<RentreeDTO> rentrees = this._rentreeService.GetByProject(id).Select(p => p.ToDTO());
+                return this.Ok(rentrees);
+            }
+            catch (Exception)
+            {
+                return this.NotFound("Project Not Found");
+            }
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -55,7 +71,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] RentreeCreateFormDTO rentree)
         {
-            int resultId = this._rentreeService.Create(rentree.ToModels());
+            int resultId = this._rentreeService.Create(rentree.ToModel());
             if (resultId > 0)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, rentree);
@@ -70,7 +86,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         {
             try
             {
-                Rentree updatedRentree = rentree.ToModels();
+                Rentree updatedRentree = rentree.ToModel();
                 updatedRentree.IdRentree = id;
                 if (this._rentreeService.Update(updatedRentree))
                 {
