@@ -9,5 +9,5 @@ public class Depense
     public int Montant { get; set; }
     public DateTime DateIntervention { get; set; }
     public DateTime DateFacturation { get; set; }
-    public string motif { get; set; }
+    public string Motif { get; set; }
 }

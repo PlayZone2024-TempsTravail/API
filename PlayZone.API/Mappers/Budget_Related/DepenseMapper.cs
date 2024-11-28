@@ -1,14 +1,13 @@
-﻿using PlayZone.BLL.Models.Budget_Related;
-using Entities = PlayZone.DAL.Entities.Budget_Related;
+﻿using PlayZone.API.DTOs.Budget_Related;
+using PlayZone.BLL.Models.Budget_Related;
+namespace PlayZone.API.Mappers.Budget_Related;
 
-
-namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class DepenseMapper
 {
-    public static Entities.Depense ToEntity(this Depense  depense)
+    public static DepenseDTO ToDTO(this DepenseDTO depense)
     {
-        return new Entities.Depense
+        return new DepenseDTO
         {
             IdDepense = depense.IdDepense,
             LibeleId = depense.LibeleId,
@@ -18,14 +17,14 @@ public static class DepenseMapper
             DateIntervention = depense.DateIntervention,
             DateFacturation = depense.DateFacturation,
             Motif = depense.Motif
+
         };
     }
 
-    public static Depense ToModel(this Entities.Depense depense)
+    public static Depense ToModel(this Depense depense)
     {
         return new Depense
         {
-            IdDepense = depense.IdDepense,
             LibeleId = depense.LibeleId,
             ProjectId = depense.ProjectId,
             OrganismeId = depense.OrganismeId,

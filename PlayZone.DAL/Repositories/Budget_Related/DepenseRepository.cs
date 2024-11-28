@@ -86,7 +86,7 @@ public class DepenseRepository : IDepenseRepository
             depense.Montant,
             depense.DateIntervention,
             depense.DateFacturation,
-            depense.motif
+            depense.Motif
         });
         return affectedRows > 0;;
     }
