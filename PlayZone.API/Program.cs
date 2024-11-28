@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.BLL.Services.Budget_Related;
 using PlayZone.BLL.Services.User_Related;
+using PlayZone.DAL.Interfaces.Budget_Related;
 using PlayZone.DAL.Interfaces.User_Related;
+using PlayZone.DAL.Repositories.Budget_Related;
 using PlayZone.DAL.Repositories.User_Related;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +20,9 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     return new NpgsqlConnection(connectionString);
 });
+
+builder.Services.AddScoped<IDepenseService, DepenseService>();
+builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
 
 
 builder.Services.AddScoped<IUserService, UserService>();

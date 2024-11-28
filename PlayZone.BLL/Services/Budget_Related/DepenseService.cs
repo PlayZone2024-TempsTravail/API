@@ -1,17 +1,16 @@
 ﻿using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Models.Budget_Related;
 using PlayZone.BLL.Mappers.Budget_Related;
-using PlayZone.BLL.Models.User_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
 
 
 namespace PlayZone.BLL.Services.Budget_Related;
 
-public class DepenceService : IDepenseService
+public class DepenseService : IDepenseService
 {
     private readonly IDepenseRepository _depenseRepository;
 
-    public DepenceService(IDepenseRepository depenseRepository)
+    public DepenseService(IDepenseRepository depenseRepository)
     {
         this._depenseRepository = depenseRepository;
     }
