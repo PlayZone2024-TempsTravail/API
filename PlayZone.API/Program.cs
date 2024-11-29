@@ -1,16 +1,26 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.Budget_Related;
+using PlayZone.BLL.Interfaces.Configuration_Related;
 using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.Budget_Related;
+using PlayZone.BLL.Services.Configuration_Related;
 using PlayZone.BLL.Services.User_Related;
+using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
+using PlayZone.DAL.Interfaces.Configuration_Related;
 using PlayZone.DAL.Interfaces.User_Related;
+using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.DAL.Repositories.Budget_Related;
+using PlayZone.DAL.Repositories.Configuration_Related;
 using PlayZone.DAL.Repositories.User_Related;
+using PlayZone.DAL.Repositories.Worktime_Related;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,16 +31,64 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     return new NpgsqlConnection(connectionString);
 });
 
-builder.Services.AddScoped<IDepenseService, DepenseService>();
-builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
 
+/*-----------------------------------------*/
 
+//Injection des services BLL - User_Related
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthService, AuthServices>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
+builder.Services.AddScoped<ICompteurWorktimeCategoryService, CompteurWorktimeCategoryService>();
+builder.Services.AddScoped<IUserSalaireService, UserSalaireService>();
 
+//Injection des services BLL - Worktime_Related
+builder.Services.AddScoped<IWorktimeService, WorktimeService>();
+builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
+
+//Injection des services BLL - Budget_Related
+builder.Services.AddScoped<IPrevisionBudgetLibeleService, PrevisionBudgetLibeleService>();
+builder.Services.AddScoped<IPrevisionBudgetCategoryService, PrevisionBudgetCategoryService>();
+builder.Services.AddScoped<IPrevisionRentreeService, PrevisionRentreeService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IRentreeService, RentreeService>();
+builder.Services.AddScoped<IDepenseService, DepenseService>();
+
+//Injection des services BLL - Configuration_Related
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+
+//Injection des services API
+builder.Services.AddScoped<JwtService>();
+
+/*-----------------------------------------*/
+
+//Injection des services DAL - User_Related
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<ICompteurWorktimeCategoryRepository, CompteurWorktimeCategoryRepository>();
+builder.Services.AddScoped<IUserSalaireRepository, UserSalaireRepository>();
+
+//Injection des services DAL - Worktime_Related
+builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
+builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
+
+//Injection des services DAL - Budget_Related
+builder.Services.AddScoped<IPrevisionBudgetLibeleRepository, PrevisionBudgetLibeleRepository>();
+builder.Services.AddScoped<IPrevisionBudgetCategoryRepository, PrevisionBudgetCategoryRepository>();
+builder.Services.AddScoped<IPrevisionRentreeRepository, PrevisionRentreeRepository>();
+builder.Services.AddScoped<IRentreeRepository, RentreeRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
+
+//Injection des services DAL - Configuration_Related
+builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+
+/*-----------------------------------------*/
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -86,6 +144,33 @@ builder.Services.AddAuthentication(option =>
     }
 );
 
+// Configuration des requetes "Cross Origin"
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        // policy
+        //     .WithOrigins("http://localhost:4200")
+        //     .AllowAnyHeader()
+        //     .AllowAnyMethod()
+        //     .AllowCredentials();
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+
+    // - Regle nommé
+    options.AddPolicy("header_api", policy =>
+    {
+        // Config : Le header restraint
+        // - Avec une clef avec une valeur spécifique
+        policy.WithHeaders(HeaderNames.ContentType, "application/json");
+        // - Avec la presence d'une clef
+        policy.WithExposedHeaders("app-key");
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -94,6 +179,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
