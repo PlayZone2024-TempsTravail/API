@@ -31,6 +31,7 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     return new NpgsqlConnection(connectionString);
 });
 
+
 /*-----------------------------------------*/
 
 //Injection des services BLL - User_Related
@@ -53,6 +54,7 @@ builder.Services.AddScoped<IPrevisionRentreeService, PrevisionRentreeService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IRentreeService, RentreeService>();
+builder.Services.AddScoped<IDepenseService, DepenseService>();
 
 //Injection des services BLL - Configuration_Related
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
@@ -81,6 +83,7 @@ builder.Services.AddScoped<IPrevisionRentreeRepository, PrevisionRentreeReposito
 builder.Services.AddScoped<IRentreeRepository, RentreeRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
 
 //Injection des services DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
