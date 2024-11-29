@@ -6,15 +6,19 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.Budget_Related;
+using PlayZone.BLL.Interfaces.Configuration_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.Budget_Related;
+using PlayZone.BLL.Services.Configuration_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
+using PlayZone.DAL.Interfaces.Configuration_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.DAL.Repositories.Budget_Related;
+using PlayZone.DAL.Repositories.Configuration_Related;
 using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
 
@@ -35,6 +39,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
+builder.Services.AddScoped<ICompteurWorktimeCategoryService, CompteurWorktimeCategoryService>();
+builder.Services.AddScoped<IUserSalaireService, UserSalaireService>();
 
 //Injection des services BLL - Worktime_Related
 builder.Services.AddScoped<IWorktimeService, WorktimeService>();
@@ -42,6 +48,13 @@ builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
 
 //Injection des services BLL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetCategoryService, PrevisionBudgetCategoryService>();
+builder.Services.AddScoped<IPrevisionRentreeService, PrevisionRentreeService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IRentreeService, RentreeService>();
+
+//Injection des services BLL - Configuration_Related
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
 //Injection des services API
 builder.Services.AddScoped<JwtService>();
@@ -53,14 +66,22 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-
+builder.Services.AddScoped<ICompteurWorktimeCategoryRepository, CompteurWorktimeCategoryRepository>();
+builder.Services.AddScoped<IUserSalaireRepository, UserSalaireRepository>();
 
 //Injection des services DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
 builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
 
-//Injection des services BLL - Budget_Related
+//Injection des services DAL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetCategoryRepository, PrevisionBudgetCategoryRepository>();
+builder.Services.AddScoped<IPrevisionRentreeRepository, PrevisionRentreeRepository>();
+builder.Services.AddScoped<IRentreeRepository, RentreeRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+
+//Injection des services DAL - Configuration_Related
+builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 /*-----------------------------------------*/
 
