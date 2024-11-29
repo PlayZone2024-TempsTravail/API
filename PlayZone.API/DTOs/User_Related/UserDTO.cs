@@ -5,15 +5,10 @@ namespace PlayZone.API.DTOs.User_Related;
 public class UserDTO
 {
     public int IdUser { get; set; }
-    public int RoleId { get; set; }
     public string? Nom { get; set; }
     public string? Prenom { get; set; }
     public string? Email { get; set; }
     public bool IsActive { get; set; }
-    public int HeuresAnnuellesPrestables { get; set; }
-    public int VA { get; set; }
-    public int VAEX { get; set; }
-    public int RC { get; set; }
 }
 
 public class UserLoginFormDTO
@@ -42,14 +37,12 @@ public class UserCreateFormDTO
     [Required]
     public string Password { get; set; }
 
-    [Required]
-    public int RoleId { get; set; }
-
-    [Required]
-    public int HeuresAnnuellesPrestables { get; set; }
-
-    public int VA { get; set; }
-    public int VAEX { get; set; }
-    public int RC { get; set; }
 }
 
+public class UserLoginDTO
+{
+    public int IdUser { get; set; }
+    public string Email { get; set; }
+    public string Nom { get; set; }
+    public string Prenom { get; set; }
+}
