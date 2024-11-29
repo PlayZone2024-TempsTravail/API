@@ -67,7 +67,8 @@ public class RoleController : ControllerBase
 
             if (resultId > 0)
             {
-                return this.CreatedAtAction(nameof(this.GetById), new { idRole = resultId }, role);
+                RoleDTO rl = this._roleService.GetById(resultId)!.ToDTO();
+                return this.CreatedAtAction(nameof(this.GetById), new { idRole = resultId }, rl);
             }
         }
         catch (Exception e)
