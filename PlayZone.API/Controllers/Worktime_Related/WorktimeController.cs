@@ -107,7 +107,7 @@ public class WorktimeController : ControllerBase
 
     [HttpPost]
     [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] WorktimeUpdateFormDTO worktime)
     {
@@ -116,7 +116,8 @@ public class WorktimeController : ControllerBase
             int resultId = this._worktimeService.Create(worktime.ToModel());
             if (resultId > 0)
             {
-                return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, worktime);
+                WorktimeDTO wt = this._worktimeService.GetById(resultId)!.ToDTO();
+                return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, wt);
             }
         }
         catch (WorktimeAlreadyExistException e)
