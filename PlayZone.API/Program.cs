@@ -6,15 +6,19 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.Budget_Related;
+using PlayZone.BLL.Interfaces.Configuration_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.Budget_Related;
+using PlayZone.BLL.Services.Configuration_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
+using PlayZone.DAL.Interfaces.Configuration_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.DAL.Repositories.Budget_Related;
+using PlayZone.DAL.Repositories.Configuration_Related;
 using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
 
@@ -43,6 +47,9 @@ builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
 //Injection des services BLL - Budget_Related
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+//Injection des services BLL - Configuration_Related
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+
 //Injection des services API
 builder.Services.AddScoped<JwtService>();
 
@@ -60,6 +67,9 @@ builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryReposito
 
 //Injection des services BLL - Budget_Related
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//Injection des services BLL - Configuration_Related
+builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 /*-----------------------------------------*/
 
