@@ -16,17 +16,17 @@ public class UserService : IUserService
 
     public IEnumerable<User> GetAll()
     {
-        return this._userRepository.GetAll().Select(u => u.ToModels());
+        return this._userRepository.GetAll().Select(u => u.ToModel());
     }
 
     public User? GetById(int id)
     {
-        return this._userRepository.GetById(id)?.ToModels();
+        return this._userRepository.GetById(id)?.ToModel();
     }
 
     public User? GetByEmail(string email)
     {
-        return this._userRepository.GetByEmail(email)?.ToModels();
+        return this._userRepository.GetByEmail(email)?.ToModel();
     }
 
     public int Create(User user)
@@ -35,12 +35,12 @@ public class UserService : IUserService
         string passwordAuto = "Test1234=";
         user.Password = passwordAuto;
 
-        return this._userRepository.Create(user.ToEntities());
+        return this._userRepository.Create(user.ToEntity());
     }
 
     public bool Update(User user)
     {
-        return this._userRepository.Update(user.ToEntities());
+        return this._userRepository.Update(user.ToEntity());
     }
 
     public bool Delete(int idUser)
