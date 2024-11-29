@@ -86,7 +86,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [PermissionAuthorize(Permission.AJOUTER_UTILISATEUR)]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserCreateFormDTO))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
@@ -94,7 +94,8 @@ public class UserController : ControllerBase
         int resultId = this._userService.Create(user.ToModel());
         if (resultId > 0)
         {
-            return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, user);
+            UserDTO u = this._userService.GetById(resultId)!.ToDTO();
+            return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, u);
         }
 
         return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
