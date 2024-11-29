@@ -55,6 +55,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IRentreeService, RentreeService>();
 builder.Services.AddScoped<IDepenseService, DepenseService>();
+builder.Services.AddScoped<IOrganismeService, OrganismeService>();
 
 //Injection des services BLL - Configuration_Related
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
@@ -84,6 +85,7 @@ builder.Services.AddScoped<IRentreeRepository, RentreeRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
+builder.Services.AddScoped<IOrganismeRepository, OrganismeRepository>();
 
 //Injection des services DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
