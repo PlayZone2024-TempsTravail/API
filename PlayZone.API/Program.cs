@@ -56,6 +56,7 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IRentreeService, RentreeService>();
 builder.Services.AddScoped<IDepenseService, DepenseService>();
 builder.Services.AddScoped<IOrganismeService, OrganismeService>();
+builder.Services.AddScoped<ILibeleService, LibeleService>();
 
 //Injection des services BLL - Configuration_Related
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
@@ -86,11 +87,13 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
 builder.Services.AddScoped<IOrganismeRepository, OrganismeRepository>();
+builder.Services.AddScoped<ILibeleRepository, LibeleRepository>();
 
 //Injection des services DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 /*-----------------------------------------*/
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
