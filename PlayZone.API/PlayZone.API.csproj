@@ -9,7 +9,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
         <PackageReference Include="Npgsql" Version="9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
@@ -17,6 +16,7 @@
     <ItemGroup>
       <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
       <Folder Include="Controllers\User_Related\" />
+      <Folder Include="Controllers\Budget_Related\" />
       <Folder Include="Controllers\Worktime_Related\" />
     </ItemGroup>
 
