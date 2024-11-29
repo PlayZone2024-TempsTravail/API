@@ -14,8 +14,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\Budget_Related\" />
+      <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
       <Folder Include="Controllers\User_Related\" />
+      <Folder Include="Controllers\Budget_Related\" />
+      <Folder Include="Controllers\Worktime_Related\" />
     </ItemGroup>
 
     <ItemGroup>
