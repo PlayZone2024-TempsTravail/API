@@ -10,7 +10,8 @@ public static class UserRoleMapper
         return new Entities.UserRole
         {
             RoleId = ur.RoleId,
-            UserId = ur.UserId
+            UserId = ur.UserId,
+            RoleName = ur.RoleName
         };
     }
 
@@ -19,7 +20,8 @@ public static class UserRoleMapper
         return new UserRole
         {
             RoleId = ur.RoleId,
-            UserId = ur.UserId
+            UserId = ur.UserId,
+            RoleName = ur.RoleName
         };
     }
 }

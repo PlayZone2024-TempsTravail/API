@@ -14,7 +14,7 @@ public static class UserMapper
             Nom = user.Nom,
             Prenom = user.Prenom,
             Email = user.Email,
-            Password = user.Password,
+            Password = user.Password
         };
     }
 

@@ -17,21 +17,27 @@ public class UserRoleRepository : IUserRoleRepository
     {
         const string query = @"
             SELECT
-                ""role_id"" AS ""RoleId"",
-                ""user_id"" AS ""UserId""
-            FROM ""User_Role"";
+                u.user_id AS userId,
+                r.id_role AS roleId,
+                r.name AS roleName
+            FROM ""User_Role"" u
+            INNER JOIN ""Role"" r ON u.role_id = r.id_role
         ";
         return this._connection.Query<UserRole>(query);
     }
 
-    public IEnumerable<int> GetByUser(int idUser)
+    public IEnumerable<UserRole> GetByUser(int iduser)
     {
         const string query = @"
-            SELECT role_id
-            FROM ""User_Role""
+            SELECT
+                u.user_id AS userId,
+                r.id_role AS roleId,
+                r.name AS roleName
+            FROM ""User_Role"" u
+            INNER JOIN ""Role"" r ON u.role_id = r.id_role
             WHERE user_id = @userId;
         ";
-        return this._connection.Query<int>(query, new {userId = idUser});
+        return this._connection.Query<UserRole>(query, new {userId = iduser});
     }
 
     public UserRole Create(UserRole userRole)

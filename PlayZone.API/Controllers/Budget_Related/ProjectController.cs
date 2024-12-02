@@ -19,22 +19,12 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public IActionResult GetAll([FromQuery] string f = "all")
+    public IActionResult GetAll()
     {
         try
         {
             IEnumerable<ProjectDTO> projects = this._projectService.GetALL().Select(p => p.ToDTO());
-
-
-            switch (f)
-            {
-                case "active":
-                    return this.Ok(projects.Where(p => p.IsActive));
-                case "inactive":
-                    return this.Ok(projects.Where(p => !p.IsActive));
-                default:
-                    return this.Ok(projects);
-            }
+            return this.Ok(projects);
         }
         catch (Exception)
         {
@@ -46,16 +36,21 @@ public class ProjectController : ControllerBase
     [HttpGet("idproject/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByProjectId(int id)
     {
         try
         {
-            ProjectDTO projects = this._projectService.GetById(id).ToDTO();
+            ProjectDTO? projects = this._projectService.GetById(id)?.ToDTO();
+            if (projects == null)
+            {
+                return this.NotFound("Project Not Found");
+            }
             return this.Ok(projects);
         }
         catch (Exception)
         {
-            return this.NotFound("Project Not Found");
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
     }
@@ -84,7 +79,7 @@ public class ProjectController : ControllerBase
         int resultId = this._projectService.Create(project.ToModel());
         if (resultId > 0)
         {
-            ProjectDTO projects = this._projectService.GetById(resultId).ToDTO();
+            ProjectDTO projects = this._projectService.GetById(resultId)!.ToDTO();
             return this.CreatedAtAction(nameof(this.GetByProjectId), new { id = resultId }, projects);
         }
 
