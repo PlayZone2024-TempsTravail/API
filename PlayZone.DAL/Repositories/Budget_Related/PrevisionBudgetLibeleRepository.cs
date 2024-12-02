@@ -57,7 +57,11 @@ public class PrevisionBudgetLibeleRepository : IPrevisionBudgetLibeleRepository
                     ""montant""
                     )
                 VALUES (
-                    @Name
+                    @IdProject,
+                    @IdLibele,
+                    @Date,
+                    @Motif,
+                    @Montant
                     )
                 RETURNING ""id_prevision_budget_libele"";
         ";
@@ -87,7 +91,8 @@ public class PrevisionBudgetLibeleRepository : IPrevisionBudgetLibeleRepository
         {
             Date = previsionBudgetLibele.Date,
             Motif = previsionBudgetLibele.Motif,
-            Montant = previsionBudgetLibele.Montant
+            Montant = previsionBudgetLibele.Montant,
+            IdPrevisionBudgetLibele =previsionBudgetLibele.IdPrevisionBudgetLibele
         });
         return affectedRows > 0;
     }

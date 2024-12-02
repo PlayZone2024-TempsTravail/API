@@ -95,7 +95,13 @@ public class WorktimeCategoryRepository : IWorktimeCategoryRepository
 
     public bool Delete(int id)
     {
-        const string query = @"DELETE FROM ""WorkTime_Category"" WHERE ""id_workTime_category"" = @IdWorktimeCategory;";
+        const string query = @"
+            UPDATE ""WorkTime_Category""
+            SET
+                ""isActive"" = false
+            WHERE ""id_workTime_category"" = @IdWorktimeCategory;
+
+        ";
         int affectedRows = this._connection.Execute(query, new { IdWorktimeCategory = id });
         return affectedRows > 0;
     }

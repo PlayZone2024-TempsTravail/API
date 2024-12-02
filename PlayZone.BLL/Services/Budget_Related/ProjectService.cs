@@ -38,4 +38,9 @@ public class ProjectService : IProjectService
     {
         return this._projectRepository.Update(project.ToEntity());
     }
+
+    public bool Delete(int Idproject)
+    {
+        return this._projectRepository.Delete(Idproject);
+    }
 }

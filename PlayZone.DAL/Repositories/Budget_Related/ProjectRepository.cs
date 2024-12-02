@@ -123,7 +123,7 @@ public class ProjectRepository : IProjectRepository
     {
         const string query = @"
             UPDATE ""Project"" SET
-                    ""isActive"" = @IsActive
+                    ""isActive"" = false
             WHERE ""id_project"" = @IdProject;
         ";
         int affectedRows = this._connection.Execute(query, new { IdProject = id });

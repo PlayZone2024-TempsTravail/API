@@ -71,9 +71,9 @@ public class RoleController : ControllerBase
                 return this.CreatedAtAction(nameof(this.GetById), new { idRole = resultId }, rl);
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         return this.StatusCode(StatusCodes.Status500InternalServerError);

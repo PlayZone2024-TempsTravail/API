@@ -12,4 +12,6 @@ public interface IProjectService
     public int Create(Project project);
     public bool Update(Project project);
 
+    public bool Delete(int Idproject);
+
 }

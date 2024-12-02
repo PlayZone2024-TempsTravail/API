@@ -124,7 +124,12 @@ namespace PlayZone.DAL.Repositories.User_Related
 
         public bool Delete(int id)
         {
-            const string query = @"DELETE FROM ""User"" WHERE ""id_user"" = @IdUser;";
+            const string query = @"
+                UPDATE ""User""
+                SET
+                    ""isActive"" = false
+                WHERE ""id_user"" = @IdUser;
+            ";
             int affectedRows = this._connection.Execute(query, new { IdUser = id });
             return affectedRows > 0;
         }

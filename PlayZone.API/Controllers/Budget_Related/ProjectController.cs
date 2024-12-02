@@ -99,7 +99,7 @@ public class ProjectController : ControllerBase
     {
         if (id <= 0)
         {
-            return this.BadRequest("Project Not Found");
+            return this.NotFound("Project Not Found");
         }
 
         Project updateProject = project.ToModel();
@@ -112,20 +112,18 @@ public class ProjectController : ControllerBase
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
-    [HttpPut]
+    [HttpDelete]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Delete(int id, [FromBody] ProjectDeleteDTO project)
+    public IActionResult Delete(int id)
     {
         if (id <= 0)
         {
-            return this.BadRequest("Project Not Found");
+            return this.NotFound("Project Not Found");
         }
 
-        Project DeleteProject = project.ToModel();
-        DeleteProject.IdProject = id;
-        if (this._projectService.Update(DeleteProject))
+        if (this._projectService.Delete(id))
         {
             return this.Ok();
         }
