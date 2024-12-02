@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using PlayZone.API.DTOs.User_Related;
+using PlayZone.API.Mappers.User_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Models.User_Related;
 
@@ -36,9 +37,9 @@ public class JwtService
             new Claim("email", user.Email)
         ];
 
-        foreach (int roleId in this._userRoleService.GetByUser(user.IdUser))
+        foreach (UserRoleDTO ur in this._userRoleService.GetByUser(user.IdUser).Select(ur => ur.ToDTO()))
         {
-            foreach (RolePermission rolePermission in this._rolePermissionService.GetByRole(roleId))
+            foreach (RolePermission rolePermission in this._rolePermissionService.GetByRole(ur.RoleId))
             {
                 claims.Add(new Claim("Permissions", rolePermission.PermissionId));
             }

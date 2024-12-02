@@ -9,19 +9,41 @@ namespace PlayZone.BLL.Services.User_Related;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    public UserService(IUserRepository userRepository)
+    private readonly IUserRoleRepository _userRoleRepository;
+    private readonly IUserSalaireRepository _userSalaireRepository;
+
+    public UserService(
+        IUserRepository userRepository,
+        IUserRoleRepository userRoleRepository,
+        IUserSalaireRepository userSalaireRepository
+    )
     {
         this._userRepository = userRepository;
+        this._userRoleRepository = userRoleRepository;
+        this._userSalaireRepository = userSalaireRepository;
     }
 
     public IEnumerable<User> GetAll()
     {
-        return this._userRepository.GetAll().Select(u => u.ToModel());
+        IEnumerable<User> users = this._userRepository.GetAll().Select(u =>
+        {
+            User user = u.ToModel();
+            user.UserRoles = this._userRoleRepository.GetByUser(user.IdUser).Select(us => us.ToModel());
+            user.UserSalaires = this._userSalaireRepository.GetByUser(user.IdUser).Select(us => us.ToModel());
+            return user;
+        });
+        return users;
     }
 
     public User? GetById(int id)
     {
-        return this._userRepository.GetById(id)?.ToModel();
+        User? user = this._userRepository.GetById(id)?.ToModel();
+
+        if (user == null) return null;
+
+        user.UserSalaires = this._userSalaireRepository.GetByUser(id).Select(us => us.ToModel());
+        user.UserRoles = this._userRoleRepository.GetByUser(id).Select(ur => ur.ToModel());
+        return user;
     }
 
     public User? GetByEmail(string email)

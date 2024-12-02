@@ -17,14 +17,14 @@ public class UserSalaireRepository : IUserSalaireRepository
     public IEnumerable<UserSalaire> GetByUser(int idUser)
     {
         const string query = @"
-        SELECT
-        ""id_userSalaire"" AS ""IdUserSalaire"",
-        ""user_id"" AS ""UserId"",
-        ""date"" AS ""Date"",
-        ""regime"" AS ""Regime"",
-        ""montant"" AS ""Montant""
-        FROM ""UserSalaire""
-        WHERE ""user_id"" = @idUser;
+            SELECT
+                ""id_userSalaire"" AS ""IdUserSalaire"",
+                ""user_id"" AS ""UserId"",
+                ""date"" AS ""Date"",
+                ""regime"" AS ""Regime"",
+                ""montant"" AS ""Montant""
+            FROM ""UserSalaire""
+            WHERE ""user_id"" = @idUser;
         ";
         return this._connection.Query<UserSalaire>(query, new { idUser = idUser });
     }
@@ -32,20 +32,20 @@ public class UserSalaireRepository : IUserSalaireRepository
     public int Create(UserSalaire userSalaire)
     {
         const string @query = @"
-                INSERT INTO ""UserSalaire"" (
-                 ""user_id"",
-                 ""date"",
-                 ""regime"",
-                 ""montant""
-                 )
-                VALUES (
-                        @UserId,
-                        @Date,
-                        @Regime,
-                        @Montant
-                        )
-                RETURNING ""id_userSalaire"" AS ""IdUserSalaire"";
-                        ";
+            INSERT INTO ""UserSalaire"" (
+                ""user_id"",
+                ""date"",
+                ""regime"",
+                ""montant""
+            )
+            VALUES (
+                @UserId,
+                @Date,
+                @Regime,
+                @Montant
+            )
+            RETURNING ""id_userSalaire"" AS ""IdUserSalaire"";
+        ";
         int resultId = this._connection.QuerySingle<int>(query, new
         {
             UserId = userSalaire.UserId,
