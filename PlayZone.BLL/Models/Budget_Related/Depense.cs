@@ -11,3 +11,9 @@ public class Depense
     public DateTime DateFacturation { get; set; }
     public string Motif { get; set; }
 }
+
+public class PreparedInOut
+{
+    public required string Date { get; set; }
+    public required decimal Montant { get; set; }
+}

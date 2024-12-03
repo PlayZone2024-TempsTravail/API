@@ -32,6 +32,13 @@ public class ProjectController : ControllerBase
         }
     }
 
+    [HttpGet("data/{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetInputOuputByProject(int id)
+    {
+        return this.Ok(this._projectService.GetMouvementsByProject(id));
+    }
+
 
     [HttpGet("idproject/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]

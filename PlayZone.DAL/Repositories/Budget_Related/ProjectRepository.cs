@@ -17,133 +17,75 @@ public class ProjectRepository : IProjectRepository
     public IEnumerable<Project> GetAll()
     {
         const string query = @"
-            SELECT
-                p.""id_project"" AS ""IdProject"",
-                p.""isActive"" AS ""IsActive"",
-                p.""name"",
-                p.""organisme_id"" AS ""OrganismeId"",
-                o.""name"" AS ""OrganismeName"",
-                p.""color"" AS ""Color"",
-                p.""montant_budget"" AS ""MontantBudget"",
-                p.""date_debut_projet"" AS ""DateDebutProjet"",
-                p.""date_fin_projet"" AS ""DateFinProjet"",
-                p.""charge_de_projet"" AS ""ChargeDeProjetId"",
-                CONCAT_WS(' ', u.prenom, u.nom) AS ""ChargeDeProjetName"",
-                prevision_depense.montant AS ""PrevisionDepenseActuelle"",
-                depense.montant AS ""DepenseReelActuelle""
-            FROM ""Project"" p
-            INNER JOIN ""Organisme"" o ON p.organisme_id = o.id_organisme
-            INNER JOIN ""User"" u ON p.charge_de_projet = u.id_user
-            LEFT JOIN (
-                SELECT project_id, SUM(montant) AS montant
-                FROM (
-                    SELECT project_id, montant, date
-                    FROM ""Prevision_Budget_Category""
-                    UNION ALL
-                    SELECT project_id,montant, date
-                    FROM ""Prevision_Budget_Libele""
-                ) prevision_depense
-                WHERE date <= NOW()
-                GROUP BY project_id
-            ) prevision_depense ON prevision_depense.project_id = p.id_project
-            LEFT JOIN (
-                SELECT project_id, SUM(montant) AS ""montant""
-                FROM ""Depense""
-                WHERE date_facturation <= NOW()
-                GROUP BY project_id
-            ) depense ON depense.project_id = p.id_project
-            ORDER BY ""DateDebutProjet"" DESC;
+            SELECT *
+            FROM ""v_getprojects"";
         ";
         return this._connection.Query<Project>(query);
-    }
-
-    public IEnumerable<Project> GetByOrgaId(int id)
-    {
-        const string query = @"
-            SELECT
-                p.""id_project"" AS ""IdProject"",
-                p.""isActive"" AS ""IsActive"",
-                p.""name"",
-                p.""organisme_id"" AS ""OrganismeId"",
-                o.""name"" AS ""OrganismeName"",
-                p.""color"" AS ""Color"",
-                p.""montant_budget"" AS ""MontantBudget"",
-                p.""date_debut_projet"" AS ""DateDebutProjet"",
-                p.""date_fin_projet"" AS ""DateFinProjet"",
-                p.""charge_de_projet"" AS ""ChargeDeProjetId"",
-                CONCAT_WS(' ', u.prenom, u.nom) AS ""ChargeDeProjetName"",
-                prevision_depense.montant AS ""PrevisionDepenseActuelle"",
-                depense.montant AS ""DepenseReelActuelle""
-            FROM ""Project"" p
-            INNER JOIN ""Organisme"" o ON p.organisme_id = o.id_organisme
-            INNER JOIN ""User"" u ON p.charge_de_projet = u.id_user
-            LEFT JOIN (
-                SELECT project_id, SUM(montant) AS montant
-                FROM (
-                    SELECT project_id, montant, date
-                    FROM ""Prevision_Budget_Category""
-                    UNION ALL
-                    SELECT project_id,montant, date
-                    FROM ""Prevision_Budget_Libele""
-                ) prevision_depense
-                WHERE date <= NOW()
-                GROUP BY project_id
-            ) prevision_depense ON prevision_depense.project_id = p.id_project
-            LEFT JOIN (
-                SELECT project_id, SUM(montant) AS ""montant""
-                FROM ""Depense""
-                WHERE date_facturation <= NOW()
-                GROUP BY project_id
-            ) depense ON depense.project_id = p.id_project
-            WHERE p.""organisme_id"" = @OrganismeId
-            ORDER BY ""DateDebutProjet"" DESC;
-        ";
-        return this._connection.Query<Project>(query, new { OrganismeId = id });
     }
 
     public Project? GetById(int id)
     {
         const string query = @"
-            SELECT
-                p.""id_project"" AS ""IdProject"",
-                p.""isActive"" AS ""IsActive"",
-                p.""name"",
-                p.""organisme_id"" AS ""OrganismeId"",
-                o.""name"" AS ""OrganismeName"",
-                p.""color"" AS ""Color"",
-                p.""montant_budget"" AS ""MontantBudget"",
-                p.""date_debut_projet"" AS ""DateDebutProjet"",
-                p.""date_fin_projet"" AS ""DateFinProjet"",
-                p.""charge_de_projet"" AS ""ChargeDeProjetId"",
-                CONCAT_WS(' ', u.prenom, u.nom) AS ""ChargeDeProjetName"",
-                prevision_depense.montant AS ""PrevisionDepenseActuelle"",
-                depense.montant AS ""DepenseReelActuelle""
-            FROM ""Project"" p
-            INNER JOIN ""Organisme"" o ON p.organisme_id = o.id_organisme
-            INNER JOIN ""User"" u ON p.charge_de_projet = u.id_user
-            LEFT JOIN (
-                SELECT project_id, SUM(montant) AS montant
-                FROM (
-                    SELECT project_id, montant, date
-                    FROM ""Prevision_Budget_Category""
-                    UNION ALL
-                    SELECT project_id,montant, date
-                    FROM ""Prevision_Budget_Libele""
-                ) prevision_depense
-                WHERE date <= NOW()
-                GROUP BY project_id
-            ) prevision_depense ON prevision_depense.project_id = p.id_project
-            LEFT JOIN (
-                SELECT project_id, SUM(montant) AS ""montant""
-                FROM ""Depense""
-                WHERE date_facturation <= NOW()
-                GROUP BY project_id
-            ) depense ON depense.project_id = p.id_project
-            WHERE p.""id_project"" = @IdProject
-            ORDER BY ""DateDebutProjet"" DESC;
+            SELECT *
+            FROM ""v_getprojects""
+            WHERE ""IdProject"" = @IdProject
         ";
         return this._connection.QuerySingleOrDefault<Project>(query, new { IdProject = id });
     }
+
+    public IEnumerable<Project> GetByOrgaId(int id)
+    {
+        const string query = @"
+            SELECT *
+            FROM ""v_getprojects""
+            WHERE ""OrganismeId"" = @OrganismeId;
+        ";
+        return this._connection.Query<Project>(query, new { OrganismeId = id });
+    }
+
+    public IEnumerable<Mouvement> GetMouvementsByProject(int idProject)
+    {
+        const string query = @"
+            WITH inOut AS (
+                SELECT c.name Category,c.id_category,l.name Libele,l.id_libele,o.name Organisme,d.motif,d.date_facturation,d.montant
+                FROM ""Depense"" d
+                INNER JOIN ""Libele"" l ON d.libele_id = l.id_libele
+                INNER JOIN ""Category"" c ON l.category_id = c.id_category
+                LEFT JOIN ""Organisme"" o ON o.id_organisme = d.organisme_id
+                WHERE project_id = @idProject
+                UNION
+                SELECT c.name,c.id_category,l.name,l.id_libele,o.name,r.motif,r.date_facturation,r.montant
+                FROM ""Rentree"" r
+                INNER JOIN ""Libele"" l ON r.libele_id = l.id_libele
+                INNER JOIN ""Category"" c ON l.category_id = c.id_category
+                LEFT JOIN ""Organisme"" o ON o.id_organisme = r.organisme_id
+                WHERE project_id = @idProject
+            ),
+            calendar AS (
+                SELECT TO_CHAR(generate_series('2024-01-01'::date, '2024-12-01'::date, '1 month'), 'MM-YYYY') AS ""date""
+            ),
+            labels AS (
+                SELECT DISTINCT Category, id_category, Libele, id_libele
+                FROM inOut
+            ),
+            all_combinations AS (
+                SELECT c.""date"", l.Category, l.id_category, l.Libele, l.id_libele
+                FROM calendar c
+                CROSS JOIN labels l
+            )
+            SELECT
+                ac.Category,
+                ac.Libele,
+                ac.""date"",
+                COALESCE(SUM(i.montant), 0) AS montant
+            FROM all_combinations ac
+            LEFT JOIN inOut i ON TO_CHAR(i.date_facturation, 'MM-YYYY') = ac.""date"" AND i.id_category = ac.id_category AND i.id_libele = ac.id_libele
+            GROUP BY ac.""date"", ac.Category, ac.Libele
+            ORDER BY ac.""date"", ac.Category, ac.Libele;
+        ";
+        return this._connection.Query<Mouvement>(query, new { idProject = idProject});
+    }
+
     public int Create(Project project)
     {
         const string query = @"
@@ -192,6 +134,7 @@ public class ProjectRepository : IProjectRepository
         });
         return affectedRows > 0;
     }
+
     public bool Delete(int id)
     {
         const string query = @"
