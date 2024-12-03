@@ -1,7 +1,6 @@
 ﻿using PlayZone.BLL.Models.Budget_Related;
 using Entities = PlayZone.DAL.Entities.Budget_Related;
 
-
 namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class DepenseMapper
