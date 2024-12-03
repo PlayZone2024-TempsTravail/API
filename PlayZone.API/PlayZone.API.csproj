@@ -18,7 +18,6 @@
       <Folder Include="Controllers\Configuration_Related\" />
       <Folder Include="Controllers\User_Related\" />
       <Folder Include="Controllers\Budget_Related\" />
-      <Folder Include="Controllers\Worktime_Related\" />
     </ItemGroup>
 
     <ItemGroup>
