@@ -5,5 +5,5 @@ namespace PlayZone.DAL.Interfaces.Budget_Related;
 
 public interface ITransactionRepository
 {
-    IEnumerable<Transaction> GetAllTransactions();
+    public IEnumerable<Transaction> GetTransactionData(IEnumerable<int> libeles, IEnumerable<int> projectIds, DateTime startDate, DateTime endDate);
 }

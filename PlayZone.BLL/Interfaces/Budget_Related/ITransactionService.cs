@@ -1,9 +1,8 @@
-﻿using PlayZone.DAL.Entities.Budget_Related;
+﻿namespace PlayZone.BLL.Interfaces.Budget_Related;
 
-namespace PlayZone.BLL.Interfaces.Budget_Related
+public interface ITransactionService
 {
-    public interface ITransactionService
-    {
-        IEnumerable<Transaction> GetAllTransactions();
-    }
+    public Object GenerateRapport(IEnumerable<int> libeles, IEnumerable<int> projectIds, DateTime startDate,
+        DateTime endDate);
 }
+
