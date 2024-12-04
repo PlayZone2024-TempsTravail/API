@@ -58,6 +58,30 @@ public class ProjectService : IProjectService
         return preparedCategories;
     }
 
+    public PreparedGraphic GetGraphiqueRentreeByProjet(int idProjet)
+    {
+        return this.PreparedGraphic(this._projectRepository.GetGraphiqueRentreeByProjet(idProjet));
+    }
+
+    public PreparedGraphic GetGraphiqueDepenseByProjet(int idProjet)
+    {
+        return this.PreparedGraphic(this._projectRepository.GetGraphiqueDepenseByProjet(idProjet));
+    }
+
+    private PreparedGraphic PreparedGraphic(IEnumerable<PrevisionGraphique> graphiqueByProjet)
+    {
+        PreparedGraphic pc = new PreparedGraphic();
+
+        foreach (PrevisionGraphique pg in graphiqueByProjet)
+        {
+            pc.Date.Add(pg.Date);
+            pc.Prevision.Add(pg.Prevision);
+            pc.Reel.Add(pg.Reel);
+        }
+
+        return pc;
+    }
+
     public int Create(Project project)
     {
         return this._projectRepository.Create(project.ToEntity());

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
 using PlayZone.API.Mappers.Budget_Related;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Models.Budget_Related;
+using PlayZone.DAL.Entities.User_Related;
 
 
 namespace PlayZone.API.Controllers.Budget_Related;
@@ -76,6 +78,38 @@ public class ProjectController : ControllerBase
         {
             return this.NotFound("Project Not Found");
         }
+    }
+
+    [HttpGet("graphique/rentree/{idProject:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PreparedGraphicDTO))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult GetGraphiqueRentreeByProjet(int idProject)
+    {
+        try
+        {
+            PreparedGraphicDTO pg = this._projectService.GetGraphiqueRentreeByProjet(idProject).ToDTO();
+            return this.Ok(pg);
+        }
+        catch (Exception)
+        { /* Ignored */ }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
+    [HttpGet("graphique/depense/{idProject:int}")]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PreparedGraphicDTO))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult GetGraphiqueDepenseByProjet(int idProject)
+    {
+        try
+        {
+            PreparedGraphicDTO pg = this._projectService.GetGraphiqueDepenseByProjet(idProject).ToDTO();
+            return this.Ok(pg);
+        }
+        catch (Exception)
+        { /* Ignored */ }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpPost("{id:int}")]

@@ -8,7 +8,6 @@ namespace PlayZone.DAL.Repositories.Budget_Related;
 public class ProjectRepository : IProjectRepository
 {
     private readonly NpgsqlConnection _connection;
-
     public ProjectRepository(NpgsqlConnection connection)
     {
         this._connection = connection;
@@ -84,6 +83,30 @@ public class ProjectRepository : IProjectRepository
             ORDER BY ac.""date"", ac.Category, ac.Libele;
         ";
         return this._connection.Query<Mouvement>(query, new { idProject = idProject});
+    }
+
+    public IEnumerable<PrevisionGraphique> GetGraphiqueRentreeByProjet(int idProjet)
+    {
+        const string query = @"
+            SELECT
+                ""month_year"" ""date"",
+                ""cumulative_montant_prevision"" ""prevision"",
+                ""cumulative_montant_reel"" ""reel""
+            FROM get_cumulative_rentree(@idProject);
+        ";
+        return this._connection.Query<PrevisionGraphique>(query, new { idProject = idProjet });
+    }
+
+    public IEnumerable<PrevisionGraphique> GetGraphiqueDepenseByProjet(int idProjet)
+    {
+        const string query = @"
+            SELECT
+                ""month_year"" ""date"",
+                ""cumulative_montant_prevision"" ""prevision"",
+                ""cumulative_montant_reel"" ""reel""
+            FROM get_cumulative_depense(@idProject);
+        ";
+        return this._connection.Query<PrevisionGraphique>(query, new { idProject = idProjet });
     }
 
     public int Create(Project project)
