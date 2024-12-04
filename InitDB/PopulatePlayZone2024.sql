@@ -24,10 +24,10 @@ INSERT INTO "Role_Permission" (role_id, permission_id) VALUES
 
 INSERT INTO "User" ("id_user", nom, prenom, email, password) VALUES
 (1, 'Hanse', 'Steven', 'steven@tech.be', 'password1'),
-(2, 'Louis', 'Patigny', 'louis.grand@tech.be', 'password2'),
-(3, 'Seb', 'Dendal', 'seb@tech.be', 'password3'),
-(4, 'Louis', 'Delleur', 'louis.petit@tech.be', 'password4'),
-(5, 'Jerome', 'Tcherepachin', 'jerome@tech.be', 'password5');
+(2, 'Patigny', 'Louis', 'louis.grand@tech.be', 'password2'),
+(3, 'Dendal', 'Seb', 'seb@tech.be', 'password3'),
+(4, 'Delleur', 'Louis', 'louis.petit@tech.be', 'password4'),
+(5, 'Tcherepachin', 'Jerome', 'jerome@tech.be', 'password5');
 ALTER TABLE "User" ALTER COLUMN "id_user" RESTART WITH 6;
 
 INSERT INTO "User_Role" VALUES
@@ -146,11 +146,11 @@ INSERT INTO "Prevision_Budget_Libele" VALUES
 ALTER TABLE "Prevision_Budget_Libele" ALTER COLUMN "id_prevision_budget_libele" RESTART WITH 10;
 
 INSERT INTO "Depense" VALUES
-(1, 23, 1, null, 1000, '2024-11-25', null, 'L''alcool, c''est de l''eau'),
-(2, 24, 1, null, 200, '2024-12-02', null, 'La souris a couté plus cher finalement, LOGITECH ❤'),
-(3, 25, 1, null, 300, '2024-12-03', null, 'Je suis sur que c''est pas pour mamy'),
-(4, 26, 1, null, 400, '2024-12-04', null, 'Les pigeons voyageurs, c''est plus ce que c''était'),
-(5, 27, 1, null, 500, '2024-12-05', null, 'Les vols de bic, c''est un fléau');
+(1, 23, 1, null, 1000, null, '2024-11-25', 'L''alcool, c''est de l''eau'),
+(2, 24, 1, null, 200, null, '2024-12-02', 'La souris a couté plus cher finalement, LOGITECH ❤'),
+(3, 25, 1, null, 300, null, '2024-12-03', 'Je suis sur que c''est pas pour mamy'),
+(4, 26, 1, null, 400, null, '2024-12-04', 'Les pigeons voyageurs, c''est plus ce que c''était'),
+(5, 27, 1, null, 500, null, '2024-12-05', 'Les vols de bic, c''est un fléau');
 ALTER TABLE "Depense" ALTER COLUMN "id_depense" RESTART WITH 6;
 
 INSERT INTO "Rentree" VALUES
