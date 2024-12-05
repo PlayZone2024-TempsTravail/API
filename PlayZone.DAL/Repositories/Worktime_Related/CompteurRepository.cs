@@ -50,13 +50,14 @@ public class CompteurRepository : ICompteurRepository
             SELECT
                 w.project_id AS projectId,
                 p.name AS projectName,
-                CEIL(EXTRACT(EPOCH FROM AGE(""end"", ""start"")) / 3600) AS Heures
+                SUM(CEIL(EXTRACT(EPOCH FROM AGE(""end"", ""start"")) / 3600)) AS Heures
             FROM ""WorkTime"" w
             INNER JOIN ""Project"" p ON w.project_id = p.id_project
             WHERE ""project_id"" IS NOT NULL
             AND user_id = @userId
             AND EXTRACT(YEAR FROM ""start"") = EXTRACT(YEAR FROM NOW())
-            ORDER BY Heures DESC;
+            GROUP BY projectId, projectName
+            ORDER BY Heures DESC
         ";
         return this._connection.Query<CompteurProjet>(query, new { userId = userId});
     }
