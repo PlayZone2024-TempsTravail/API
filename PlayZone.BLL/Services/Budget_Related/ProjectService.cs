@@ -4,6 +4,7 @@ using PlayZone.BLL.Models.Budget_Related;
 using PlayZone.DAL.Entities.Budget_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
 using Project = PlayZone.BLL.Models.Budget_Related.Project;
+using ProjectShort = PlayZone.BLL.Models.Budget_Related.ProjectShort;
 
 namespace PlayZone.BLL.Services.Budget_Related;
 
@@ -19,6 +20,16 @@ public class ProjectService : IProjectService
     public IEnumerable<Project> GetALL()
     {
         return this._projectRepository.GetAll().Select(p => p.ToModel());
+    }
+
+    public IEnumerable<ProjectShort> GetAllShort()
+    {
+        return this._projectRepository.GetAllShort().Select(p => p.ToModel());
+    }
+
+    public IEnumerable<ProjectShort> GetAllShortOrderByWorktimeOfUser(int userId)
+    {
+        return this._projectRepository.GetAllShortOrderByWorktimeOfUser(userId).Select(p => p.ToModel());
     }
 
     public IEnumerable<Project> GetByOrgaId(int id)

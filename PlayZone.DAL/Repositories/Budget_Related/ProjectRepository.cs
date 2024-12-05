@@ -22,6 +22,34 @@ public class ProjectRepository : IProjectRepository
         return this._connection.Query<Project>(query);
     }
 
+    public IEnumerable<ProjectShort> GetAllShort()
+    {
+        const string query = @"
+            SELECT
+                ""id_project"" AS IdProject,
+                ""isActive"" AS IsActive,
+                ""name""
+            FROM ""Project"";
+        ";
+        return this._connection.Query<ProjectShort>(query);
+    }
+
+    public IEnumerable<ProjectShort> GetAllShortOrderByWorktimeOfUser(int idUser)
+    {
+        const string query = @"
+            SELECT
+                p.id_project AS IdProject,
+                p.name AS Name,
+                ""isActive"" AS IsActive,
+                SUM(CEIL(EXTRACT(EPOCH FROM AGE(w.""end"", w.""start"")) / 3600)) AS Heures
+            FROM ""Project"" p
+            LEFT JOIN ""WorkTime"" w ON p.id_project = w.project_id
+            GROUP BY p.name, id_project
+            ORDER BY Heures DESC NULLS LAST;
+                    ";
+        return this._connection.Query<ProjectShort>(query);
+    }
+
     public Project? GetById(int id)
     {
         const string query = @"

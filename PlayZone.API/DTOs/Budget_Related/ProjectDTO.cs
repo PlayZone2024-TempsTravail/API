@@ -40,7 +40,9 @@ public class ProjectUpdateDTO
     public bool IsActive { get; set; }
 }
 
-public class ProjectDeleteDTO
+public class ProjectShortDTO
 {
+    public int IdProject { get; set; }
     public bool IsActive { get; set; }
+    public required string Name { get; set; }
 }
