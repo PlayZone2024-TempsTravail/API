@@ -45,4 +45,14 @@ public static class ProjectMapper
         };
     }
 
+    public static ProjectShort ToModel(this Entities.ProjectShort entity)
+    {
+        return new ProjectShort
+        {
+            IdProject = entity.IdProject,
+            IsActive = entity.IsActive,
+            Name = entity.Name
+        };
+    }
+
 }

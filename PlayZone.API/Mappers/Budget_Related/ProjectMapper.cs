@@ -71,11 +71,14 @@ public static class ProjectMapper
             IsActive = project.IsActive
         };
     }
-    public static Model.Project ToModel(this ProjectDeleteDTO project)
+
+    public static ProjectShortDTO ToDTO(this Model.ProjectShort model)
     {
-        return new Model.Project
+        return new ProjectShortDTO
         {
-            IsActive = project.IsActive
+            IdProject = model.IdProject,
+            IsActive = model.IsActive,
+            Name = model.Name
         };
     }
 

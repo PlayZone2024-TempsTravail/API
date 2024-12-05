@@ -16,3 +16,10 @@ public class Project
     public decimal PrevisionDepenseActuelle { get; set; }
     public decimal DepenseReelActuelle { get; set; }
 }
+
+public class ProjectShort()
+{
+    public int IdProject { get; set; }
+    public bool IsActive { get; set; }
+    public required string Name { get; set; }
+}

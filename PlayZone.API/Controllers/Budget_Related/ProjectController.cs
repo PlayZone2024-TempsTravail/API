@@ -20,7 +20,7 @@ public class ProjectController : ControllerBase
         this._projectService = projectService;
     }
 
-    [HttpGet("GetAll")]
+    [HttpGet]
     public IActionResult GetAll()
     {
         try
@@ -33,6 +33,31 @@ public class ProjectController : ControllerBase
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
+
+    [HttpGet("short")]
+    public IActionResult GetAllShort()
+    {
+        try
+        {
+            IEnumerable<ProjectShortDTO> projects = this._projectService.GetAllShort().Select(p => p.ToDTO());
+            return this.Ok(projects);
+        }
+        catch (Exception) { /* Ignored */ }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
+    [HttpGet("short/{idUser:int}")]
+    public IActionResult GetAllShort(int idUser)
+    {
+        try
+        {
+            IEnumerable<ProjectShortDTO> projects = this._projectService.GetAllShortOrderByWorktimeOfUser(idUser).Select(p => p.ToDTO());
+            return this.Ok(projects);
+        }
+        catch (Exception) { /* Ignored */ }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
 
     [HttpGet("data/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

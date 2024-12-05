@@ -5,6 +5,8 @@ namespace PlayZone.DAL.Interfaces.Budget_Related;
 public interface IProjectRepository
 {
     public IEnumerable<Project> GetAll();
+    public IEnumerable<ProjectShort> GetAllShort();
+    public IEnumerable<ProjectShort> GetAllShortOrderByWorktimeOfUser(int idUser);
     public IEnumerable<Project> GetByOrgaId(int id);
     public Project? GetById(int id);
     public IEnumerable<Mouvement> GetMouvementsByProject(int idProject);

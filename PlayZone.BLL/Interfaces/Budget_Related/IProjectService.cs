@@ -6,6 +6,8 @@ namespace PlayZone.BLL.Interfaces.Budget_Related;
 public interface IProjectService
 {
     public IEnumerable<Project> GetALL();
+    public IEnumerable<ProjectShort> GetAllShort();
+    public IEnumerable<ProjectShort> GetAllShortOrderByWorktimeOfUser(int userId);
     public IEnumerable<Project> GetByOrgaId(int id);
     public Project? GetById(int id);
     public IEnumerable<PreparedCategory> GetMouvementsByProject(int idProjet);
