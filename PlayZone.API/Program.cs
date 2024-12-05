@@ -1,4 +1,6 @@
 using System.Text;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
@@ -58,6 +60,7 @@ builder.Services.AddScoped<IDepenseService, DepenseService>();
 builder.Services.AddScoped<IOrganismeService, OrganismeService>();
 builder.Services.AddScoped<ILibeleService, LibeleService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddSingleton<IConverter, SynchronizedConverter>(_ => new SynchronizedConverter(new PdfTools()));
 
 //Injection des services BLL - Configuration_Related
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
@@ -96,8 +99,10 @@ builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 /*-----------------------------------------*/
 
-
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
@@ -192,6 +197,8 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseRouting();
 
 app.UseAuthorization();
 

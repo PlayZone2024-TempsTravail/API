@@ -7,9 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DinkToPdf" Version="1.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
         <PackageReference Include="Npgsql" Version="9.0.0" />
+        <PackageReference Include="Razor.Templating.Core" Version="2.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
 
@@ -23,6 +25,23 @@
     <ItemGroup>
       <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
       <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\TemplateRapport\PdfTemplate.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+    <None Remove="Lib\libwkhtmltox.dll" />
+    <EmbeddedResource Include="Lib\libwkhtmltox.dll" Link="libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="Views\PdfTemplate.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

@@ -1,9 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.BLL.Interfaces.Budget_Related;
-using PlayZone.DAL.Entities.Budget_Related;
-using System.Collections.Generic;
-using PlayZone.API.DTOs.Budget_Related;
-using PlayZone.API.Mappers.Budget_Related;
 
 namespace PlayZone.API.Controllers.Budget_Related
 {
@@ -12,18 +8,20 @@ namespace PlayZone.API.Controllers.Budget_Related
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
+        private readonly ILogger<TransactionController> _logger;
 
-        public TransactionController(ITransactionService transactionService)
+        public TransactionController(ITransactionService transactionService, ILogger<TransactionController> logger)
         {
             this._transactionService = transactionService;
+            this._logger = logger;
         }
 
         [HttpPost]
-        public IActionResult GenerateRapport(IEnumerable<int> libele, IEnumerable<int> projectIds, DateTime startDate, DateTime endDate)
+        public IActionResult GenerateRapport([FromQuery] IEnumerable<int> libele,[FromQuery] IEnumerable<int> projectIds, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             try
             {
-                Object file = this._transactionService.GenerateRapport(libele, projectIds, startDate, endDate);
+                var file = this._transactionService.GenerateRapport(libele, projectIds, startDate, endDate);
                 return this.Ok(file);
             }
             catch (Exception e)
