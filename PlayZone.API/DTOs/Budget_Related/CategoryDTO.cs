@@ -24,7 +24,7 @@ public class CategoryUpdateFormDTO
 
 public class TreeCategoryDTO
 {
-    public required string CategoryId { get; set; }
-    public required string CategoryName { get; set; }
-    public IEnumerable<TreeLibeleDTO> Libeles { get; set; } = new List<TreeLibeleDTO>();
+    public required string key { get; set; }
+    public required string label { get; set; }
+    public IEnumerable<TreeLibeleDTO> children { get; set; } = new List<TreeLibeleDTO>();
 }

@@ -22,6 +22,6 @@ public class LibeleUpdateFormDTO
 
 public class TreeLibeleDTO
 {
-    public required string LibeleId  { get; set; }
-    public required string LibeleName  { get; set; }
+    public required string key  { get; set; }
+    public required string label  { get; set; }
 }

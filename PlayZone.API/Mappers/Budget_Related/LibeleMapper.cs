@@ -48,8 +48,8 @@ public static class LibeleMapper
     {
         return new TreeLibeleDTO
         {
-            LibeleId = libele.LibeleId,
-            LibeleName = libele.LibeleName
+            key = libele.LibeleId,
+            label = libele.LibeleName
         };
     }
 }

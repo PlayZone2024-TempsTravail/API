@@ -51,9 +51,9 @@ public static class CategoryMapper
     {
         return new TreeCategoryDTO()
         {
-            CategoryId = category.CategoryId,
-            CategoryName = category.CategoryName,
-            Libeles = category.Libeles.Select(l => l.ToDTO())
+            key = category.CategoryId,
+            label = category.CategoryName,
+            children = category.Libeles.Select(l => l.ToDTO())
         };
     }
 }
