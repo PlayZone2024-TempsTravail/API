@@ -6,3 +6,11 @@ public class Libele
     public int IdCategory  { get; set; }
     public string Name  { get; set; }
 }
+
+public class TreeLibele
+{
+    public required string CategoryId  { get; set; }
+    public required string CategoryName  { get; set; }
+    public required string LibeleId  { get; set; }
+    public required string LibeleName  { get; set; }
+}

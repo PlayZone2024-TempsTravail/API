@@ -21,3 +21,10 @@ public class CategoryUpdateFormDTO
     public bool IsIncome { get; set; }
     public bool EstimationParCategorie { get; set; }
 }
+
+public class TreeCategoryDTO
+{
+    public required string CategoryId { get; set; }
+    public required string CategoryName { get; set; }
+    public IEnumerable<TreeLibeleDTO> Libeles { get; set; } = new List<TreeLibeleDTO>();
+}

@@ -17,9 +17,9 @@ public class OrganismeController : ControllerBase
         this._organismeService = organismeService;
     }
 
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet]
     public IActionResult GetAll()
     {
         try
@@ -34,9 +34,9 @@ public class OrganismeController : ControllerBase
         }
     }
 
+    [HttpGet("fournisseursFirst")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet("fournisseursFirst")]
     public IActionResult GetAllFournisseursFirst()
     {
         try
@@ -50,9 +50,9 @@ public class OrganismeController : ControllerBase
         }
     }
 
+    [HttpGet("clientsFirst")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet("clientsFirst")]
     public IActionResult GetAllClientsFirst()
     {
         try

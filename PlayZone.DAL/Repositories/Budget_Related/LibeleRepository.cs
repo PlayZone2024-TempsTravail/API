@@ -26,6 +26,20 @@ public class LibeleRepository : ILibeleRepository
         return this._connection.Query<Libele>(query);
     }
 
+    public IEnumerable<TreeLibele> GetAllWithCategories()
+    {
+        const string query = @"
+                SELECT
+                    CONCAT('c-', c.id_category) categoryId,
+                    c.name categoryName,
+                    CONCAT('l-', l.id_libele) libeleId,
+                    l.name libeleName
+                FROM ""Libele"" l
+                INNER JOIN public.""Category"" C on C.id_category = l.category_id;
+        ";
+        return this._connection.Query<TreeLibele>(query);
+    }
+
     public Libele? GetById(int id)
     {
         const string query = @"

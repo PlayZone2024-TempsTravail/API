@@ -8,6 +8,13 @@ public class Category
     public bool EstimationParCategorie { get; set; }
 }
 
+public class TreeCategory
+{
+    public required string CategoryId { get; set; }
+    public required string CategoryName { get; set; }
+    public List<TreeLibele> Libeles { get; set; }
+}
+
 public class PreparedCategory
 {
     public required string Name { get; init; }

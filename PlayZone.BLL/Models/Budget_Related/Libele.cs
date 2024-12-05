@@ -7,6 +7,12 @@ public class Libele
     public string Name  { get; set; }
 }
 
+public class TreeLibele
+{
+    public required string LibeleId  { get; set; }
+    public required string LibeleName  { get; set; }
+}
+
 public class PreparedLibele
 {
     public required string Name { get; set; }

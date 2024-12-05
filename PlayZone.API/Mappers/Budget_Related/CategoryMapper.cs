@@ -46,4 +46,14 @@ public static class CategoryMapper
             EstimationParCategorie = category.EstimationParCategorie
         };
     }
+
+    public static TreeCategoryDTO ToDTO(this Models.TreeCategory category)
+    {
+        return new TreeCategoryDTO()
+        {
+            CategoryId = category.CategoryId,
+            CategoryName = category.CategoryName,
+            Libeles = category.Libeles.Select(l => l.ToDTO())
+        };
+    }
 }

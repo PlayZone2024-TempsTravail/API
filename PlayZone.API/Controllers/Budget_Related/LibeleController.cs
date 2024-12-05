@@ -17,9 +17,9 @@ namespace PlayZone.API.Controllers.Budget_Related
             this._libeleService = libeleService;
         }
 
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpGet]
         public IActionResult GetAll()
         {
             try
@@ -33,7 +33,23 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("tree")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LibeleDTO>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllWithCategories()
+        {
+            try
+            {
+                IEnumerable<TreeCategoryDTO> treeCategories = this._libeleService.GetAllWithCategories().Select(c => c.ToDTO());
+                return this.Ok(treeCategories);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)

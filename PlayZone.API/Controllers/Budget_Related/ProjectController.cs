@@ -137,7 +137,7 @@ public class ProjectController : ControllerBase
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
-    [HttpPost("{id:int}")]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] ProjectCreateDTO project)

@@ -13,9 +13,30 @@ public class LibeleService : ILibeleService
         this._libeleRepository = libeleRepository;
     }
 
-    public IEnumerable<Libele> GetAll()
+    public IEnumerable<PlayZone.BLL.Models.Budget_Related.Libele> GetAll()
     {
         return this._libeleRepository.GetAll().Select(u => u.ToModels());
+    }
+
+    public IEnumerable<TreeCategory> GetAllWithCategories()
+    {
+        List<TreeCategory> treeCategories = new List<TreeCategory>();
+
+        foreach (var tuple in this._libeleRepository.GetAllWithCategories())
+        {
+            TreeCategory? treeCategory = treeCategories.FirstOrDefault(tc => tc.CategoryId == tuple.CategoryId);
+
+            if (treeCategory == default)
+            {
+                treeCategory = new TreeCategory { CategoryId = tuple.CategoryId, CategoryName = tuple.CategoryName };
+                treeCategory.Libeles = new List<TreeLibele>();
+                treeCategories.Add(treeCategory);
+            }
+
+            treeCategory.Libeles.Add(new TreeLibele { LibeleId = tuple.LibeleId, LibeleName = tuple.LibeleName });
+        }
+
+        return treeCategories;
     }
 
     public Libele? GetById(int id)
