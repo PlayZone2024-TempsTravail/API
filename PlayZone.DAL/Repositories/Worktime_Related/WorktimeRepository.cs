@@ -99,17 +99,17 @@ public class WorktimeRepository : IWorktimeRepository
             ""isOnSite"" = @IsOnSite
         WHERE
             ""id_WorkTime"" = @IdWorktime;
-    ";
-    return this._connection.Execute(query, new
-    {
-        Start = worktime.Start,
-        End = worktime.End,
-        CategoryId = worktime.CategoryId,
-        ProjectId = (worktime.ProjectId == 0) ? null : worktime.ProjectId,
-        UserId = worktime.UserId,
-        IsOnSite = worktime.IsOnSite,
-        IdWorktime = worktime.IdWorktime
-    }) > 0;
+        ";
+        return this._connection.Execute(query, new
+        {
+            Start = worktime.Start,
+            End = worktime.End,
+            CategoryId = worktime.CategoryId,
+            ProjectId = (worktime.ProjectId == 0) ? null : worktime.ProjectId,
+            UserId = worktime.UserId,
+            IsOnSite = worktime.IsOnSite,
+            IdWorktime = worktime.IdWorktime
+        }) > 0;
     }
     public int Create(Worktime worktime)
     {

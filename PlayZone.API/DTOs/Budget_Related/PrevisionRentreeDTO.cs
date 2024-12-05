@@ -4,7 +4,7 @@ public class PrevisionRentreeDTO
 {
     public int IdPrevisionRentree { get; set; }
     public int ProjectId { get; set; }
-    public int OrganismeId { get; set; }
+    public int? OrganismeId { get; set; }
     public int LibeleId { get; set; }
     public DateTime Date { get; set; }
     public string Motif { get; set; }
@@ -14,7 +14,7 @@ public class PrevisionRentreeDTO
 public class PrevisionRentreeCreateDTO
 {
     public int ProjectId { get; set; }
-    public int OrganismeId { get; set; }
+    public int? OrganismeId { get; set; }
     public int LibeleId { get; set; }
     public DateTime Date { get; set; }
     public string Motif { get; set; }
@@ -24,7 +24,7 @@ public class PrevisionRentreeCreateDTO
 public class PrevisionRentreeUpdateDTO
 {
     public int ProjectId { get; set; }
-    public int OrganismeId { get; set; }
+    public int? OrganismeId { get; set; }
     public int LibeleId { get; set; }
     public DateTime Date { get; set; }
     public string Motif { get; set; }

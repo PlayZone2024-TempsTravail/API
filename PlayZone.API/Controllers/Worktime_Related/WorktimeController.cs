@@ -108,6 +108,7 @@ public class WorktimeController : ControllerBase
     [HttpPost]
     [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeDTO))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] WorktimeUpdateFormDTO worktime)
     {
@@ -122,7 +123,7 @@ public class WorktimeController : ControllerBase
         }
         catch (WorktimeAlreadyExistException e)
         {
-            return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            return this.BadRequest(e.Message);
         }
         catch (Exception) { /* ignored */ }
 

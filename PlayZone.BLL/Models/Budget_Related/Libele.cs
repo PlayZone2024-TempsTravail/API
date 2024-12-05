@@ -6,3 +6,9 @@ public class Libele
     public int IdCategory  { get; set; }
     public string Name  { get; set; }
 }
+
+public class PreparedLibele
+{
+    public required string Name { get; set; }
+    public List<PreparedInOut> InOuts { get; set; } = new List<PreparedInOut>();
+}
