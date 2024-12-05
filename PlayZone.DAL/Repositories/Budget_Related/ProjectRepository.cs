@@ -40,6 +40,7 @@ public class ProjectRepository : IProjectRepository
             SELECT
                 p.id_project AS IdProject,
                 p.name AS Name,
+                ""isActive"" AS IsActive,
                 SUM(CEIL(EXTRACT(EPOCH FROM AGE(w.""end"", w.""start"")) / 3600)) AS Heures
             FROM ""Project"" p
             LEFT JOIN ""WorkTime"" w ON p.id_project = w.project_id
