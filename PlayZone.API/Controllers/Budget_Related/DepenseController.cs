@@ -82,7 +82,7 @@ namespace PlayZone.API.Controllers.Budget_Related
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Error while updating Depense");
             }
 
-            [HttpDelete]
+            [HttpDelete("{id:int}")]
             [ProducesResponseType(StatusCodes.Status200OK)]
             [ProducesResponseType(StatusCodes.Status500InternalServerError)]
             public IActionResult Delete(int id)

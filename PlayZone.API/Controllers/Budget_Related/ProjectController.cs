@@ -173,7 +173,7 @@ public class ProjectController : ControllerBase
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

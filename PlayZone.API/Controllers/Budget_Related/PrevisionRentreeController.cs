@@ -94,7 +94,7 @@ public class PrevisionRentreeController : ControllerBase
     }
 
 
-    [HttpDelete]
+    [HttpDelete("{idPrevisionRentree:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int idPrevisionRentree)
