@@ -283,7 +283,6 @@ CREATE TABLE "Prevision_Rentree" (
 
     CONSTRAINT NN__Prevision_Rentree__libele_id CHECK ("libele_id" IS NOT NULL),
     CONSTRAINT NN__Prevision_Rentree__project_id CHECK ("project_id" IS NOT NULL),
-    CONSTRAINT NN__Prevision_Rentree__organisme_id CHECK ("organisme_id" IS NOT NULL),
     CONSTRAINT NN__Prevision_Rentree__date CHECK ("date" IS NOT NULL),
     CONSTRAINT NN__Prevision_Rentree__montant CHECK ("montant" IS NOT NULL),
 
