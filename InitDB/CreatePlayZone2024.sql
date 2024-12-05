@@ -329,8 +329,6 @@ LEFT JOIN (
 ) depense ON depense.project_id = p.id_project
 ORDER BY "DateDebutProjet" DESC;
 
-
-
 CREATE FUNCTION get_cumulative_rentree(id INT)
 RETURNS TABLE (
     "month_year" TEXT,
@@ -340,65 +338,72 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
         WITH inOut_prevision AS (
-            SELECT c.id_category idCategory, c.name nameCategory, TO_CHAR(d.date, 'MM-YYYY') "date", SUM(d.montant) montant
-            FROM "Prevision_Rentree" d
-            INNER JOIN "Libele" l ON d.libele_id = l.id_libele
-            INNER JOIN "Category" c ON l.category_id = c.id_category
+            SELECT TO_CHAR(d.date, 'MM-YYYY') "date", SUM(d.montant) montant
+            FROM "Prevision_Budget_Libele" d
+                     INNER JOIN "Libele" l ON d.libele_id = l.id_libele
+                     INNER JOIN "Category" c ON l.category_id = c.id_category
             WHERE project_id = id
-            AND c."isIncome" = true
-            AND d.date <= NOW()
-            GROUP BY c.name, c.id_category, "date"
+              AND c."isIncome" = true
+              AND d.date <= NOW()
+            GROUP BY "date"
 
             UNION
 
-            SELECT c.id_category, c.name, TO_CHAR(d.date, 'MM-YYYY'), SUM(d.montant)
+            SELECT TO_CHAR(d.date, 'MM-YYYY'), SUM(d.montant)
             FROM "Prevision_Budget_Category" d
-            INNER JOIN "Category" c ON d.category_id = c.id_category
+                     INNER JOIN "Category" c ON d.category_id = c.id_category
             WHERE project_id = id
-            AND c."isIncome" = true
-            AND d.date <= NOW()
-            GROUP BY c.name, c.id_category, "date"
+              AND c."isIncome" = true
+              AND d.date <= NOW()
+            GROUP BY "date"
         ),
-        inOut_Reel AS (
-            SELECT c.id_category idCategory, c.name nameCategory, TO_CHAR(d.date_facturation, 'MM-YYYY') "date", SUM(d.montant) montant
-            FROM "Rentree" d
-            INNER JOIN "Libele" l ON d.libele_id = l.id_libele
-            INNER JOIN "Category" c ON l.category_id = c.id_category
-            WHERE project_id = id
-            AND d.date_facturation <= NOW()
-            GROUP BY c.name, c.id_category, "date"
-        ),
-        all_combinations AS (
-            SELECT categories.idCategory, categories.nameCategory, calendar."date"
-            FROM (
-                SELECT DISTINCT TO_CHAR(GENERATE_SERIES(date_debut_projet, date_fin_projet, '1 month'), 'MM-YYYY') AS "date"
-                FROM "Project"
-                WHERE id_project = id
-            ) calendar
-            CROSS JOIN (
-                SELECT DISTINCT idCategory, nameCategory
-                FROM inOut_prevision
-            ) categories
-        ),
-        monthly_totals AS (
-            SELECT
-            ac."date",
-            COALESCE(SUM(p.montant), 0) AS montant_previ,
-            COALESCE(SUM(r.montant), 0) AS montant_reel
-            FROM all_combinations ac
-            LEFT JOIN inOut_prevision p ON p.date = ac."date" AND p.idCategory = ac.idCategory
-            LEFT JOIN inOut_Reel r ON r.date = ac."date" AND r.idCategory = ac.idCategory
-            GROUP BY ac."date"
-        )
-        SELECT
-            mt."date",
-            SUM(mt.montant_previ) OVER (ORDER BY mt."date") AS cumulative_montant_prevision,
-            SUM(mt.montant_reel) OVER (ORDER BY mt."date") AS cumulative_montant_reel
-        FROM monthly_totals mt
-        ORDER BY mt."date";
+         inOut_Reel AS (
+             SELECT TO_CHAR(r.date_facturation, 'MM-YYYY') "date", SUM(r.montant) montant
+             FROM "Rentree" r
+                      INNER JOIN "Libele" l ON r.libele_id = l.id_libele
+                      INNER JOIN "Category" c ON l.category_id = c.id_category
+             WHERE project_id = id
+               AND r.date_facturation <= NOW()
+             GROUP BY "date"
+         ),
+         generate_date AS (
+             SELECT DISTINCT TO_CHAR(generate_series(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
+             FROM "Project"
+             WHERE id_project = id
+         ),
+         group_combinations AS (
+             SELECT
+                 gd."date",
+                 COALESCE(p.montant, 0) AS montant_previ,
+                 null AS montant_reel
+             FROM generate_date gd
+                      LEFT JOIN  inOut_prevision p ON p.date = gd.date
+             UNION
+             SELECT
+                 gd."date",
+                 null,
+                 COALESCE(r.montant, 0)
+             FROM generate_date gd
+                      LEFT JOIN  inOut_Reel r ON r.date = gd.date
+         ),
+         avengers_assemble AS (
+             SELECT
+                 date,
+                 SUM(montant_previ) as montant_previ,
+                 SUM(montant_reel) as montant_reel
+             FROM group_combinations
+             GROUP BY date
+         )
+    SELECT
+        "date",
+        SUM(montant_previ) OVER(ORDER BY "date") AS cumulative_montant_prevision,
+        SUM(montant_reel) OVER(ORDER BY "date") AS cumulative_montant_reel
+    FROM avengers_assemble
+    ORDER BY "date";
 END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION get_cumulative_depense(id INT);
 CREATE OR REPLACE FUNCTION get_cumulative_depense(id INT)
 RETURNS TABLE (
     "month_year" TEXT,
@@ -408,61 +413,67 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
         WITH inOut_prevision AS (
-            SELECT c.id_category idCategory, c.name nameCategory, TO_CHAR(d.date, 'MM-YYYY') "date", SUM(d.montant) montant
+            SELECT TO_CHAR(d.date, 'MM-YYYY') "date", SUM(d.montant) montant
             FROM "Prevision_Budget_Libele" d
-            INNER JOIN "Libele" l ON d.libele_id = l.id_libele
-            INNER JOIN "Category" c ON l.category_id = c.id_category
+                     INNER JOIN "Libele" l ON d.libele_id = l.id_libele
+                     INNER JOIN "Category" c ON l.category_id = c.id_category
             WHERE project_id = id
-            AND c."isIncome" = false
-            AND d.date <= NOW()
-            GROUP BY c.name, c.id_category, "date"
+              AND c."isIncome" = false
+              AND d.date <= NOW()
+            GROUP BY "date"
 
             UNION
 
-            SELECT c.id_category, c.name, TO_CHAR(d.date, 'MM-YYYY'), SUM(d.montant)
+            SELECT TO_CHAR(d.date, 'MM-YYYY'), SUM(d.montant)
             FROM "Prevision_Budget_Category" d
-            INNER JOIN "Category" c ON d.category_id = c.id_category
+                     INNER JOIN "Category" c ON d.category_id = c.id_category
             WHERE project_id = id
-            AND c."isIncome" = false
-            AND d.date <= NOW()
-            GROUP BY c.name, c.id_category, "date"
+              AND c."isIncome" = false
+              AND d.date <= NOW()
+            GROUP BY "date"
         ),
-        inOut_Reel AS (
-            SELECT c.id_category idCategory, c.name nameCategory, TO_CHAR(d.date_facturation, 'MM-YYYY') "date", SUM(d.montant) montant
-            FROM "Depense" d
-            INNER JOIN "Libele" l ON d.libele_id = l.id_libele
-            INNER JOIN "Category" c ON l.category_id = c.id_category
-            WHERE project_id = id
-            AND d.date_facturation <= NOW()
-            GROUP BY c.name, c.id_category, "date"
-        ),
-        all_combinations AS (
-            SELECT categories.idCategory, categories.nameCategory, calendar."date"
-            FROM (
-                SELECT DISTINCT TO_CHAR(GENERATE_SERIES(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
-                FROM "Project"
-                WHERE id_project = id
-            ) calendar
-            CROSS JOIN (
-                SELECT DISTINCT idCategory, nameCategory
-                FROM inOut_prevision
-            ) categories
-        ),
-        monthly_totals AS (
-            SELECT
-            ac."date",
-            COALESCE(SUM(p.montant), 0) AS montant_previ,
-            COALESCE(SUM(r.montant), 0) AS montant_reel
-            FROM all_combinations ac
-            LEFT JOIN inOut_prevision p ON p.date = ac."date" AND p.idCategory = ac.idCategory
-            LEFT JOIN inOut_Reel r ON r.date = ac."date" AND r.idCategory = ac.idCategory
-            GROUP BY ac."date"
-        )
+             inOut_Reel AS (
+                 SELECT TO_CHAR(d.date_facturation, 'MM-YYYY') "date", SUM(d.montant) montant
+                 FROM "Depense" d
+                          INNER JOIN "Libele" l ON d.libele_id = l.id_libele
+                          INNER JOIN "Category" c ON l.category_id = c.id_category
+                 WHERE project_id = id
+                   AND d.date_facturation <= NOW()
+                 GROUP BY "date"
+             ),
+             generate_date AS (
+                 SELECT DISTINCT TO_CHAR(generate_series(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
+                 FROM "Project"
+                 WHERE id_project = id
+             ),
+             group_combinations AS (
+                 SELECT
+                     gd."date",
+                     COALESCE(p.montant, 0) AS montant_previ,
+                     null AS montant_reel
+                 FROM generate_date gd
+                          LEFT JOIN  inOut_prevision p ON p.date = gd.date
+                 UNION
+                 SELECT
+                     gd."date",
+                     null,
+                     COALESCE(r.montant, 0)
+                 FROM generate_date gd
+                          LEFT JOIN  inOut_Reel r ON r.date = gd.date
+             ),
+             avengers_assemble AS (
+                 SELECT
+                     date,
+                     SUM(montant_previ) as montant_previ,
+                     SUM(montant_reel) as montant_reel
+                 FROM group_combinations
+                 GROUP BY date
+             )
         SELECT
-            mt."date",
-            SUM(mt.montant_previ) OVER (ORDER BY mt."date") AS cumulative_montant_prevision,
-            SUM(mt.montant_reel) OVER (ORDER BY mt."date") AS cumulative_montant_reel
-        FROM monthly_totals mt
-        ORDER BY mt."date";
+            "date",
+            SUM(montant_previ) OVER(ORDER BY "date") AS cumulative_montant_prevision,
+            SUM(montant_reel) OVER(ORDER BY "date") AS cumulative_montant_reel
+        FROM avengers_assemble
+        ORDER BY "date";
 END;
 $$ LANGUAGE plpgsql;
