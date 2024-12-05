@@ -49,12 +49,11 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
 
     public int Create(PrevisionRentree previsionRentree)
     {
-        try
-        {
-            const string query = @"
+        const string query = @"
             INSERT INTO ""Prevision_Rentree"" (
                 ""libele_id"",
                 ""project_id"",
+                ""organisme_id"",
                 ""date"",
                 ""motif"",
                 ""montant""
@@ -62,27 +61,24 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
             VALUES (
                     @LibeleId,
                     @ProjectId,
+                    @OrganismeId,
                     @Date,
                     @Motif,
                     @Montant
                     )
             RETURNING ""id_prevision_rentree"" AS ""IdPrevisionRentree"";
                 ";
-            int resultId = this._connection.QuerySingle<int>(query, new
-            {
-                IdPrevisionRentree = previsionRentree.IdPrevisionRentree,
-                LibeleId = previsionRentree.LibeleId,
-                ProjectId = previsionRentree.ProjectId,
-                Date = previsionRentree.Date,
-                Motif = previsionRentree.Motif,
-                Montant = previsionRentree.Montant
-            });
-            return resultId;
-        }
-        catch (Exception e)
+        int resultId = this._connection.QuerySingle<int> (query, new
         {
-            throw new Exception(e.Message);
-        }
+            IdPrevisionRentree = previsionRentree.IdPrevisionRentree,
+            LibeleId = previsionRentree.LibeleId,
+            ProjectId = previsionRentree.ProjectId,
+            OrganismeId = previsionRentree.OrganismeId,
+            Date = previsionRentree.Date,
+            Motif = previsionRentree.Motif,
+            Montant = previsionRentree.Montant
+        });
+        return resultId;
     }
 
     public bool Update(PrevisionRentree previsionRentree)
