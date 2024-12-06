@@ -23,6 +23,8 @@ using PlayZone.DAL.Repositories.Budget_Related;
 using PlayZone.DAL.Repositories.Configuration_Related;
 using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
+using PlayZone.Razor.Interfaces;
+using PlayZone.Razor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +50,8 @@ builder.Services.AddScoped<IUserSalaireService, UserSalaireService>();
 //Injection des services BLL - Worktime_Related
 builder.Services.AddScoped<IWorktimeService, WorktimeService>();
 builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
+builder.Services.AddScoped<IWorktimeRapportService, WorktimeRapportService>();
+builder.Services.AddScoped<IGenerate, Generate>();
 
 //Injection des services BLL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetLibeleService, PrevisionBudgetLibeleService>();
@@ -81,6 +85,7 @@ builder.Services.AddScoped<IUserSalaireRepository, UserSalaireRepository>();
 //Injection des services DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
 builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
+builder.Services.AddScoped<IWorktimeRapportRepository, WorktimeRapportRepository>();
 
 //Injection des services DAL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetLibeleRepository, PrevisionBudgetLibeleRepository>();

@@ -20,6 +20,7 @@
       <Folder Include="Controllers\Configuration_Related\" />
       <Folder Include="Controllers\User_Related\" />
       <Folder Include="Controllers\Worktime_Related\" />
+      <ProjectReference Include="..\PlayZone.Razor\PlayZone.Razor.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,12 +37,8 @@
     <EmbeddedResource Include="Lib\libwkhtmltox.dll" Link="libwkhtmltox.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-  </ItemGroup>
-
-    <ItemGroup>
-      <Content Update="Views\PdfTemplate.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+    <Content Remove="Views\PdfTemplate.cshtml" />
+    <None Include="Views\PdfTemplate.cshtml" />
     </ItemGroup>
 
 </Project>

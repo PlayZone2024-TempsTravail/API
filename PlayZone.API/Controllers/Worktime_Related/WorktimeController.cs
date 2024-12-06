@@ -14,10 +14,12 @@ namespace PlayZone.API.Controllers.Worktime_Related;
 public class WorktimeController : ControllerBase
 {
     private readonly IWorktimeService _worktimeService;
+    private readonly IWorktimeRapportService _worktimeRapportService;
 
-    public WorktimeController(IWorktimeService worktimeService)
+    public WorktimeController(IWorktimeService worktimeService, IWorktimeRapportService worktimeRapportService)
     {
         this._worktimeService = worktimeService;
+        this._worktimeRapportService = worktimeRapportService;
     }
 
     [HttpGet("range")]
@@ -163,5 +165,14 @@ public class WorktimeController : ControllerBase
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
+    }
+
+
+
+
+    [HttpGet("test")]
+    public IActionResult GetRapportCOmpteurs()
+    {
+        return this.Ok(this._worktimeRapportService.GetAll());
     }
 }
