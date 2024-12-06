@@ -25,6 +25,7 @@ public static class PrevisionRentreeMapper
         {
             IdPrevisionRentree = previsionRentree.IdPrevisionRentree,
             LibeleId = previsionRentree.LibeleId,
+            LibeleName = previsionRentree.LibeleName,
             ProjectId = previsionRentree.ProjectId,
             OrganismeId = previsionRentree.OrganismeId,
             Date = previsionRentree.Date,

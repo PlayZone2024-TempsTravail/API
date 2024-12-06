@@ -240,7 +240,7 @@ CREATE TABLE "Depense" (
     CONSTRAINT NN__Depense__libele_id CHECK ("libele_id" IS NOT NULL),
     CONSTRAINT NN__Depense__project_id CHECK ("project_id" IS NOT NULL),
     CONSTRAINT NN__Depense__montant CHECK ("montant" IS NOT NULL),
-    CONSTRAINT NN__Depense__date_intervention CHECK ("date_intervention" IS NOT NULL),
+    CONSTRAINT NN__Depense__date_facturation CHECK ("date_facturation" IS NOT NULL),
 
     CONSTRAINT FK__Depense__libele_id FOREIGN KEY ("libele_id") REFERENCES "Libele"("id_libele"),
     CONSTRAINT FK__Depense__project_id FOREIGN KEY ("project_id") REFERENCES "Project"("id_project"),
