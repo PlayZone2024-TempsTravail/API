@@ -43,10 +43,10 @@ public class PrevisionRentreeController : ControllerBase
     {
         try
         {
-            PrevisionRentreeDTO previsionRentree = this._previsionRentreeService.GetById(idPrevisionRentree).ToDTO();
+            PrevisionRentreeDTO? previsionRentree = this._previsionRentreeService.GetById(idPrevisionRentree)?.ToDTO();
             if (previsionRentree != null)
                 return this.Ok(previsionRentree);
-            return this.NotFound("La prevision de rentree n'existe pas.");
+            return this.NotFound("La prevision de rentree n'existe pas");
         }
         catch (Exception)
         {

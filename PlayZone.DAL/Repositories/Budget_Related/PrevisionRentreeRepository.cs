@@ -18,13 +18,15 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
     {
         const string query = @"
             SELECT
-                ""id_prevision_rentree"" AS ""IdPrevisionRentree"",
-                ""libele_id"" AS ""LibeleId"",
-                ""organisme_id"" AS ""OrganismeId"",
-                ""date"" AS ""Date"",
-                ""motif"" AS ""Motif"",
-                ""montant"" AS ""Montant""
-            FROM ""Prevision_Rentree""
+                pr.""id_prevision_rentree"" AS ""IdPrevisionRentree"",
+                pr.""libele_id"" AS ""LibeleId"",
+                l.name AS ""LibeleName"",
+                pr.""organisme_id"" AS ""OrganismeId"",
+                pr.""date"" AS ""Date"",
+                pr.""motif"" AS ""Motif"",
+                pr.""montant"" AS ""Montant""
+            FROM ""Prevision_Rentree"" pr
+            INNER JOIN ""Libele"" l ON pr.libele_id = l.id_libele
             WHERE ""project_id"" = @ProjectId;
         ";
         return this._connection.Query<PrevisionRentree>(query, new { ProjectId = projectId });
@@ -34,14 +36,16 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
     {
         const string query = @"
             SELECT
-                ""id_prevision_rentree"" AS ""IdPrevisionRentree"",
-                ""libele_id"" AS ""LibeleId"",
-                ""project_id"" AS ""ProjectId"",
-                ""organisme_id"" AS ""OrganismeId"",
-                ""date"" AS ""Date"",
-                ""motif"" AS ""Motif"",
-                ""montant"" AS ""Montant""
-            FROM ""Prevision_Rentree""
+                pr.""id_prevision_rentree"" AS ""IdPrevisionRentree"",
+                pr.""libele_id"" AS ""LibeleId"",
+                l.name AS ""LibeleName"",
+                pr.""project_id"" AS ""ProjectId"",
+                pr.""organisme_id"" AS ""OrganismeId"",
+                pr.""date"" AS ""Date"",
+                pr.""motif"" AS ""Motif"",
+                pr.""montant"" AS ""Montant""
+            FROM ""Prevision_Rentree"" pr
+            INNER JOIN ""Libele"" l ON pr.libele_id = l.id_libele
             WHERE ""id_prevision_rentree"" = @IdPrevisionRentree;
         ";
         return this._connection.QuerySingleOrDefault<PrevisionRentree>(query, new { IdPrevisionRentree = id });
