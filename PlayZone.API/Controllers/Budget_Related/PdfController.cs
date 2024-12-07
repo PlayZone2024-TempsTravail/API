@@ -1,8 +1,8 @@
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using PlayZone.API.Views;
-using Razor.Templating.Core;
+using PlayZone.Razor.Services;
+using PlayZone.Razor.Views;
 
 namespace PlayZone.API.Controllers.Budget_Related;
 
@@ -10,66 +10,33 @@ namespace PlayZone.API.Controllers.Budget_Related;
 [ApiController]
 public class PdfController : ControllerBase
 {
-    private readonly IConverter _converter;
+    private readonly PdfGenerator _pdfGenerator;
+    private readonly RazorViewRendererService _razorViewRendererService;
 
-    public PdfController(IConverter converter)
+    public PdfController(RazorViewRendererService razorViewRendererService, PdfGenerator pdfGenerator)
     {
-        this._converter = converter;
+        this._razorViewRendererService = razorViewRendererService;
+        this._pdfGenerator = pdfGenerator;
+    }
+
+    private FileContentResult Generate(object model, string view, string outputNameFile = "rapport")
+    {
+        string html = this._razorViewRendererService.RenderViewToStringAsync(view, model).Result;
+        byte[] pdfBytes = this._pdfGenerator.Execute(html);
+        return this.File(pdfBytes, "application/pdf", $"{outputNameFile}.pdf", true);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GeneratePdf()
+    public IActionResult GeneratePdf()
     {
-        // Ajouter une vérification pour s'assurer que le fichier existe
-        if (!System.IO.File.Exists("Views/PdfTemplate.cshtml"))
-        {
-            return this.StatusCode(StatusCodes.Status404NotFound, $"Le fichier template n'a pas été trouvé");
-        }
-
         PdfTemplate model = new PdfTemplate();
-        string html = await RazorTemplateEngine.RenderAsync("Views/PdfTemplate.cshtml", model);
+        return this.Generate(model, "Views/PdfTemplate.cshtml");
+    }
 
-        GlobalSettings globalSettings = new GlobalSettings
-        {
-            ColorMode = ColorMode.Color,
-            Orientation = Orientation.Portrait,
-            PaperSize = PaperKind.A4,
-            Margins = new MarginSettings { Top = 10, Bottom = 10, Left = 10, Right = 10 }
-        };
-
-        ObjectSettings objectSettings = new ObjectSettings
-        {
-            PagesCount = true,
-            HtmlContent = html,
-            WebSettings = { DefaultEncoding = "utf-8" },
-            HeaderSettings = new HeaderSettings
-            {
-                FontName = "Arial",
-                FontSize = 9,
-                Line = true,
-                Center = "Rapport Financier",
-                Right = "[date] [time]",
-                Spacing = 2.5
-            },
-            FooterSettings = new FooterSettings
-            {
-                FontName = "Arial",
-                FontSize = 9,
-                Line = true,
-                Center = "[page] de [toPage]",
-                Left = "Confidentiel",
-                Right = "PlayZone2024",
-                Spacing = 2.5
-            }
-        };
-
-        HtmlToPdfDocument pdf = new HtmlToPdfDocument()
-        {
-            GlobalSettings = globalSettings,
-            Objects = { objectSettings }
-        };
-
-        byte[] pdfBytes = this._converter.Convert(pdf);
-        return File(pdfBytes, "application/pdf", "Rapport.pdf", true);
+    [HttpGet("test")]
+    public IActionResult GeneratePdfNatif()
+    {
+        MyView model = new MyView();
+        return this.Generate(model, "Views/MyView.cshtml", "test_hello_world");
     }
 }

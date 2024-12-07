@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayZone.API", "PlayZone.AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayZone.DAL", "PlayZone.DAL\PlayZone.DAL.csproj", "{25DEA8BB-3A5A-425D-84BF-2D1F23F1F37D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayZone.Razor", "PlayZone.Razor\PlayZone.Razor.csproj", "{BD69B86D-308B-4F2D-B5B2-8E1D49F386B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +40,9 @@ Global
 		{25DEA8BB-3A5A-425D-84BF-2D1F23F1F37D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25DEA8BB-3A5A-425D-84BF-2D1F23F1F37D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25DEA8BB-3A5A-425D-84BF-2D1F23F1F37D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD69B86D-308B-4F2D-B5B2-8E1D49F386B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD69B86D-308B-4F2D-B5B2-8E1D49F386B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD69B86D-308B-4F2D-B5B2-8E1D49F386B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD69B86D-308B-4F2D-B5B2-8E1D49F386B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

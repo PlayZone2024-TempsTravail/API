@@ -1,4 +1,4 @@
-﻿namespace PlayZone.API.Views;
+﻿namespace PlayZone.Razor.Views;
 
 
 public class PdfTemplate

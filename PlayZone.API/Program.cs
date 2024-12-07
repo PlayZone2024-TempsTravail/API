@@ -2,6 +2,8 @@ using System.Text;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
@@ -23,6 +25,7 @@ using PlayZone.DAL.Repositories.Budget_Related;
 using PlayZone.DAL.Repositories.Configuration_Related;
 using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
+using PlayZone.Razor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,9 +71,15 @@ builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 //Injection des services API
 builder.Services.AddScoped<JwtService>();
 
+//Injection des services pour Razor
+builder.Services.AddSingleton<IRazorViewEngine, RazorViewEngine>();
+builder.Services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+builder.Services.AddSingleton<RazorViewRendererService>();
+builder.Services.AddSingleton<PdfGenerator>();
+
 /*-----------------------------------------*/
 
-//Injection des services DAL - User_Related
+//Injection des repositories DAL - User_Related
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
@@ -78,11 +87,11 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<ICompteurWorktimeCategoryRepository, CompteurWorktimeCategoryRepository>();
 builder.Services.AddScoped<IUserSalaireRepository, UserSalaireRepository>();
 
-//Injection des services DAL - Worktime_Related
+//Injection des repositories DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
 builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
 
-//Injection des services DAL - Budget_Related
+//Injection des repositories DAL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetLibeleRepository, PrevisionBudgetLibeleRepository>();
 builder.Services.AddScoped<IPrevisionBudgetCategoryRepository, PrevisionBudgetCategoryRepository>();
 builder.Services.AddScoped<IPrevisionRentreeRepository, PrevisionRentreeRepository>();
@@ -94,7 +103,7 @@ builder.Services.AddScoped<IOrganismeRepository, OrganismeRepository>();
 builder.Services.AddScoped<ILibeleRepository, LibeleRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
-//Injection des services DAL - Configuration_Related
+//Injection des repositories DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 /*-----------------------------------------*/
