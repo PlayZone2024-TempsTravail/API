@@ -11,7 +11,7 @@ public class PdfGenerator
         this._converter = converter;
     }
 
-    public byte[] Execute(string html)
+    public byte[] Execute(string html, string? title = null)
     {
         GlobalSettings globalSettings = new GlobalSettings
         {
@@ -26,26 +26,28 @@ public class PdfGenerator
             PagesCount = true,
             HtmlContent = html,
             WebSettings = { DefaultEncoding = "utf-8" },
-            HeaderSettings = new HeaderSettings
-            {
-                FontName = "Arial",
-                FontSize = 9,
-                Line = true,
-                Center = "Rapport Financier",
-                Right = "[date] [time]",
-                Spacing = 2.5
-            },
             FooterSettings = new FooterSettings
             {
                 FontName = "Arial",
                 FontSize = 9,
                 Line = true,
                 Center = "[page] de [toPage]",
-                Left = "Confidentiel",
-                Right = "PlayZone2024",
+                Left = "[date]",
+                Right = "Institut Eco-Conseil",
                 Spacing = 2.5
             }
         };
+        if (title is not null)
+        {
+            objectSettings.HeaderSettings = new HeaderSettings
+            {
+                FontName = "Arial",
+                FontSize = 9,
+                Line = true,
+                Center = title,
+                Spacing = 2.5
+            };
+        }
 
         HtmlToPdfDocument pdf = new HtmlToPdfDocument()
         {

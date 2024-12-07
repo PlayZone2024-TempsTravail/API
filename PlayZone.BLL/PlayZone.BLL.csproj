@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+      <ProjectReference Include="..\PlayZone.Razor\PlayZone.Razor.csproj" />
     </ItemGroup>
 
     <ItemGroup>

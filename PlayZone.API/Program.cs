@@ -11,23 +11,29 @@ using Npgsql;
 using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Interfaces.Configuration_Related;
+using PlayZone.BLL.Interfaces.Rapport_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.Budget_Related;
 using PlayZone.BLL.Services.Configuration_Related;
+using PlayZone.BLL.Services.Rapport_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
 using PlayZone.DAL.Interfaces.Configuration_Related;
+using PlayZone.DAL.Interfaces.Rapport_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.DAL.Repositories.Budget_Related;
 using PlayZone.DAL.Repositories.Configuration_Related;
+using PlayZone.DAL.Repositories.Rapport_Related;
 using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
 using PlayZone.Razor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Injection de la connection DB
 builder.Services.AddTransient<NpgsqlConnection>(service =>
@@ -68,6 +74,9 @@ builder.Services.AddSingleton<IConverter, SynchronizedConverter>(_ => new Synchr
 //Injection des services BLL - Configuration_Related
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
+//Injection des services BLL - Rapport_Related
+builder.Services.AddScoped<IRapportService, RapportService>();
+
 //Injection des services API
 builder.Services.AddScoped<JwtService>();
 
@@ -105,6 +114,9 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 //Injection des repositories DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+
+//Injection des repositories DAL - Rapport_Related
+builder.Services.AddScoped<IWorktimeRapportRepository, WorktimeRapportRepository>();
 
 /*-----------------------------------------*/
 

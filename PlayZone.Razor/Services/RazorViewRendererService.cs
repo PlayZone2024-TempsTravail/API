@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace PlayZone.Razor.Services;
 
 public class RazorViewRendererService
 {
-    private string Directory { get; set; } = "";
+    private string Directory { get; set; } = "Views\\";
 
     private readonly IRazorViewEngine _razorViewEngine;
     private readonly ITempDataProvider _tempDataProvider;
@@ -22,15 +23,16 @@ public class RazorViewRendererService
     public RazorViewRendererService(
         IRazorViewEngine razorViewEngine,
         ITempDataProvider tempDataProvider,
-        IServiceProvider serviceProvider
-    )
+        IServiceProvider serviceProvider)
     {
         this._razorViewEngine = razorViewEngine;
         this._tempDataProvider = tempDataProvider;
         this._serviceProvider = serviceProvider;
     }
 
-    public async Task<string> RenderViewToStringAsync(string viewName, object model)
+    private string GetPath(string file) => this.Directory + file;
+
+    public async Task<string> RenderViewToStringAsync<T>(string viewName, T model)
     {
         using IServiceScope scope = this._serviceProvider.CreateScope();
 
@@ -39,7 +41,11 @@ public class RazorViewRendererService
 
         await using StringWriter stringWriter = new StringWriter();
 
-        ViewEngineResult viewResult = this._razorViewEngine.GetView(this.Directory, viewName, false);
+        ViewEngineResult viewResult = this._razorViewEngine.GetView(
+            this.GetPath(viewName),
+            this.GetPath(viewName),
+            false
+        );
 
         if (viewResult.View == null)
         {
