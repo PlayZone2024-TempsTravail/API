@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.BLL.Interfaces.User_Related;
+using PlayZone.DAL.Entities.User_Related;
 using Models = PlayZone.BLL.Models.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related;
@@ -19,6 +22,8 @@ public class UserSalaireController : ControllerBase
     }
 
     [HttpGet("{userId:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserSalaireDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByUser(int userId)
@@ -36,6 +41,8 @@ public class UserSalaireController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] UserSalaireCreateDTO userSalaire)

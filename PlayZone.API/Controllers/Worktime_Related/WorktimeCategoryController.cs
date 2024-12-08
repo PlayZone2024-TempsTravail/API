@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Worktime_Related;
@@ -20,6 +21,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet]
+        [Authorize]
         [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeCategoryDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,6 +39,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -54,6 +57,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpPost]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -69,6 +73,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -84,6 +89,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

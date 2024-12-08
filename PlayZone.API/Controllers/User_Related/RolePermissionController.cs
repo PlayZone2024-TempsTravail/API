@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -20,7 +21,8 @@ public class RolePermissionController : ControllerBase
     }
 
     [HttpGet]
-    [PermissionAuthorize(Permission.CONSULTER_ROLES)]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RolePermissionDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
@@ -38,7 +40,8 @@ public class RolePermissionController : ControllerBase
     }
 
     [HttpGet("{idRole}")]
-    [PermissionAuthorize(Permission.CONSULTER_ROLES)]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<string>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetByRole(int idRole)
@@ -55,7 +58,8 @@ public class RolePermissionController : ControllerBase
     }
 
     [HttpPost]
-    [PermissionAuthorize(Permission.CREER_ROLE)]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create(RolePermissionDTO rolePermissionFormDto)
@@ -78,7 +82,8 @@ public class RolePermissionController : ControllerBase
 
 
     [HttpPatch]
-    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(RolePermissionUpdateDTO userRoleUpdateDto)
@@ -105,7 +110,8 @@ public class RolePermissionController : ControllerBase
     }
 
     [HttpDelete]
-    [PermissionAuthorize(Permission.SUPPRIMER_ROLE)]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(RolePermissionDTO rolePermissionDto)

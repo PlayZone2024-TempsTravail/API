@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Worktime_Related;
@@ -106,6 +107,7 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]

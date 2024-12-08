@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related
@@ -10,6 +12,8 @@ namespace PlayZone.API.Controllers.User_Related
     {
 
         [HttpGet]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         public IActionResult GetPermissions()
         {
             try

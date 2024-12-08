@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
@@ -21,6 +22,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     public IActionResult GetAll()
     {
         try
@@ -35,6 +38,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("short")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     public IActionResult GetAllShort()
     {
         try
@@ -47,6 +52,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("short/{idUser:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     public IActionResult GetAllShort(int idUser)
     {
         try
@@ -60,6 +67,8 @@ public class ProjectController : ControllerBase
 
 
     [HttpGet("data/input/{id:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetInputByProject(int id)
     {
@@ -67,6 +76,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("data/output/{id:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetOuputByProject(int id)
     {
@@ -75,6 +86,8 @@ public class ProjectController : ControllerBase
 
 
     [HttpGet("idproject/{id:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -97,6 +110,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("idorganisme/{id:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetByOrgaId(int id)
@@ -113,6 +128,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("graphique/rentree/{idProject:int}")]
+    [Authorize]
     [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PreparedGraphicDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -129,6 +145,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("graphique/depense/{idProject:int}")]
+    [Authorize]
     [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PreparedGraphicDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -145,6 +162,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] ProjectCreateDTO project)
@@ -160,6 +179,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -181,6 +202,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
