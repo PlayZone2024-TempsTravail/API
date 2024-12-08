@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
 using PlayZone.API.Mappers.Budget_Related;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.DAL.Entities.Budget_Related;
+using PlayZone.DAL.Entities.User_Related;
 using Models = PlayZone.BLL.Models.Budget_Related;
 
 namespace PlayZone.API.Controllers.Budget_Related
@@ -19,6 +22,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet("projets/{id}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<DepenseDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByProjectId(int id)
@@ -35,6 +40,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet("{id}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         public IActionResult GetById(int id)
         {
             try
@@ -49,6 +56,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpPost]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(DepenseDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] CreateDepenseDTO depense)
@@ -63,6 +72,8 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
 
             [HttpPut]
+            [Authorize]
+            [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
             [ProducesResponseType(StatusCodes.Status200OK)]
             [ProducesResponseType(StatusCodes.Status500InternalServerError)]
             public IActionResult Update(int id, [FromBody] UpdateDepenseDTO depense)
@@ -83,6 +94,8 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
 
             [HttpDelete("{id:int}")]
+            [Authorize]
+            [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
             [ProducesResponseType(StatusCodes.Status200OK)]
             [ProducesResponseType(StatusCodes.Status500InternalServerError)]
             public IActionResult Delete(int id)

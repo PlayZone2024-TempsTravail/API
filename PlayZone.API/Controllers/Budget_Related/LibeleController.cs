@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
 using PlayZone.API.Mappers.Budget_Related;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Models.Budget_Related;
+using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Controllers.Budget_Related
 {
@@ -18,6 +21,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
@@ -34,6 +39,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet("tree")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllWithCategories()
@@ -50,6 +57,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
@@ -66,6 +75,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpPost]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LibeleCreateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] LibeleCreateFormDTO libele)
@@ -80,6 +91,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpPut("{id}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] LibeleUpdateFormDTO libele)
@@ -95,6 +108,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)

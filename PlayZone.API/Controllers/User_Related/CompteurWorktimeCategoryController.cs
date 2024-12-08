@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.BLL.Interfaces.User_Related;
-using PlayZone.BLL.Models.User_Related;
+using PlayZone.DAL.Entities.User_Related;
+using CompteurWorktimeCategory = PlayZone.BLL.Models.User_Related.CompteurWorktimeCategory;
 
 namespace PlayZone.API.Controllers.User_Related;
 
@@ -19,6 +22,8 @@ public class CompteurWorktimeCategoryController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompteurWorktimeCategoryDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
@@ -36,6 +41,8 @@ public class CompteurWorktimeCategoryController : ControllerBase
     }
 
     [HttpGet("{userId:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompteurWorktimeCategoryUpdateDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByUser(int userId)
@@ -52,6 +59,8 @@ public class CompteurWorktimeCategoryController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create(CompteurWorktimeCategoryDTO compteurWorktimeCategory)
@@ -73,6 +82,8 @@ public class CompteurWorktimeCategoryController : ControllerBase
     }
 
     [HttpPut("{userId:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompteurWorktimeCategoryUpdateDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int userId, [FromBody] CompteurWorktimeCategoryUpdateDTO compteurWorktimeCategory)
@@ -87,6 +98,8 @@ public class CompteurWorktimeCategoryController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(CompteurWorktimeCategoryDeleteDTO compteurWorktimeCategory)

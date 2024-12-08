@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -20,6 +21,7 @@ namespace PlayZone.API.Controllers.User_Related
 
 
         [HttpGet]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserRoleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,6 +39,7 @@ namespace PlayZone.API.Controllers.User_Related
         }
 
         [HttpGet("{idUser:int}")]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<int>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -54,6 +57,7 @@ namespace PlayZone.API.Controllers.User_Related
         }
 
         [HttpPost]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -76,6 +80,7 @@ namespace PlayZone.API.Controllers.User_Related
         }
 
         [HttpDelete]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

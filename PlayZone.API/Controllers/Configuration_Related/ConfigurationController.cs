@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Configuration_Related;
 using PlayZone.API.Mappers.Configuration_Related;
 using PlayZone.BLL.Interfaces.Configuration_Related;
 using PlayZone.BLL.Models.Configuration_Related;
+using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Controllers.Configuration_Related
 {
@@ -18,6 +21,8 @@ namespace PlayZone.API.Controllers.Configuration_Related
         }
 
         [HttpGet]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         public IActionResult GetAll()
         {
             try
@@ -33,6 +38,8 @@ namespace PlayZone.API.Controllers.Configuration_Related
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         public IActionResult GetById(int id)
         {
             try
@@ -48,6 +55,8 @@ namespace PlayZone.API.Controllers.Configuration_Related
 
 
         [HttpPost]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ConfigurationCreateFormDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public IActionResult Create([FromBody] ConfigurationCreateFormDTO configuration)

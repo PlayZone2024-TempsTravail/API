@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Worktime_Related;
 using PlayZone.API.Mappers.Worktime_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
+using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Controllers.Worktime_Related
 {
@@ -17,6 +20,8 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet("absence/{idUser:int}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         public IActionResult GetAbsenceByUser(int idUser)
         {
             try
@@ -31,6 +36,8 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet("projet/{idUser:int}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         public IActionResult GetProjectByUser(int idUser)
         {
             try
