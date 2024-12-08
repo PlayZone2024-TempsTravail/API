@@ -10,3 +10,9 @@ public class RolePermissionDTO
     [Required]
     public required string PermissionId { get; set; }
 }
+
+public class RolePermissionUpdateDTO
+{
+    public IEnumerable<RolePermissionDTO> add { get; set; }
+    public IEnumerable<RolePermissionDTO> remove { get; set; }
+}

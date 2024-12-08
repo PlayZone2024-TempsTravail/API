@@ -20,7 +20,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet]
-        [PermissionAuthorize(Permission.AJOUTER_POINTAGE)]
+        [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeCategoryDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
@@ -37,7 +37,7 @@ namespace PlayZone.API.Controllers.Worktime_Related
         }
 
         [HttpGet("{id}")]
-        [PermissionAuthorize(Permission.AJOUTER_POINTAGE)]
+        [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
