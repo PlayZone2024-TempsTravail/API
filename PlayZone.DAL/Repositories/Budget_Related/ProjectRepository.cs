@@ -70,47 +70,13 @@ public class ProjectRepository : IProjectRepository
         return this._connection.Query<Project>(query, new { OrganismeId = id });
     }
 
-    public IEnumerable<Mouvement> GetMouvementsByProject(int idProject)
+    public IEnumerable<Mouvement> GetMouvementsByProject(int idProject, bool useDepenses)
     {
         const string query = @"
-            WITH inOut AS (
-                SELECT c.name Category,c.id_category,l.name Libele,l.id_libele,o.name Organisme,d.motif,d.date_facturation,d.montant
-                FROM ""Depense"" d
-                INNER JOIN ""Libele"" l ON d.libele_id = l.id_libele
-                INNER JOIN ""Category"" c ON l.category_id = c.id_category
-                LEFT JOIN ""Organisme"" o ON o.id_organisme = d.organisme_id
-                WHERE project_id = @idProject
-                UNION
-                SELECT c.name,c.id_category,l.name,l.id_libele,o.name,r.motif,r.date_facturation,r.montant
-                FROM ""Rentree"" r
-                INNER JOIN ""Libele"" l ON r.libele_id = l.id_libele
-                INNER JOIN ""Category"" c ON l.category_id = c.id_category
-                LEFT JOIN ""Organisme"" o ON o.id_organisme = r.organisme_id
-                WHERE project_id = @idProject
-            ),
-            calendar AS (
-                SELECT TO_CHAR(generate_series('2024-01-01'::date, '2024-12-01'::date, '1 month'), 'MM-YYYY') AS ""date""
-            ),
-            labels AS (
-                SELECT DISTINCT Category, id_category, Libele, id_libele
-                FROM inOut
-            ),
-            all_combinations AS (
-                SELECT c.""date"", l.Category, l.id_category, l.Libele, l.id_libele
-                FROM calendar c
-                CROSS JOIN labels l
-            )
-            SELECT
-                ac.Category,
-                ac.Libele,
-                ac.""date"",
-                COALESCE(SUM(i.montant), 0) AS montant
-            FROM all_combinations ac
-            LEFT JOIN inOut i ON TO_CHAR(i.date_facturation, 'MM-YYYY') = ac.""date"" AND i.id_category = ac.id_category AND i.id_libele = ac.id_libele
-            GROUP BY ac.""date"", ac.Category, ac.Libele
-            ORDER BY ac.""date"", ac.Category, ac.Libele;
+            SELECT *
+            FROM get_all_inout_for_project(@idProject, @useDepenses);
         ";
-        return this._connection.Query<Mouvement>(query, new { idProject = idProject});
+        return this._connection.Query<Mouvement>(query, new { idProject = idProject, useDepenses = useDepenses});
     }
 
     public IEnumerable<PrevisionGraphique> GetGraphiqueRentreeByProjet(int idProjet)

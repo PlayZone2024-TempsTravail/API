@@ -9,7 +9,7 @@ public interface IProjectRepository
     public IEnumerable<ProjectShort> GetAllShortOrderByWorktimeOfUser(int idUser);
     public IEnumerable<Project> GetByOrgaId(int id);
     public Project? GetById(int id);
-    public IEnumerable<Mouvement> GetMouvementsByProject(int idProject);
+    public IEnumerable<Mouvement> GetMouvementsByProject(int idProject, bool useDepenses);
     public IEnumerable<PrevisionGraphique> GetGraphiqueRentreeByProjet(int idProjet);
     public IEnumerable<PrevisionGraphique> GetGraphiqueDepenseByProjet(int idProjet);
     public int Create(Project project);

@@ -59,11 +59,18 @@ public class ProjectController : ControllerBase
     }
 
 
-    [HttpGet("data/{id:int}")]
+    [HttpGet("data/input/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult GetInputOuputByProject(int id)
+    public IActionResult GetInputByProject(int id)
     {
-        return this.Ok(this._projectService.GetMouvementsByProject(id));
+        return this.Ok(this._projectService.GetMouvementsByProject(id, false));
+    }
+
+    [HttpGet("data/output/{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetOuputByProject(int id)
+    {
+        return this.Ok(this._projectService.GetMouvementsByProject(id, true));
     }
 
 
