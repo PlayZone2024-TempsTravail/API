@@ -10,9 +10,9 @@ public static class CompteurMapper
         return new CompteurAbsenceDTO
         {
             Category = compteur.Category,
-            Counter = compteur.Counter,
             Max = compteur.Max,
-            Difference = compteur.Difference
+            Counter = compteur.Counter,
+            Solde = compteur.Solde
         };
     }
 

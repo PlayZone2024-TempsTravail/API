@@ -12,7 +12,7 @@ public static class CompteurMapper
             Category = entity.Category,
             Counter = entity.Counter,
             Max = entity.Max,
-            Difference = entity.Difference
+            Solde = entity.Solde
         };
     }
 
