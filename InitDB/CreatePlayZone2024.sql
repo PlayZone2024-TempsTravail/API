@@ -291,7 +291,14 @@ CREATE TABLE "Prevision_Rentree" (
     CONSTRAINT FK__Prevision_Rentree__organisme_id FOREIGN KEY ("organisme_id") REFERENCES "Organisme"("id_organisme")
 );
 
-CREATE OR REPLACE VIEW V_GetProjects AS
+CREATE FUNCTION calculate_interval_worktime("start" timestamp, "end" timestamp)
+    RETURNS INT AS $$
+BEGIN
+    RETURN CEIL(EXTRACT(EPOCH FROM AGE("end", "start")) / 3600);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE VIEW V_GetProjects AS
 SELECT
     p."id_project" AS "IdProject",
     p."isActive" AS "IsActive",
@@ -403,8 +410,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION get_cumulative_depense(id INT);
-CREATE OR REPLACE FUNCTION get_cumulative_depense(id INT)
+CREATE FUNCTION get_cumulative_depense(id INT)
 RETURNS TABLE (
     "month_year" TEXT,
     cumulative_montant_prevision NUMERIC,
@@ -535,5 +541,79 @@ BEGIN
     LEFT JOIN inOut i ON TO_CHAR(i.Date, 'MM-YYYY') = ac.date AND i.IdCategory = ac.IdCategory AND i.IdLibelle = ac.IdLibelle
     GROUP BY ac."date", ac.Category, ac.Libelle
     ORDER BY ac.Category, ac.Libelle, ac."date";
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION get_counters_for_user(id INT)
+RETURNS TABLE (
+    "Category"  VARCHAR,
+    "Max"       DECIMAL,
+    "Utilise"   DECIMAL,
+    "Solde"     DECIMAL
+) AS $$
+BEGIN
+    RETURN QUERY
+    WITH PrepareHeuresSup AS (
+        SELECT
+            "category_id",
+            EXTRACT(ISODOW FROM "start") dayofweek,
+            calculate_interval_worktime("start", "end") heures
+        FROM "WorkTime"
+        WHERE user_id = id
+        AND category_id <> 7
+    ),
+    HeuresSup AS (
+        SELECT
+            "category_id",
+            CASE
+                WHEN dayofweek = 6 THEN Heures * 1.5
+                WHEN dayofweek = 7 THEN Heures * 2
+                ELSE Heures
+            END AS Heures
+        FROM PrepareHeuresSup
+        WHERE Heures > 8
+    ),
+    compteur AS (
+        SELECT
+            "workTime_category_id" AS category_id,
+            "quantity" AS max
+        FROM "Compteur_WorkTime_Category"
+        WHERE user_id = id
+    ),
+    cross_heuressup_compteur AS (
+        SELECT category_id, SUM(Heures) AS Heures
+        FROM (
+            SELECT category_id, Heures
+            FROM HeuresSup
+            UNION
+            SELECT category_id, max
+            FROM compteur
+        ) data
+        GROUP BY category_id
+    ),
+    utilise AS (
+        SELECT DISTINCT wc."id_workTime_category", wc."abreviation", COALESCE(SUM("hours"), 0) AS count
+        FROM (
+            SELECT
+                "id_WorkTime",
+                "category_id",
+                "project_id",
+                calculate_interval_worktime("start","end") AS hours
+            FROM "WorkTime" w
+            WHERE EXTRACT(YEAR FROM start) = EXTRACT(YEAR FROM NOW())
+            AND user_id = id
+        ) wr
+        RIGHT JOIN "WorkTime_Category" wc ON "wr".category_id = wc."id_workTime_category"
+        WHERE "id_workTime_category" <> 7
+        GROUP BY wc."id_workTime_category", wc."abreviation"
+        ORDER BY wc."id_workTime_category"
+    )
+    SELECT
+        u.abreviation as Category,
+        c.Heures::decimal as Max,
+        u.count::decimal as Counter,
+        (c.Heures-u.count)::decimal as Solde
+    FROM utilise u
+    FULL JOIN cross_heuressup_compteur c ON u."id_workTime_category" = c.category_id;
 END;
 $$ LANGUAGE plpgsql;
