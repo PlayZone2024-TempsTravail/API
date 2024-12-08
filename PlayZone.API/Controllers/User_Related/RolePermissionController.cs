@@ -76,6 +76,34 @@ public class RolePermissionController : ControllerBase
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
+
+    [HttpPatch]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult Update(RolePermissionUpdateDTO userRoleUpdateDto)
+    {
+        try
+        {
+            foreach (RolePermissionDTO rolePermissionDto in userRoleUpdateDto.add)
+            {
+                this._rolePermissionService.Create(rolePermissionDto.ToModel());
+            }
+
+            foreach (RolePermissionDTO rolePermissionDto in userRoleUpdateDto.remove)
+            {
+                this._rolePermissionService.Delete(rolePermissionDto.RoleId, rolePermissionDto.PermissionId);
+            }
+
+            return this.Ok();
+        }
+        catch (Exception)
+        {
+            /* ignored */
+        }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
     [HttpDelete]
     [PermissionAuthorize(Permission.SUPPRIMER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
