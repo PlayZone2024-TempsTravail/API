@@ -477,3 +477,63 @@ BEGIN
         ORDER BY "date";
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE FUNCTION get_all_inOut_for_project(id INT, use_depenses BOOLEAN)
+RETURNS TABLE (
+    "Category"  VARCHAR,
+    "Libele"    VARCHAR,
+    "Date"      TEXT,
+    "Montant"   DECIMAL
+) AS $$
+BEGIN
+    CREATE TEMP TABLE IF NOT EXISTS inOut (
+        category VARCHAR,
+        IdCategory INT,
+        libelle VARCHAR,
+        IdLibelle INT,
+        Organisme VARCHAR,
+        motif VARCHAR,
+        Date TIMESTAMP,
+        Montant decimal
+    ) ON COMMIT DROP;
+
+    IF use_depenses THEN
+        INSERT INTO inOut
+        SELECT c.name Category, c.id_category, l.name Libele, l.id_libele, o.name Organisme, d.motif, d.date_facturation, d.montant
+        FROM "Depense" d
+        INNER JOIN "Libele" l ON d.libele_id = l.id_libele
+        INNER JOIN "Category" c ON l.category_id = c.id_category
+        LEFT JOIN "Organisme" o ON o.id_organisme = d.organisme_id
+        WHERE project_id = id;
+    ELSE
+        INSERT INTO inOut
+        SELECT c.name Category, c.id_category, l.name Libele, l.id_libele, o.name Organisme, r.motif, r.date_facturation, r.montant
+        FROM "Rentree" r
+        INNER JOIN "Libele" l ON r.libele_id = l.id_libele
+        INNER JOIN "Category" c ON l.category_id = c.id_category
+        LEFT JOIN "Organisme" o ON o.id_organisme = r.organisme_id
+        WHERE project_id = id;
+    END IF;
+
+    RETURN QUERY
+    WITH calendar AS (
+        SELECT TO_CHAR(generate_series("Project".date_debut_projet, now(), '1 month'), 'MM-YYYY') AS "date"
+        FROM "Project"
+        WHERE id_project = id
+    ),
+    all_combinations AS (
+        SELECT c."date", l.Category, l.IdCategory, l.Libelle, l.IdLibelle
+        FROM calendar c
+        CROSS JOIN inOut l
+    )
+    SELECT
+        ac.Category,
+        ac.Libelle,
+        ac."date",
+        COALESCE(SUM(i.montant), 0) AS Montant
+    FROM all_combinations ac
+    LEFT JOIN inOut i ON TO_CHAR(i.Date, 'MM-YYYY') = ac.date AND i.IdCategory = ac.IdCategory AND i.IdLibelle = ac.IdLibelle
+    GROUP BY ac."date", ac.Category, ac.Libelle
+    ORDER BY ac.Category, ac.Libelle, ac."date";
+END;
+$$ LANGUAGE plpgsql;

@@ -10,7 +10,7 @@ public interface IProjectService
     public IEnumerable<ProjectShort> GetAllShortOrderByWorktimeOfUser(int userId);
     public IEnumerable<Project> GetByOrgaId(int id);
     public Project? GetById(int id);
-    public IEnumerable<PreparedCategory> GetMouvementsByProject(int idProjet);
+    public IEnumerable<PreparedCategory> GetMouvementsByProject(int idProjet, bool useDepenses);
     public PreparedGraphic GetGraphiqueRentreeByProjet(int idProjet);
     public PreparedGraphic GetGraphiqueDepenseByProjet(int idProjet);
     public int Create(Project project);

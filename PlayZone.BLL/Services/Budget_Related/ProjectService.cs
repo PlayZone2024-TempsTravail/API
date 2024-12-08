@@ -42,11 +42,11 @@ public class ProjectService : IProjectService
         return this._projectRepository.GetById(id)?.ToModel();
     }
 
-    public IEnumerable<PreparedCategory> GetMouvementsByProject(int idProjet)
+    public IEnumerable<PreparedCategory> GetMouvementsByProject(int idProjet, bool useDepenses)
     {
         List<PreparedCategory> preparedCategories = new List<PreparedCategory>();
 
-        foreach (Mouvement mouvement in this._projectRepository.GetMouvementsByProject(idProjet))
+        foreach (Mouvement mouvement in this._projectRepository.GetMouvementsByProject(idProjet, useDepenses))
         {
             PreparedCategory? preparedCategory = preparedCategories.FirstOrDefault(pc => pc.Name == mouvement.Category);
 
