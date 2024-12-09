@@ -5,7 +5,7 @@ namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class CategoryMapper
 {
-    public static Entities.Category ToEntities(this Category category)
+    public static Entities.Category ToEntity(this Category category)
     {
         return new Entities.Category
         {
@@ -16,7 +16,7 @@ public static class CategoryMapper
         };
     }
 
-    public static Category ToModels(this Entities.Category category)
+    public static Category ToModel(this Entities.Category category)
     {
         return new Category
         {

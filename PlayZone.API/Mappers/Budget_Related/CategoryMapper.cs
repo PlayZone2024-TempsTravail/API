@@ -16,7 +16,7 @@ public static class CategoryMapper
         };
     }
 
-    public static Models.Category ToModels(this CategoryDTO category)
+    public static Models.Category ToModel(this CategoryDTO category)
     {
         return new Models.Category
         {
@@ -27,7 +27,7 @@ public static class CategoryMapper
         };
     }
 
-    public static Models.Category ToModels(this CategoryCreateFormDTO category)
+    public static Models.Category ToModel(this CategoryCreateFormDTO category)
     {
         return new Models.Category
         {
@@ -37,7 +37,7 @@ public static class CategoryMapper
         };
     }
 
-    public static Models.Category ToModels(this CategoryUpdateFormDTO category)
+    public static Models.Category ToModel(this CategoryUpdateFormDTO category)
     {
         return new Models.Category
         {

@@ -16,16 +16,16 @@ public class ConfigurationService : IConfigurationService
 
     public IEnumerable<Configuration> GetAll()
     {
-        return this._configurationRepository.GetAll().Select(c => c.ToModels());
+        return this._configurationRepository.GetAll().Select(c => c.ToModel());
     }
 
     public Configuration? GetById(int id)
     {
-        return this._configurationRepository.GetById(id)?.ToModels();
+        return this._configurationRepository.GetById(id)?.ToModel();
     }
 
     public int Create(Configuration configuration)
     {
-        return this._configurationRepository.Create(configuration.ToEntities());
+        return this._configurationRepository.Create(configuration.ToEntity());
     }
 }

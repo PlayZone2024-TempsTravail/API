@@ -18,7 +18,7 @@ public static class LibeleMapper
         };
     }
 
-    public static Models.Libele ToModels(this LibeleDTO libele)
+    public static Models.Libele ToModel(this LibeleDTO libele)
     {
         return new Models.Libele
         {
@@ -30,7 +30,7 @@ public static class LibeleMapper
         };
     }
 
-    public static Models.Libele ToModels(this LibeleCreateFormDTO libele)
+    public static Models.Libele ToModel(this LibeleCreateFormDTO libele)
     {
         return new Models.Libele
         {
@@ -39,7 +39,7 @@ public static class LibeleMapper
         };
     }
 
-    public static Models.Libele ToModels(this LibeleUpdateFormDTO libele)
+    public static Models.Libele ToModel(this LibeleUpdateFormDTO libele)
     {
         return new Models.Libele
         {

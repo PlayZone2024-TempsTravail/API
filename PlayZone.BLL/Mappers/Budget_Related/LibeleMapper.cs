@@ -5,7 +5,7 @@ namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class LibeleMapper
 {
-    public static Entities.Libele ToEntities(this Libele libele)
+    public static Entities.Libele ToEntity(this Libele libele)
     {
         return new Entities.Libele
         {
@@ -17,7 +17,7 @@ public static class LibeleMapper
         };
     }
 
-    public static Libele ToModels(this Entities.Libele libele)
+    public static Libele ToModel(this Entities.Libele libele)
     {
         return new Libele
         {

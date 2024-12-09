@@ -66,7 +66,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] CategoryCreateFormDTO category)
         {
-            int resultId = this._categoryService.Create(category.ToModels());
+            int resultId = this._categoryService.Create(category.ToModel());
             if (resultId > 0)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, category);
@@ -82,7 +82,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] CategoryUpdateFormDTO category)
         {
-            Category updatedCategory = category.ToModels();
+            Category updatedCategory = category.ToModel();
             updatedCategory.IdCategory = id;
             if (this._categoryService.Update(updatedCategory))
             {

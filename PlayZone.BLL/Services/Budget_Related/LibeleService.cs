@@ -15,7 +15,7 @@ public class LibeleService : ILibeleService
 
     public IEnumerable<PlayZone.BLL.Models.Budget_Related.Libele> GetAll()
     {
-        return this._libeleRepository.GetAll().Select(u => u.ToModels());
+        return this._libeleRepository.GetAll().Select(u => u.ToModel());
     }
 
     public IEnumerable<TreeCategory> GetAllWithCategories()
@@ -41,17 +41,17 @@ public class LibeleService : ILibeleService
 
     public Libele? GetById(int id)
     {
-        return this._libeleRepository.GetById(id)?.ToModels();
+        return this._libeleRepository.GetById(id)?.ToModel();
     }
 
     public int Create(Libele libele)
     {
-        return this._libeleRepository.Create(libele.ToEntities());
+        return this._libeleRepository.Create(libele.ToEntity());
     }
 
     public bool Update(Libele libele)
     {
-        return this._libeleRepository.Update(libele.ToEntities());
+        return this._libeleRepository.Update(libele.ToEntity());
     }
 
     public bool Delete(int idLibele)
