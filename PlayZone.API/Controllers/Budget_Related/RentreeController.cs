@@ -39,7 +39,7 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
         }
 
-        [HttpGet("idorganisme/{id:int}")]
+        [HttpGet("projet/{id:int}")]
         [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeDTO))]
