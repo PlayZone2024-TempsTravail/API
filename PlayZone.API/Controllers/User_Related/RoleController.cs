@@ -31,9 +31,9 @@ public class RoleController : ControllerBase
             IEnumerable<RoleDTO> roles = this._roleService.GetAll().Select(r => r.ToDTO());
             return this.Ok(roles);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return this.StatusCode(StatusCodes.Status500InternalServerError);
+            return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 

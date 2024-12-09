@@ -20,8 +20,8 @@ public class RoleRepository : IRoleRepository
             SELECT
                 ""id_role"" AS IdRole,
                 ""name"",
-                ""isremovable"",
-                ""isvisible""
+                ""isRemovable"",
+                ""isVisible""
             FROM ""Role""
             ORDER BY ""id_role"";
         ";
@@ -34,8 +34,8 @@ public class RoleRepository : IRoleRepository
             SELECT
                 ""id_role"" AS IdRole,
                 ""name"",
-                ""isremovable"",
-                ""isvisible""
+                ""isRemovable"",
+                ""isVisible""
             FROM ""Role""
             WHERE ""id_role"" = @Id;
         ";
