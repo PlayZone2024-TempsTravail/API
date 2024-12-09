@@ -619,43 +619,43 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION get_TotalDays_By_Project(startDate DATE, endDate DATE)
-    RETURNS TABLE (
-                      "ProjectId"     VARCHAR,
-                      "ProjectName"   VARCHAR,
-                      "TotalDays"     DECIMAL
-                  ) AS $$
+CREATE FUNCTION get_TotalDays_By_Project(startDate TIMESTAMP, endDate TIMESTAMP)
+RETURNS TABLE (
+    "ProjectId"     VARCHAR,
+    "ProjectName"   VARCHAR,
+    "TotalDays"     DECIMAL
+) AS $$
 BEGIN
     RETURN QUERY
-        WITH work AS (
-            SELECT
-                COALESCE(w.project_id, 0) AS projectId,
-                COALESCE(p.name, 'Vie IEC') AS projectName,
-                calculate_interval_worktime(w."start", w."end") AS projectHours
-            FROM "WorkTime" w
-                     LEFT JOIN "Project" p ON w.project_id = p.id_project
-            WHERE w.category_id = 7
-              AND (p.date_debut_projet BETWEEN startDate AND endDate OR w.project_id IS NULL)
-              AND (p.date_fin_projet BETWEEN startDate AND endDate OR w.project_id IS NULL)
-        ),
-             projects AS (
-                 SELECT "Project".id_project,"Project".name
-                 FROM "Project"
-                 WHERE date_debut_projet BETWEEN startDate AND endDate
-                   AND date_fin_projet BETWEEN startDate AND endDate
-                 UNION ALL
-                 SELECT 0, 'Vie IEC'
-             )
+    WITH work AS (
         SELECT
-            CASE
-                WHEN p.id_project = 0 THEN 'VIEC'
-                ELSE p.id_project::varchar
-                END AS ProjectId,
-            p.name,
-            COALESCE(ROUND(SUM(w.projectHours)::DEC/8, 2), 0) AS TotalDays
-        FROM projects p
-                 LEFT JOIN work w ON p.id_project = w.projectId
-        GROUP BY p.id_project, p.name
-        ORDER BY TotalDays DESC NULLS LAST;
+            COALESCE(w.project_id, 0) AS projectId,
+            COALESCE(p.name, 'Vie IEC') AS projectName,
+            calculate_interval_worktime(w."start", w."end") AS projectHours
+        FROM "WorkTime" w
+        LEFT JOIN "Project" p ON w.project_id = p.id_project
+        WHERE w.category_id = 7
+        AND (p.date_debut_projet BETWEEN startDate AND endDate OR w.project_id IS NULL)
+        AND (p.date_fin_projet BETWEEN startDate AND endDate OR w.project_id IS NULL)
+    ),
+    projects AS (
+        SELECT "Project".id_project,"Project".name
+        FROM "Project"
+        WHERE date_debut_projet BETWEEN startDate AND endDate
+        AND date_fin_projet BETWEEN startDate AND endDate
+        UNION ALL
+        SELECT 0, 'Vie IEC'
+    )
+    SELECT
+        CASE
+            WHEN p.id_project = 0 THEN 'VIEC'
+            ELSE p.id_project::varchar
+        END AS ProjectId,
+        p.name,
+        COALESCE(ROUND(SUM(w.projectHours)::DEC/8, 2), 0) AS TotalDays
+    FROM projects p
+    LEFT JOIN work w ON p.id_project = w.projectId
+    GROUP BY p.id_project, p.name
+    ORDER BY TotalDays DESC NULLS LAST;
 END;
 $$ LANGUAGE plpgsql;
