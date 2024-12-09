@@ -2,10 +2,12 @@
 
 public class PrevisionBudgetCategory
 {
-    public int idPrevisionBudgetCategory { get; set; }
-    public int projectId { get; set; }
-    public int categoryId { get; set; }
-    public string motif { get; set; }
-    public DateTime date { get; set; }
-    public decimal montant { get; set; }
+    public int IdPrevisionBudgetCategory { get; set; }
+    public int ProjectId { get; set; }
+    public int CategoryId { get; set; }
+    public string CategoryName { get; set; }
+    public bool IsIncome { get; set; }
+    public string Motif { get; set; }
+    public DateTime Date { get; set; }
+    public decimal Montant { get; set; }
 }

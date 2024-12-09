@@ -33,9 +33,9 @@ namespace PlayZone.API.Controllers.Budget_Related
                     .Select(pbc => pbc.ToDTO());
                 return this.Ok(pbcs);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -90,7 +90,7 @@ namespace PlayZone.API.Controllers.Budget_Related
             try
             {
                 Models.PrevisionBudgetCategory pbcModel = pbc.ToModel();
-                pbcModel.idPrevisionBudgetCategory = id;
+                pbcModel.IdPrevisionBudgetCategory = id;
 
                 if (this._pbcs.Update(pbcModel))
                     return this.Ok();

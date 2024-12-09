@@ -17,14 +17,17 @@ public class PrevisionBudgetCategoryRepository : IPrevisionBudgetCategoryReposit
     {
         const string query = @"
             SELECT
-                ""id_prevision_budget_category"" AS ""idPrevisionBudgetCategory"" ,
-                ""project_id"" AS ""projectId"",
-                ""category_id"" AS ""categoryId"",
-                ""date"",
-                ""motif"",
-                ""montant""
-            FROM ""Prevision_Budget_Category""
-            WHERE ""project_id"" = @projectId;
+                p.""id_prevision_budget_category"" AS ""idPrevisionBudgetCategory"" ,
+                p.""project_id"" AS ""projectId"",
+                p.""category_id"" AS ""categoryId"",
+                c.name AS ""categoryName"",
+                p.""date"",
+                p.""motif"",
+                p.""montant"",
+                c.""isIncome"" AS ""IsIncome""
+            FROM ""Prevision_Budget_Category"" p
+            INNER JOIN ""Category"" c ON p.category_id = c.id_category
+            WHERE ""project_id"" = @projectId
         ";
         return this._connection.Query<PrevisionBudgetCategory>(query, new { projectId = projectId });
     }
@@ -33,13 +36,16 @@ public class PrevisionBudgetCategoryRepository : IPrevisionBudgetCategoryReposit
     {
         const string query = @"
             SELECT
-                ""id_prevision_budget_category"" AS ""idPrevisionBudgetCategory"" ,
-                ""project_id"" AS ""projectId"",
-                ""category_id"" AS ""categoryId"",
-                ""date"",
-                ""motif"",
-                ""montant""
-            FROM ""Prevision_Budget_Category""
+                p.""id_prevision_budget_category"" AS ""idPrevisionBudgetCategory"" ,
+                p.""project_id"" AS ""projectId"",
+                p.""category_id"" AS ""categoryId"",
+                c.name AS ""categoryName"",
+                p.""date"",
+                p.""motif"",
+                p.""montant"",
+                c.""isIncome"" AS ""IsIncome""
+            FROM ""Prevision_Budget_Category"" p
+            INNER JOIN ""Category"" c ON p.category_id = c.id_category
             WHERE ""id_prevision_budget_category"" = @id;
         ";
         return this._connection.QuerySingleOrDefault<PrevisionBudgetCategory>(query, new { id = id });
@@ -54,11 +60,11 @@ public class PrevisionBudgetCategoryRepository : IPrevisionBudgetCategoryReposit
         ";
         return this._connection.QuerySingleOrDefault<int>(query, new
         {
-            projectId = pbc.projectId,
-            categoryId = pbc.categoryId,
-            date = pbc.date,
-            motif = pbc.motif,
-            montant = pbc.montant
+            projectId = pbc.ProjectId,
+            categoryId = pbc.CategoryId,
+            date = pbc.Date,
+            motif = pbc.Motif,
+            montant = pbc.Montant
         });
     }
 
@@ -74,10 +80,10 @@ public class PrevisionBudgetCategoryRepository : IPrevisionBudgetCategoryReposit
         ";
         int affectedRows = this._connection.Execute(query, new
         {
-            id = previsionBudgetCategory.idPrevisionBudgetCategory,
-            date = previsionBudgetCategory.date,
-            montant = previsionBudgetCategory.montant,
-            motif = previsionBudgetCategory.motif
+            id = previsionBudgetCategory.IdPrevisionBudgetCategory,
+            date = previsionBudgetCategory.Date,
+            montant = previsionBudgetCategory.Montant,
+            motif = previsionBudgetCategory.Motif
         });
         return affectedRows > 0;
     }

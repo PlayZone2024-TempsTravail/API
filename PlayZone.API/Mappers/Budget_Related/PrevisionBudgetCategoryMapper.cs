@@ -9,12 +9,14 @@ public static class PrevisionBudgetCategoryMapper
     {
         return new Models.PrevisionBudgetCategory
         {
-            idPrevisionBudgetCategory = dto.idPrevisionBudgetCategory,
-            projectId = dto.projectId,
-            categoryId = dto.categoryId,
-            date = dto.date,
-            montant = dto.montant,
-            motif = dto.motif
+            IdPrevisionBudgetCategory = dto.IdPrevisionBudgetCategory,
+            ProjectId = dto.ProjectId,
+            CategoryId = dto.CategoryId,
+            CategoryName = dto.CategoryName,
+            IsIncome = dto.IsIncome,
+            Date = dto.Date,
+            Montant = dto.Montant,
+            Motif = dto.Motif
         };
     }
 
@@ -22,12 +24,11 @@ public static class PrevisionBudgetCategoryMapper
     {
         return new Models.PrevisionBudgetCategory
         {
-
-            projectId = dto.projectId,
-            categoryId = dto.categoryId,
-            date = dto.date,
-            montant = dto.montant,
-            motif = dto.motif
+            ProjectId = dto.projectId,
+            CategoryId = dto.categoryId,
+            Date = dto.date,
+            Montant = dto.montant,
+            Motif = dto.motif
         };
     }
 
@@ -35,9 +36,9 @@ public static class PrevisionBudgetCategoryMapper
     {
         return new Models.PrevisionBudgetCategory
         {
-            date = dto.date,
-            montant = dto.montant,
-            motif = dto.motif
+            Date = dto.date,
+            Montant = dto.montant,
+            Motif = dto.motif
         };
     }
 
@@ -45,12 +46,14 @@ public static class PrevisionBudgetCategoryMapper
     {
         return new PrevisionBudgetCategoryDTO
         {
-            idPrevisionBudgetCategory = model.idPrevisionBudgetCategory,
-            projectId = model.projectId,
-            categoryId = model.categoryId,
-            date = model.date,
-            montant = model.montant,
-            motif = model.motif
+            IdPrevisionBudgetCategory = model.IdPrevisionBudgetCategory,
+            ProjectId = model.ProjectId,
+            CategoryId = model.CategoryId,
+            CategoryName = model.CategoryName,
+            IsIncome = model.IsIncome,
+            Date = model.Date,
+            Montant = model.Montant,
+            Motif = model.Motif
         };
     }
 }
