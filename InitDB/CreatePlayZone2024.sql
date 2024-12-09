@@ -28,7 +28,7 @@ CREATE TABLE "Role_Permission" (
 
     CONSTRAINT PK_Role_Permission PRIMARY KEY ("role_id", "permission_id"),
 
-    CONSTRAINT FK__Role_Permission__role_id FOREIGN KEY ("role_id") REFERENCES "Role"("id_role")
+    CONSTRAINT FK__Role_Permission__role_id FOREIGN KEY ("role_id") REFERENCES "Role"("id_role") ON DELETE CASCADE
 );
 
 CREATE TABLE "User" (
