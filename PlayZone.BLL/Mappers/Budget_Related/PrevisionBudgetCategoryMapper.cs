@@ -9,12 +9,14 @@ public static class PrevisionBudgetCategoryMapper
     {
         return new PrevisionBudgetCategory
         {
-            idPrevisionBudgetCategory = entity.idPrevisionBudgetCategory,
-            projectId = entity.projectId,
-            categoryId = entity.categoryId,
-            date = entity.date,
-            montant = entity.montant,
-            motif = entity.motif
+            IdPrevisionBudgetCategory = entity.IdPrevisionBudgetCategory,
+            ProjectId = entity.ProjectId,
+            CategoryId = entity.CategoryId,
+            CategoryName = entity.CategoryName,
+            IsIncome = entity.IsIncome,
+            Date = entity.Date,
+            Montant = entity.Montant,
+            Motif = entity.Motif
         };
     }
 
@@ -22,12 +24,14 @@ public static class PrevisionBudgetCategoryMapper
     {
         return new Entities.PrevisionBudgetCategory
         {
-            idPrevisionBudgetCategory = model.idPrevisionBudgetCategory,
-            projectId = model.projectId,
-            categoryId = model.categoryId,
-            date = model.date,
-            montant = model.montant,
-            motif = model.motif
+            IdPrevisionBudgetCategory = model.IdPrevisionBudgetCategory,
+            ProjectId = model.ProjectId,
+            CategoryId = model.CategoryId,
+            CategoryName = model.CategoryName,
+            IsIncome = model.IsIncome,
+            Date = model.Date,
+            Montant = model.Montant,
+            Motif = model.Motif
         };
     }
 }
