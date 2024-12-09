@@ -30,4 +30,8 @@
       </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+    </ItemGroup>
+
 </Project>

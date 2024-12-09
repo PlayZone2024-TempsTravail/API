@@ -5,6 +5,7 @@ using PlayZone.BLL.Models.Rapport_Related;
 using PlayZone.DAL.Interfaces.Rapport_Related;
 using PlayZone.Razor.Services;
 using PlayZone.Razor.Views;
+using WorktimeProject = PlayZone.BLL.Models.Rapport_Related.WorktimeProject;
 
 namespace PlayZone.BLL.Services.Rapport_Related;
 
@@ -54,8 +55,14 @@ public class RapportService : IRapportService
         );
     }
 
+    public byte[] GetWorktimeProjectRapport(DateTime start, DateTime end)
+    {
+        IEnumerable<WorktimeProject> rapportProjects = this._wrr.GetTotalDaysProject(start, end).Select(w => w.ToModel());
 
-
-
-
+        return this.Generate(
+            new TotalDaysByProjectRapport(rapportProjects.Select(rp => rp.ToRazor())),
+            "TotalDaysByProjectRapport.cshtml",
+            "Heures Préstées par Projet"
+        );
+    }
 }

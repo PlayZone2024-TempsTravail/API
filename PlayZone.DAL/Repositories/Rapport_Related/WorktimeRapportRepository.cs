@@ -24,4 +24,16 @@ public class WorktimeRapportRepository : IWorktimeRapportRepository
         ";
         return this._connection.Query<WorktimeRapport>(query);
     }
+
+    public IEnumerable<WorktimeProject> GetTotalDaysProject(DateTime start, DateTime end)
+    {
+        const string query = @"
+            SELECT
+                ""ProjectId"" AS ProjectId,
+                ""ProjectName"" AS ProjectName,
+                ""TotalDays"" AS TotalDays
+            FROM get_TotalDays_By_Project(@start, @end);
+        ";
+        return this._connection.Query<WorktimeProject>(query, new { start = start, end = end });
+    }
 }

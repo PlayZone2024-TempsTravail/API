@@ -1,0 +1,117 @@
+﻿@using PlayZone.Razor.Models
+@model PlayZone.Razor.Views.TotalDaysByProjectRapport
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Rapport des compteurs d'absenses</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            font-size: 12px;
+        }
+
+        h1 {
+            color: #004080;
+            border-bottom: 1px solid #004080;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        h2 {
+            font-size: 1em;
+            margin: 5px 0;
+            color: #004080;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #004080;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        tfoot {
+            background-color: #004080;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tfoot td {
+            text-align: right;
+        }
+
+        .montant {
+            text-align: right;
+        }
+
+        body > div:not(:last-child) {
+            page-break-after: always;
+        }
+
+        body > div > div {
+            padding-top: .5rem;
+            padding-bottom: 1rem;
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+
+<body>
+<table>
+
+    <thead>
+        <tr>
+            <th>N° Projet</th>
+            <th>Projet</th>
+            <th>Nombre jour</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @foreach (TotalDaysByProjectModel wrrm in Model.DaysByProject)
+    {
+    <tr>
+        <td>@wrrm.ProjectId</td>
+        <td>@wrrm.ProjectName</td>
+        <td>@wrrm.TotalDays</td>
+    </tr>
+    }
+    </tbody>
+</table>
+</body>
+</html>
+

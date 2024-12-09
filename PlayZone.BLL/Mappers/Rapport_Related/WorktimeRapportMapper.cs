@@ -13,4 +13,6 @@ public static class WorktimeRapportMapper
             Counters = new Dictionary<string, int>(preparedWorktimeRapport.Counters)
         };
     }
+
+
 }

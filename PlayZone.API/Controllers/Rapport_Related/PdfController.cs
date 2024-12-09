@@ -30,4 +30,15 @@ public class PdfController : ControllerBase
             true
         );
     }
+
+    [HttpGet("totalhours")]
+    public IActionResult GenerateTotalHoursPdf(DateTime start, DateTime end)
+    {
+        return this.File(
+            this._rapportService.GetWorktimeProjectRapport(start, end),
+            "application/pdf",
+            "rapport.pdf",
+            true
+        );
+    }
 }

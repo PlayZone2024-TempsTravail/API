@@ -3,4 +3,5 @@
 public interface IRapportService
 {
     public byte[] GetWorktimeCounterRapport();
+    public byte[] GetWorktimeProjectRapport(DateTime start, DateTime end);
 }
