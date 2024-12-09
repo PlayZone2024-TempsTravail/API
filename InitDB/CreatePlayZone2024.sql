@@ -50,8 +50,10 @@ CREATE TABLE "User" (
 );
 
 CREATE TABLE "User_Role" (
-    "user_id"   INT,
-    "role_id"   INT,
+    "user_id"       INT,
+    "role_id"       INT,
+    "isRemovale"    BOOLEAN DEFAULT TRUE,
+    "isVisible"     BOOLEAN DEFAULT TRUE,
 
     CONSTRAINT PK__User_Role PRIMARY KEY ("user_id", "role_id"),
 
@@ -617,3 +619,18 @@ BEGIN
     FULL JOIN cross_heuressup_compteur c ON u."id_workTime_category" = c.category_id;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION check_isremovable()
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT NEW.isremovable THEN
+        RAISE EXCEPTION 'Role Interdit à la suppresion';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_delete
+    BEFORE DELETE ON "Role"
+    FOR EACH ROW
+EXECUTE FUNCTION check_isremovable();

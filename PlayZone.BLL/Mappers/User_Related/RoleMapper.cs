@@ -10,7 +10,9 @@ public static class RoleMapper
         return new Role
         {
             IdRole = role.IdRole,
-            Name = role.Name
+            Name = role.Name,
+            IsRemovable = role.IsRemovable,
+            IsVisible = role.IsVisible
         };
     }
 
@@ -19,7 +21,9 @@ public static class RoleMapper
         return new Entities.Role
         {
             IdRole = role.IdRole,
-            Name = role.Name
+            Name = role.Name,
+            IsRemovable = role.IsRemovable,
+            IsVisible = role.IsVisible
         };
     }
 }
