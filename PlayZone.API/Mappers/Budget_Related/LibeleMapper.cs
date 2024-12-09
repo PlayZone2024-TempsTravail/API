@@ -11,8 +11,10 @@ public static class LibeleMapper
         return new LibeleDTO
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
@@ -21,8 +23,10 @@ public static class LibeleMapper
         return new Models.Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
@@ -31,7 +35,7 @@ public static class LibeleMapper
         return new Models.Libele
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            LibeleName = libele.Name
         };
     }
 
@@ -40,7 +44,7 @@ public static class LibeleMapper
         return new Models.Libele
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            LibeleName = libele.Name
         };
     }
 

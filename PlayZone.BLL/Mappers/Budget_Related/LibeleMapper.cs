@@ -10,8 +10,10 @@ public static class LibeleMapper
         return new Entities.Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
@@ -20,8 +22,10 @@ public static class LibeleMapper
         return new Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 }

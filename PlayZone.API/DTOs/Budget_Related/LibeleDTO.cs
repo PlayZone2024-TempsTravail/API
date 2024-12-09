@@ -2,9 +2,11 @@
 
 public class LibeleDTO
 {
-    public int IdLibele { get; set; }
-    public int IdCategory { get; set; }
-    public string Name { get; set; }
+    public bool IsIncome { get; set; }
+    public int IdCategory  { get; set; }
+    public string CategoryName  { get; set; }
+    public int IdLibele  { get; set; }
+    public string LibeleName  { get; set; }
 }
 
 public class LibeleCreateFormDTO
