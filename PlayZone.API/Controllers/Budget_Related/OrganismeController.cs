@@ -100,7 +100,7 @@ public class OrganismeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] OrganismeCreateFormDTO organisme)
     {
-        int resultId = this._organismeService.Create(organisme.ToModels());
+        int resultId = this._organismeService.Create(organisme.ToModel());
         if (resultId > 0)
         {
             return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, organisme);
@@ -115,7 +115,7 @@ public class OrganismeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int id, [FromBody] OrganismeUpdateFormDTO organisme)
     {
-        Organisme updatedOrganisme = organisme.ToModels();
+        Organisme updatedOrganisme = organisme.ToModel();
         updatedOrganisme.IdOrganisme = id;
         if (this._organismeService.Update(updatedOrganisme))
         {

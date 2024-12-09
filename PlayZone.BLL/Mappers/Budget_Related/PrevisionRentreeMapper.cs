@@ -10,6 +10,8 @@ public static class PrevisionRentreeMapper
         return new Entities.PrevisionRentree
         {
             IdPrevisionRentree = previsionRentree.IdPrevisionRentree,
+            CategoryId = previsionRentree.CategoryId,
+            CategoryName = previsionRentree.CategoryName,
             LibeleId = previsionRentree.LibeleId,
             ProjectId = previsionRentree.ProjectId,
             OrganismeId = previsionRentree.OrganismeId,
@@ -24,6 +26,8 @@ public static class PrevisionRentreeMapper
         return new PrevisionRentree
         {
             IdPrevisionRentree = previsionRentree.IdPrevisionRentree,
+            CategoryId = previsionRentree.CategoryId,
+            CategoryName = previsionRentree.CategoryName,
             LibeleId = previsionRentree.LibeleId,
             LibeleName = previsionRentree.LibeleName,
             ProjectId = previsionRentree.ProjectId,

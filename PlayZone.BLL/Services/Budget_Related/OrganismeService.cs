@@ -16,32 +16,32 @@ public class OrganismeService : IOrganismeService
 
     public IEnumerable<Organisme> GetAll()
     {
-        return this._organismeRepository.GetAll().Select(o => o.ToModels());
+        return this._organismeRepository.GetAll().Select(o => o.ToModel());
     }
 
     public IEnumerable<Organisme> GetAllFournisseursFirst()
     {
-        return this._organismeRepository.GetAllFournisseursFirst().Select(o => o.ToModels());
+        return this._organismeRepository.GetAllFournisseursFirst().Select(o => o.ToModel());
     }
 
     public IEnumerable<Organisme> GetAllClientsFirst()
     {
-        return this._organismeRepository.GetAllClientsFirst().Select(o => o.ToModels());
+        return this._organismeRepository.GetAllClientsFirst().Select(o => o.ToModel());
     }
 
     public Organisme? GetById(int id)
     {
-        return this._organismeRepository.GetById(id)?.ToModels();
+        return this._organismeRepository.GetById(id)?.ToModel();
     }
 
     public int Create(Organisme organisme)
     {
-        return this._organismeRepository.Create(organisme.ToEntities());
+        return this._organismeRepository.Create(organisme.ToEntity());
     }
 
     public bool Update(Organisme organisme)
     {
-        return this._organismeRepository.Update(organisme.ToEntities());
+        return this._organismeRepository.Update(organisme.ToEntity());
     }
 
     public bool Delete(int id)

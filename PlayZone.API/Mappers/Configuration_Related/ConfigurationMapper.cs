@@ -16,7 +16,7 @@ public static class ConfigurationMapper
         };
     }
 
-    public static Models.Configuration ToModels(this ConfigurationCreateFormDTO configuration)
+    public static Models.Configuration ToModel(this ConfigurationCreateFormDTO configuration)
     {
         return new Models.Configuration
         {

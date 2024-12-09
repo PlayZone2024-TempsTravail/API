@@ -109,7 +109,8 @@ namespace PlayZone.DAL.Repositories.User_Related
                 UPDATE ""User"" SET
                     ""nom"" = @Nom,
                     ""prenom"" = @Prenom,
-                    ""email"" = @Email
+                    ""email"" = @Email,
+                    ""isActive"" = @IsActive
                 WHERE ""id_user"" = @IdUser;
             ";
             int affectedRows = this._connection.Execute(query, new
@@ -117,7 +118,8 @@ namespace PlayZone.DAL.Repositories.User_Related
                 user.IdUser,
                 user.Nom,
                 user.Prenom,
-                user.Email
+                user.Email,
+                user.IsActive
             });
             return affectedRows > 0;
         }

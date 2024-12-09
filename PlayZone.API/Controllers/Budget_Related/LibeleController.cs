@@ -81,7 +81,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] LibeleCreateFormDTO libele)
         {
-            int resultId = this._libeleService.Create(libele.ToModels());
+            int resultId = this._libeleService.Create(libele.ToModel());
             if (resultId > 0)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, libele);
@@ -97,7 +97,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] LibeleUpdateFormDTO libele)
         {
-            Libele updatedLibele = libele.ToModels();
+            Libele updatedLibele = libele.ToModel();
             updatedLibele.IdLibele = id;
             if (this._libeleService.Update(updatedLibele))
             {

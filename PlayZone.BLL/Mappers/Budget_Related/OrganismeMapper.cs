@@ -5,7 +5,7 @@ namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class OrganismeMapper
 {
-    public static Entities.Organisme ToEntities(this Organisme organisme)
+    public static Entities.Organisme ToEntity(this Organisme organisme)
     {
         return new Entities.Organisme
         {
@@ -14,7 +14,7 @@ public static class OrganismeMapper
         };
     }
 
-    public static Organisme ToModels(this Entities.Organisme organisme)
+    public static Organisme ToModel(this Entities.Organisme organisme)
     {
         return new Organisme
         {

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using PlayZone.DAL.Entities.Budget_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
@@ -8,10 +9,12 @@ namespace PlayZone.DAL.Repositories.Budget_Related;
 public class PrevisionRentreeRepository : IPrevisionRentreeRepository
 {
     private readonly NpgsqlConnection _connection;
+    private ILogger<PrevisionRentreeRepository> _logger;
 
-    public PrevisionRentreeRepository(NpgsqlConnection connection)
+    public PrevisionRentreeRepository(NpgsqlConnection connection, ILogger<PrevisionRentreeRepository> logger)
     {
         this._connection = connection;
+        this._logger = logger;
     }
 
     public IEnumerable<PrevisionRentree> GetByProject(int projectId)
@@ -19,14 +22,18 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
         const string query = @"
             SELECT
                 pr.""id_prevision_rentree"" AS ""IdPrevisionRentree"",
+                l.category_id AS ""CategoryId"",
+                c.name AS ""CategoryName"",
                 pr.""libele_id"" AS ""LibeleId"",
                 l.name AS ""LibeleName"",
                 pr.""organisme_id"" AS ""OrganismeId"",
                 pr.""date"" AS ""Date"",
                 pr.""motif"" AS ""Motif"",
-                pr.""montant"" AS ""Montant""
+                pr.""montant"" AS ""Montant"",
+                pr.""project_id"" AS ""ProjectId""
             FROM ""Prevision_Rentree"" pr
             INNER JOIN ""Libele"" l ON pr.libele_id = l.id_libele
+            INNER JOIN ""Category"" c ON l.category_id = c.id_category
             WHERE ""project_id"" = @ProjectId;
         ";
         return this._connection.Query<PrevisionRentree>(query, new { ProjectId = projectId });
@@ -37,15 +44,18 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
         const string query = @"
             SELECT
                 pr.""id_prevision_rentree"" AS ""IdPrevisionRentree"",
+                l.category_id AS ""CategoryId"",
+                c.name AS ""CategoryName"",
                 pr.""libele_id"" AS ""LibeleId"",
                 l.name AS ""LibeleName"",
-                pr.""project_id"" AS ""ProjectId"",
                 pr.""organisme_id"" AS ""OrganismeId"",
                 pr.""date"" AS ""Date"",
                 pr.""motif"" AS ""Motif"",
-                pr.""montant"" AS ""Montant""
+                pr.""montant"" AS ""Montant"",
+                pr.""project_id"" AS ""ProjectId""
             FROM ""Prevision_Rentree"" pr
             INNER JOIN ""Libele"" l ON pr.libele_id = l.id_libele
+            INNER JOIN ""Category"" c ON l.category_id = c.id_category
             WHERE ""id_prevision_rentree"" = @IdPrevisionRentree;
         ";
         return this._connection.QuerySingleOrDefault<PrevisionRentree>(query, new { IdPrevisionRentree = id });

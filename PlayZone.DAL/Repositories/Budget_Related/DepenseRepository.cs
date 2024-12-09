@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using PlayZone.DAL.Entities.Budget_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
@@ -14,7 +15,6 @@ public class DepenseRepository : IDepenseRepository
     {
         this._connection = connection;
     }
-
 
     public IEnumerable<Depense> GetByProjectId(int id)
     {
@@ -82,7 +82,7 @@ public class DepenseRepository : IDepenseRepository
             depense.IdDepense,
             depense.LibeleId,
             depense.ProjectId,
-            depense.OrganismeId,
+            OrganismeId = (depense.OrganismeId == 0) ? (int?)null : 0,
             depense.Montant,
             depense.DateIntervention,
             depense.DateFacturation,

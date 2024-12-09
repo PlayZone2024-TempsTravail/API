@@ -11,7 +11,7 @@ public static class PrevisionBudgetLibeleMapper
         {
             IdPrevisionBudgetLibele = model.IdPrevisionBudgetLibele,
             IdProject = model.IdProject,
-            IdLibele = model.IdLibele,
+            LibeleId = model.LibeleId,
             Date = model.Date,
             Motif = model.Motif,
             Montant = model.Montant
@@ -23,7 +23,10 @@ public static class PrevisionBudgetLibeleMapper
         {
             IdPrevisionBudgetLibele = entity.IdPrevisionBudgetLibele,
             IdProject = entity.IdProject,
-            IdLibele = entity.IdLibele,
+            CategoryId = entity.CategoryId,
+            CategoryName = entity.CategoryName,
+            LibeleId = entity.LibeleId,
+            LibeleName = entity.LibeleName,
             Date = entity.Date,
             Motif = entity.Motif,
             Montant = entity.Montant

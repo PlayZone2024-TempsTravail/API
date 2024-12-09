@@ -11,36 +11,40 @@ public static class LibeleMapper
         return new LibeleDTO
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
-    public static Models.Libele ToModels(this LibeleDTO libele)
+    public static Models.Libele ToModel(this LibeleDTO libele)
     {
         return new Models.Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
-    public static Models.Libele ToModels(this LibeleCreateFormDTO libele)
+    public static Models.Libele ToModel(this LibeleCreateFormDTO libele)
     {
         return new Models.Libele
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            LibeleName = libele.Name
         };
     }
 
-    public static Models.Libele ToModels(this LibeleUpdateFormDTO libele)
+    public static Models.Libele ToModel(this LibeleUpdateFormDTO libele)
     {
         return new Models.Libele
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            LibeleName = libele.Name
         };
     }
 

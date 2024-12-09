@@ -5,23 +5,27 @@ namespace PlayZone.BLL.Mappers.Budget_Related;
 
 public static class LibeleMapper
 {
-    public static Entities.Libele ToEntities(this Libele libele)
+    public static Entities.Libele ToEntity(this Libele libele)
     {
         return new Entities.Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
-    public static Libele ToModels(this Entities.Libele libele)
+    public static Libele ToModel(this Entities.Libele libele)
     {
         return new Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 }

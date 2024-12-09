@@ -16,22 +16,22 @@ public class CategoryService : ICategoryService
 
     public IEnumerable<Category> GetAll()
     {
-        return this._categoryRepository.GetAll().Select(c => c.ToModels());
+        return this._categoryRepository.GetAll().Select(c => c.ToModel());
     }
 
     public Category? GetById(int id)
     {
-        return this._categoryRepository.GetById(id)?.ToModels();
+        return this._categoryRepository.GetById(id)?.ToModel();
     }
 
     public int Create(Category category)
     {
-        return this._categoryRepository.Create(category.ToEntities());
+        return this._categoryRepository.Create(category.ToEntity());
     }
 
     public bool Update(Category category)
     {
-        return this._categoryRepository.Update(category.ToEntities());
+        return this._categoryRepository.Update(category.ToEntity());
     }
 
     public bool Delete(int id)

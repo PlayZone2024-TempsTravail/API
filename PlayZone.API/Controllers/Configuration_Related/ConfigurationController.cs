@@ -61,7 +61,7 @@ namespace PlayZone.API.Controllers.Configuration_Related
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public IActionResult Create([FromBody] ConfigurationCreateFormDTO configuration)
         {
-            int resultId = this._configurationService.Create(configuration.ToModels());
+            int resultId = this._configurationService.Create(configuration.ToModel());
             if (resultId > 0)
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, configuration);

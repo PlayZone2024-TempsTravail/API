@@ -23,6 +23,8 @@ using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Injection de la connection DB
 builder.Services.AddTransient<NpgsqlConnection>(service =>
