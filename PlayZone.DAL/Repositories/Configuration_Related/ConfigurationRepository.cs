@@ -19,11 +19,17 @@ public class ConfigurationRepository : IConfigurationRepository
     {
         const string query = @"
             SELECT
-                 ""id_configuration"" AS ""IdConfiguration"",
-                ""date"" AS ""Date"",
-                ""parameter_name"" AS ""ParameterName"",
-                ""parameter_value"" AS ""ParameterValue""
-            FROM ""Configuration""
+                c.""id_configuration"" AS ""IdConfiguration"",
+                c.""parameter_name"" AS ""ParameterName"",
+                c.""parameter_value"" AS ""ParameterValue""
+            FROM ""Configuration"" c
+            INNER JOIN (
+                SELECT parameter_name, MAX(date) date
+                FROM ""Configuration""
+                GROUP BY parameter_name
+            ) d
+            ON c.parameter_name = d.parameter_name
+            AND c.date = d.date
         ";
         return this._connection.Query<Configuration>(query);
     }
@@ -32,12 +38,17 @@ public class ConfigurationRepository : IConfigurationRepository
     {
         const string query = @"
                 SELECT
-                    ""id_configuration"" AS ""IdConfiguration"",
-                    ""date"" AS ""Date"",
-                    ""parameter_name"" AS ""ParameterName"",
-                    ""parameter_value"" AS ""ParameterValue""
-                FROM ""Configuration""
-                WHERE ""id_configuration"" = @IdConfiguration;
+                    c.""id_configuration"" AS ""IdConfiguration"",
+                    c.""parameter_name"" AS ""ParameterName"",
+                    c.""parameter_value"" AS ""ParameterValue""
+                FROM ""Configuration"" c
+                INNER JOIN (
+                    SELECT parameter_name, MAX(date) date
+                    FROM ""Configuration""
+                    GROUP BY parameter_name
+                ) d
+                ON c.parameter_name = d.parameter_name
+                AND c.date = d.date
             ";
             return this._connection.QueryFirstOrDefault<Configuration>(query, new { IdConfiguration = id });
     }
@@ -46,12 +57,10 @@ public class ConfigurationRepository : IConfigurationRepository
     {
         const string query = @"
                 INSERT INTO ""Configuration"" (
-                    ""date"",
                     ""parameter_name"",
                     ""parameter_value""
                 )
                 VALUES (
-                    @Date,
                     @ParameterName,
                     @ParameterValue
                 )
@@ -59,7 +68,6 @@ public class ConfigurationRepository : IConfigurationRepository
             ";
         int resultId = this._connection.QuerySingle<int>(query, new
         {
-            Date = configuration.Date,
             ParameterName = configuration.ParameterName,
             ParameterValue = configuration.ParameterValue
         });

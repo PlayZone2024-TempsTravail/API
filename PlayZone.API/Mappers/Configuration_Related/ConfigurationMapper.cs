@@ -10,7 +10,6 @@ public static class ConfigurationMapper
         return new ConfigurationDTO
         {
             IdConfiguration = configuration.IdConfiguration,
-            Date = configuration.Date,
             ParameterName = configuration.ParameterName,
             ParameterValue = configuration.ParameterValue
         };
@@ -20,7 +19,6 @@ public static class ConfigurationMapper
     {
         return new Models.Configuration
         {
-            Date = configuration.Date,
             ParameterName = configuration.ParameterName,
             ParameterValue = configuration.ParameterValue
         };
