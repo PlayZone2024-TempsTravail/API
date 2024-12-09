@@ -19,6 +19,8 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
         const string query = @"
             SELECT
                 pr.""id_prevision_rentree"" AS ""IdPrevisionRentree"",
+                l.category_id AS ""CategoryId"",
+                c.name AS ""CategoryName"",
                 pr.""libele_id"" AS ""LibeleId"",
                 l.name AS ""LibeleName"",
                 pr.""organisme_id"" AS ""OrganismeId"",
@@ -27,6 +29,7 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
                 pr.""montant"" AS ""Montant""
             FROM ""Prevision_Rentree"" pr
             INNER JOIN ""Libele"" l ON pr.libele_id = l.id_libele
+            INNER JOIN ""Category"" c ON l.category_id = c.id_category
             WHERE ""project_id"" = @ProjectId;
         ";
         return this._connection.Query<PrevisionRentree>(query, new { ProjectId = projectId });
@@ -37,15 +40,17 @@ public class PrevisionRentreeRepository : IPrevisionRentreeRepository
         const string query = @"
             SELECT
                 pr.""id_prevision_rentree"" AS ""IdPrevisionRentree"",
+                l.category_id AS ""CategoryId"",
+                c.name AS ""CategoryName"",
                 pr.""libele_id"" AS ""LibeleId"",
                 l.name AS ""LibeleName"",
-                pr.""project_id"" AS ""ProjectId"",
                 pr.""organisme_id"" AS ""OrganismeId"",
                 pr.""date"" AS ""Date"",
                 pr.""motif"" AS ""Motif"",
                 pr.""montant"" AS ""Montant""
             FROM ""Prevision_Rentree"" pr
             INNER JOIN ""Libele"" l ON pr.libele_id = l.id_libele
+            INNER JOIN ""Category"" c ON l.category_id = c.id_category
             WHERE ""id_prevision_rentree"" = @IdPrevisionRentree;
         ";
         return this._connection.QuerySingleOrDefault<PrevisionRentree>(query, new { IdPrevisionRentree = id });
