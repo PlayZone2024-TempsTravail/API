@@ -18,11 +18,11 @@ public class LibeleRepository : ILibeleRepository
     {
         const string query = @"
                 SELECT
-                    c.""isIncome"",
-                    c.id_category categoryId,
-                    c.name categoryName,
-                    l.id_libele libeleId,
-                    l.name libeleName
+                    c.""isIncome"" IsIncome,
+                    c.id_category IdCategory,
+                    c.name CategoryName,
+                    l.id_libele IdLibele,
+                    l.name LibeleName
                 FROM ""Libele"" l
                 INNER JOIN ""Category"" c on C.id_category = l.category_id;
             ";
