@@ -623,10 +623,10 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION check_isremovable()
     RETURNS TRIGGER AS $$
 BEGIN
-    IF NOT NEW.isremovable THEN
+    IF NOT OLD.isremovable THEN
         RAISE EXCEPTION 'Role Interdit à la suppresion';
     END IF;
-    RETURN NEW;
+    RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 

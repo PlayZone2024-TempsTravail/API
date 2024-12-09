@@ -22,7 +22,8 @@ public class RoleRepository : IRoleRepository
                 ""name"",
                 ""isremovable"",
                 ""isvisible""
-            FROM ""Role"";
+            FROM ""Role""
+            ORDER BY ""id_role"";
         ";
         return this._connection.Query<Role>(query);
     }
