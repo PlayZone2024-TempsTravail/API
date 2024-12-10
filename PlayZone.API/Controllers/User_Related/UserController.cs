@@ -22,7 +22,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
@@ -40,7 +40,7 @@ public class UserController : ControllerBase
 
     [HttpGet("id/{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -65,7 +65,7 @@ public class UserController : ControllerBase
 
     [HttpGet("email/{email}")]
     [Authorize]
-    [PermissionAuthorize(Permission.CONSULTER_UTILISATEUR)]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -90,9 +90,8 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.AJOUTER_UTILISATEUR)]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDTO))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
     {
@@ -108,7 +107,7 @@ public class UserController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
-    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
+    [PermissionAuthorize(Permission.SUPPRIMER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

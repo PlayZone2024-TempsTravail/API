@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -23,7 +22,7 @@ public class UserSalaireController : ControllerBase
 
     [HttpGet("{userId:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_USER_SALAIRE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserSalaireDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByUser(int userId)
@@ -42,7 +41,7 @@ public class UserSalaireController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_USER_SALAIRE)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] UserSalaireCreateDTO userSalaire)
@@ -52,13 +51,16 @@ public class UserSalaireController : ControllerBase
             int resultId = this._userSalaireService.Create(userSalaire.ToModel());
             if (resultId > 0)
             {
-                return this.CreatedAtAction(nameof(this.GetByUser), new {userId = resultId}, userSalaire);
+                return this.CreatedAtAction(nameof(this.GetByUser), new { userId = resultId }, userSalaire);
             }
         }
-        catch (Exception) { /* ignored */ }
+        catch (Exception)
+        {
+            /* ignored */
+        }
+
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
-

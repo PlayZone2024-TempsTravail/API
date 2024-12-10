@@ -21,7 +21,7 @@ public class RoleController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RoleDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
@@ -39,7 +39,7 @@ public class RoleController : ControllerBase
 
     [HttpGet("{idRole}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RoleDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -60,7 +60,7 @@ public class RoleController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RoleDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] RoleCreateDTO role)
@@ -86,7 +86,7 @@ public class RoleController : ControllerBase
 
     [HttpPut]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -109,7 +109,7 @@ public class RoleController : ControllerBase
 
     [HttpDelete("{idRole}")]
     [Authorize]
-    [PermissionAuthorize(Permission.SUPPRIMER_ROLE)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

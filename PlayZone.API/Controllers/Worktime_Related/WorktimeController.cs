@@ -22,14 +22,17 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("range")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetByDateRange([FromQuery] int userId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    public IActionResult GetByDateRange([FromQuery] int userId, [FromQuery] DateTime startDate,
+        [FromQuery] DateTime endDate)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByDateRange(userId, startDate, endDate).Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes =
+                this._worktimeService.GetByDateRange(userId, startDate, endDate).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -39,13 +42,16 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("day/{userId:int}/{dayOfMonth:int}/{monthOfYear:int}/{year:int}")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByDay(int userId, int dayOfMonth, int monthOfYear, int year)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByDay(userId, dayOfMonth, monthOfYear, year).Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByDay(userId, dayOfMonth, monthOfYear, year)
+                .Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -55,13 +61,16 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("week/{userId:int}/{weekOfYear:int}/{year:int}")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByWeek(int userId, int weekOfYear, int year)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByWeek(userId, weekOfYear, year).Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes =
+                this._worktimeService.GetByWeek(userId, weekOfYear, year).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -71,13 +80,16 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("month/{userId:int}/{monthOfYear:int}/{year:int}")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByMonth(int userId, int monthOfYear, int year)
     {
         try
         {
-            IEnumerable<WorktimeDTO> worktimes = this._worktimeService.GetByMonth(userId, monthOfYear, year).Select(w => w.ToDTO());
+            IEnumerable<WorktimeDTO> worktimes =
+                this._worktimeService.GetByMonth(userId, monthOfYear, year).Select(w => w.ToDTO());
             return this.Ok(worktimes);
         }
         catch (Exception)
@@ -87,7 +99,8 @@ public class WorktimeController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -108,7 +121,7 @@ public class WorktimeController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -127,14 +140,19 @@ public class WorktimeController : ControllerBase
         {
             return this.BadRequest(e.Message);
         }
-        catch (Exception) { /* ignored */ }
+        catch (Exception)
+        {
+            /* ignored */
+        }
 
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpPut("{id}")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int id, [FromBody] WorktimeUpdateFormDTO worktime)
     {
@@ -149,11 +167,13 @@ public class WorktimeController : ControllerBase
         {
             return this.Ok();
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpDelete("{idWorktime:int}")]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [Authorize]
+    [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int idWorktime)

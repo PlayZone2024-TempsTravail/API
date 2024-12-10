@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -23,7 +22,7 @@ public class CompteurWorktimeCategoryController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_COMPTEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompteurWorktimeCategoryDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
@@ -42,14 +41,15 @@ public class CompteurWorktimeCategoryController : ControllerBase
 
     [HttpGet("{userId:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_COMPTEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompteurWorktimeCategoryUpdateDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetByUser(int userId)
     {
         try
         {
-            IEnumerable<CompteurWorktimeCategoryUpdateDTO> compteurWorktimeCategory = this._compteurWorktimeCategoryService.GetByUser(userId).Select(cw => cw.ToUpdateDTO());
+            IEnumerable<CompteurWorktimeCategoryUpdateDTO> compteurWorktimeCategory =
+                this._compteurWorktimeCategoryService.GetByUser(userId).Select(cw => cw.ToUpdateDTO());
             return this.Ok(compteurWorktimeCategory);
         }
         catch (Exception)
@@ -60,17 +60,20 @@ public class CompteurWorktimeCategoryController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_COMPTEUR)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create(CompteurWorktimeCategoryDTO compteurWorktimeCategory)
     {
         try
         {
-            CompteurWorktimeCategoryDTO cw = this._compteurWorktimeCategoryService.Create(compteurWorktimeCategory.ToModel()).ToDTO();
-            if (compteurWorktimeCategory.UserId == cw.UserId && compteurWorktimeCategory.WorktimeCategoryId == cw.WorktimeCategoryId)
+            CompteurWorktimeCategoryDTO cw = this._compteurWorktimeCategoryService
+                .Create(compteurWorktimeCategory.ToModel()).ToDTO();
+            if (compteurWorktimeCategory.UserId == cw.UserId &&
+                compteurWorktimeCategory.WorktimeCategoryId == cw.WorktimeCategoryId)
             {
-                return this.CreatedAtAction (nameof (this.GetByUser), new { userId = compteurWorktimeCategory.UserId }, cw);
+                return this.CreatedAtAction(nameof(this.GetByUser), new { userId = compteurWorktimeCategory.UserId },
+                    cw);
             }
         }
         catch (Exception)
@@ -83,7 +86,7 @@ public class CompteurWorktimeCategoryController : ControllerBase
 
     [HttpPut("{userId:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_COMPTEUR)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompteurWorktimeCategoryUpdateDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int userId, [FromBody] CompteurWorktimeCategoryUpdateDTO compteurWorktimeCategory)
@@ -94,29 +97,30 @@ public class CompteurWorktimeCategoryController : ControllerBase
         {
             return this.Ok(compteurWorktimeCategory);
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpDelete]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_COMPTEUR)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(CompteurWorktimeCategoryDeleteDTO compteurWorktimeCategory)
     {
         try
         {
-            if (this._compteurWorktimeCategoryService.Delete(compteurWorktimeCategory.UserId, compteurWorktimeCategory.WorktimeCategoryId))
+            if (this._compteurWorktimeCategoryService.Delete(compteurWorktimeCategory.UserId,
+                    compteurWorktimeCategory.WorktimeCategoryId))
             {
                 return this.Ok();
             }
         }
         catch (Exception)
         {
-            /* ignored */
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
-

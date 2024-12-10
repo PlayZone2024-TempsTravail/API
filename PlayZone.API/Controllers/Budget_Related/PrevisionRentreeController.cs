@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
@@ -23,7 +22,7 @@ public class PrevisionRentreeController : ControllerBase
 
     [HttpGet("{projectId:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrevisionRentreeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetbyProject(int projectId)
@@ -42,7 +41,7 @@ public class PrevisionRentreeController : ControllerBase
 
     [HttpGet("projets/{idPrevisionRentree:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PrevisionRentreeDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -64,7 +63,7 @@ public class PrevisionRentreeController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_PREVISION_RENTREE)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] PrevisionRentreeCreateDTO previsionRentree)
@@ -74,10 +73,15 @@ public class PrevisionRentreeController : ControllerBase
             int resultId = this._previsionRentreeService.Create(previsionRentree.ToModel());
             if (resultId > 0)
             {
-                return this.CreatedAtAction(nameof(this.GetById), new { idPrevisionRentree = resultId }, previsionRentree);
+                return this.CreatedAtAction(nameof(this.GetById), new { idPrevisionRentree = resultId },
+                    previsionRentree);
             }
         }
-        catch (Exception) { /* ignored */ }
+        catch (Exception)
+        {
+            /* ignored */
+        }
+
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -86,8 +90,9 @@ public class PrevisionRentreeController : ControllerBase
 
     [HttpPut]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.EDIT_PREVISION_RENTREE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int idPrevisionRentree, [FromBody] PrevisionRentreeUpdateDTO previsionRentree)
     {
@@ -95,19 +100,21 @@ public class PrevisionRentreeController : ControllerBase
         {
             return this.BadRequest("Invalid user data");
         }
+
         Models.PrevisionRentree updatedPrevisionRentree = previsionRentree.ToModel();
         updatedPrevisionRentree.IdPrevisionRentree = idPrevisionRentree;
         if (this._previsionRentreeService.Update(updatedPrevisionRentree))
         {
             return this.Ok();
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
 
     [HttpDelete("{idPrevisionRentree:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.DELETE_PREVISION_RENTREE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int idPrevisionRentree)
@@ -122,4 +129,3 @@ public class PrevisionRentreeController : ControllerBase
         }
     }
 }
-

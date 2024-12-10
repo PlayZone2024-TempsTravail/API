@@ -22,7 +22,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentreeDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
@@ -34,14 +34,13 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
             catch (Exception)
             {
-
                 return this.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [HttpGet("projet/{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByProject(int id)
@@ -59,14 +58,20 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
         {
             try
             {
-                RentreeDTO rentree = this._rentreeService.GetById(id).ToDTO();
+                RentreeDTO? rentree = this._rentreeService.GetById(id)?.ToDTO();
+                if (rentree == null)
+                {
+                    return this.NotFound("Rentree Not Found");
+                }
+
                 return this.Ok(rentree);
             }
             catch (Exception)
@@ -77,7 +82,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPost]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_RENTREE)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RentreeCreateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] RentreeCreateFormDTO rentree)
@@ -87,12 +92,13 @@ namespace PlayZone.API.Controllers.Budget_Related
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, rentree);
             }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_RENTREE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] RentreeUpdateFormDTO rentree)
@@ -110,12 +116,13 @@ namespace PlayZone.API.Controllers.Budget_Related
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, e);
             }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpDelete("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.DELETE_RENTREE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentreeDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)
@@ -130,5 +137,4 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
         }
     }
-
 }

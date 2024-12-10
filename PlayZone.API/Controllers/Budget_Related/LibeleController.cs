@@ -22,7 +22,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
@@ -40,14 +40,15 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet("tree")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllWithCategories()
         {
             try
             {
-                IEnumerable<TreeCategoryDTO> treeCategories = this._libeleService.GetAllWithCategories().Select(c => c.ToDTO());
+                IEnumerable<TreeCategoryDTO> treeCategories =
+                    this._libeleService.GetAllWithCategories().Select(c => c.ToDTO());
                 return this.Ok(treeCategories);
             }
             catch (Exception e)
@@ -58,14 +59,19 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet("{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
         {
             try
             {
-                LibeleDTO libele = this._libeleService.GetById(id).ToDTO();
+                LibeleDTO? libele = this._libeleService.GetById(id)?.ToDTO();
+                if (libele == null)
+                {
+                    return this.NotFound();
+                }
                 return this.Ok(libele);
             }
             catch (Exception)
@@ -76,7 +82,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPost]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_LIBELLE)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LibeleCreateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] LibeleCreateFormDTO libele)
@@ -92,7 +98,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPut("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_LIBELLE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] LibeleUpdateFormDTO libele)
@@ -109,7 +115,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpDelete("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_LIBELLE)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LibeleDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
@@ -23,7 +22,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
@@ -39,17 +38,22 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
         }
 
-
         [HttpGet("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
         {
             try
             {
-                CategoryDTO category = this._categoryService.GetById(id).ToDTO();
+                CategoryDTO? category = this._categoryService.GetById(id)?.ToDTO();
+                if (category == null)
+                {
+                    return this.BadRequest("Category Not Found");
+                }
+
                 return this.Ok(category);
             }
             catch (Exception)
@@ -58,10 +62,9 @@ namespace PlayZone.API.Controllers.Budget_Related
             }
         }
 
-
         [HttpPost]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_CATEGORY)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CategoryCreateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] CategoryCreateFormDTO category)
@@ -71,13 +74,13 @@ namespace PlayZone.API.Controllers.Budget_Related
             {
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, category);
             }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
-
         [HttpPut("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_CATEGORY)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryUpdateFormDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] CategoryUpdateFormDTO category)
@@ -88,13 +91,13 @@ namespace PlayZone.API.Controllers.Budget_Related
             {
                 return this.Ok(updatedCategory);
             }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
-
         [HttpDelete("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_CATEGORY)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)
@@ -108,7 +111,5 @@ namespace PlayZone.API.Controllers.Budget_Related
                 return this.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-
-
     }
 }

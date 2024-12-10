@@ -23,7 +23,9 @@ public class ProjectController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProjectDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
     {
         try
@@ -39,7 +41,9 @@ public class ProjectController : ControllerBase
 
     [HttpGet("short")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProjectShortDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAllShort()
     {
         try
@@ -47,28 +51,39 @@ public class ProjectController : ControllerBase
             IEnumerable<ProjectShortDTO> projects = this._projectService.GetAllShort().Select(p => p.ToDTO());
             return this.Ok(projects);
         }
-        catch (Exception) { /* Ignored */ }
+        catch (Exception)
+        {
+            /* Ignored */
+        }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpGet("short/{idUser:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProjectShortDTO>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAllShort(int idUser)
     {
         try
         {
-            IEnumerable<ProjectShortDTO> projects = this._projectService.GetAllShortOrderByWorktimeOfUser(idUser).Select(p => p.ToDTO());
+            IEnumerable<ProjectShortDTO> projects =
+                this._projectService.GetAllShortOrderByWorktimeOfUser(idUser).Select(p => p.ToDTO());
             return this.Ok(projects);
         }
-        catch (Exception) { /* Ignored */ }
+        catch (Exception)
+        {
+            /* Ignored */
+        }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
 
     [HttpGet("data/input/{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetInputByProject(int id)
     {
@@ -77,7 +92,7 @@ public class ProjectController : ControllerBase
 
     [HttpGet("data/output/{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetOuputByProject(int id)
     {
@@ -87,7 +102,7 @@ public class ProjectController : ControllerBase
 
     [HttpGet("idproject/{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -100,18 +115,18 @@ public class ProjectController : ControllerBase
             {
                 return this.NotFound("Project Not Found");
             }
+
             return this.Ok(projects);
         }
         catch (Exception)
         {
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
-
     }
 
     [HttpGet("idorganisme/{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetByOrgaId(int id)
@@ -129,7 +144,7 @@ public class ProjectController : ControllerBase
 
     [HttpGet("graphique/rentree/{idProject:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PreparedGraphicDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetGraphiqueRentreeByProjet(int idProject)
@@ -140,13 +155,16 @@ public class ProjectController : ControllerBase
             return this.Ok(pg);
         }
         catch (Exception)
-        { /* Ignored */ }
+        {
+            /* Ignored */
+        }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpGet("graphique/depense/{idProject:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PreparedGraphicDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetGraphiqueDepenseByProjet(int idProject)
@@ -157,13 +175,16 @@ public class ProjectController : ControllerBase
             return this.Ok(pg);
         }
         catch (Exception)
-        { /* Ignored */ }
+        {
+            /* Ignored */
+        }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.CREATE_PROJECT)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] ProjectCreateDTO project)
@@ -180,9 +201,9 @@ public class ProjectController : ControllerBase
 
     [HttpPut("{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFY_PROJECT)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int id, [FromBody] ProjectUpdateDTO project)
     {
@@ -203,9 +224,9 @@ public class ProjectController : ControllerBase
 
     [HttpDelete("{id:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.DELETE_PROJECT)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int id)
     {
