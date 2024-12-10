@@ -1,8 +1,8 @@
-﻿@using PlayZone.Razor.Views
+﻿@using PlayZone.Razor.Models
 @model PlayZone.Razor.Views.ProjectRapportView
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Rapport Financier</title>
@@ -13,21 +13,32 @@
             padding: 0;
             background-color: #fff;
             color: #333;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         h1 {
             color: #004080;
-            border-bottom: 1px solid #004080;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-            font-size: 1.2em;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
         }
 
         h2 {
-            font-size: 1em;
-            margin: 5px 0;
+            font-size: 1.4em;
+            margin: 15px 0;
             color: #004080;
+            border-bottom: 1px solid #004080;
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #004080;
+            font-weight: bold;
         }
 
         table {
@@ -83,47 +94,69 @@
             padding-bottom: 1rem;
             page-break-inside: avoid;
         }
+
+        /* Ajout de classes pour les colonnes */
+        .col-45 {
+            width: auto;
+        }
+
+        .col-25 {
+            width: 25%;
+        }
+
+        .col-15 {
+            width: 15%;
+        }
     </style>
 </head>
 <body>
 
-@foreach (Category category in Model.mesdepenses)
+@foreach (ProjectRapport project in Model.Rapports)
 {
-<div>
-    <h1>@category.CategoryName</h1>
-
-    @foreach (Libele libele in category.Libeles)
-    {
     <div>
-        <h2>@libele.LibeleName</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Motif</th>
-                <th>Date</th>
-                <th>Montant</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (InOut inOut in libele.InOuts)
-            {
-            <tr>
-                <td>@inOut.Motif</td>
-                <td>@inOut.Date.ToString("dd-MM-yyyy")</td>
-                <td class="montant">@inOut.Montant.ToString("C")</td>
-            </tr>
-            }
-            </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="2">Total</td>
-                <td class="montant">@libele.InOuts.Sum(x => x.Montant).ToString("C")</td>
-            </tr>
-            </tfoot>
-        </table>
+        <h1>@project.Name</h1>
+
+        @foreach (ProjectRapport.Category category in project.Categories)
+        {
+            <div>
+                <h2>@category.Name</h2>
+
+                @foreach (ProjectRapport.Libelle libelle in category.Libelles)
+                {
+                    <div>
+                        <h3>@libelle.Name</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="col-45">Motif</th>
+                                <th class="col-25">Organisme</th>
+                                <th class="col-15">Date</th>
+                                <th class="col-15">Montant</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (ProjectRapport.InOut inOut in libelle.InOuts)
+                            {
+                                <tr>
+                                    <td class="col-45">@inOut.Motif</td>
+                                    <td class="col-25">@inOut.Organisme</td>
+                                    <td class="col-15">@inOut.Date.ToString("dd-MM-yyyy")</td>
+                                    <td class="montant col-15">@inOut.Montant.ToString("C")</td>
+                                </tr>
+                            }
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="3">Total</td>
+                                <td class="montant col-15">@libelle.InOuts.Sum(x => x.Montant).ToString("C")</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                }
+            </div>
+        }
     </div>
-    }
-</div>
 }
 
 </body>

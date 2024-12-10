@@ -1,4 +1,5 @@
 ﻿using ProjectRapportRazor = PlayZone.Razor.Models.ProjectRapport;
+using ExtractProjectRapportRazor = PlayZone.Razor.Models.ExtractProjectRapport;
 using ExtractProjectRapportModel = PlayZone.BLL.Models.Rapport_Related.ExtractProjectRapport;
 using ExtractProjectRapportEntity = PlayZone.DAL.Entities.Rapport_Related.ExtractProjectRapport;
 
@@ -23,9 +24,9 @@ public static class ExtractProjectRapportMapper
         };
     }
 
-    public static ProjectRapportRazor ToRazor(this ExtractProjectRapportModel model)
+    public static ExtractProjectRapportRazor ToRazor(this ExtractProjectRapportModel model)
     {
-        return new ProjectRapportRazor
+        return new ExtractProjectRapportRazor
         {
             ProjectId = model.ProjectId,
             CategoryId = model.CategoryId,

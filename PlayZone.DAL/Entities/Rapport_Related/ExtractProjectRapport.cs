@@ -10,6 +10,6 @@ public class ExtractProjectRapport
     public string LibelleName { get; set; }
     public string Organisme { get; set; }
     public string Motif { get; set; }
-    public DateOnly Date { get; set; }
+    public DateTime Date { get; set; }
     public decimal Montant { get; set; }
 }

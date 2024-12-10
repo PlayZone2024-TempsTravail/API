@@ -1,4 +1,4 @@
-﻿namespace PlayZone.BLL.Models.Rapport_Related;
+﻿namespace PlayZone.Razor.Models;
 
 public class ExtractProjectRapport
 {
