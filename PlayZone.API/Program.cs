@@ -68,7 +68,6 @@ builder.Services.AddScoped<IRentreeService, RentreeService>();
 builder.Services.AddScoped<IDepenseService, DepenseService>();
 builder.Services.AddScoped<IOrganismeService, OrganismeService>();
 builder.Services.AddScoped<ILibeleService, LibeleService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddSingleton<IConverter, SynchronizedConverter>(_ => new SynchronizedConverter(new PdfTools()));
 
 //Injection des services BLL - Configuration_Related
@@ -110,7 +109,6 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
 builder.Services.AddScoped<IOrganismeRepository, OrganismeRepository>();
 builder.Services.AddScoped<ILibeleRepository, LibeleRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 //Injection des repositories DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
