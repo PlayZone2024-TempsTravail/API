@@ -659,3 +659,119 @@ BEGIN
     ORDER BY TotalDays DESC NULLS LAST;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE VIEW "HeuresPrestables" AS
+SELECT
+    c."id_configuration" AS "IdConfiguration",
+    c."parameter_name" AS "ParameterName",
+    c."parameter_value" AS "ParameterValue"
+FROM "Configuration" c
+INNER JOIN (
+    SELECT parameter_name, MAX(date) date
+    FROM "Configuration"
+    GROUP BY parameter_name
+) d
+ON c.parameter_name = d.parameter_name
+AND c.date = d.date;
+
+CREATE FUNCTION get_all_inout_for_selected_projects(startDate DATE, endDate DATE, projects INT[], libelles INT[])
+RETURNS TABLE (
+    "projectId"    INT,
+    "categoryId"    INT,
+    "libelleId"     INT,
+    "projectName"  VARCHAR,
+    "categoryName"  VARCHAR,
+    "libelleName"   VARCHAR,
+    "organisme"     VARCHAR,
+    "motif"         VARCHAR,
+    "date"          DATE,
+    "montant"       DECIMAL
+) AS $$
+DECLARE
+    libelle_renumeration INT = 5;
+BEGIN
+    RETURN QUERY
+        WITH heures_prestables AS (
+            SELECT "ParameterValue"::dec AS heures
+            FROM v_get_last_configuration c
+            WHERE c."ParameterName" LIKE 'NOMBRE_HEURES_PRESTABLES_AN'
+        ),
+        worktimes AS (
+            SELECT
+                wt."id_WorkTime",
+                wt.user_id,
+                wt.project_id,
+                DATE(wt.start) AS "start",
+                ROUND((calculate_interval_worktime(wt.start, wt.end)/(heures_prestables.heures))*us.montant, 2) as cout
+            FROM "WorkTime" wt
+            INNER JOIN "UserSalaire" us ON wt.user_id = us.user_id AND wt.start >= us.date
+            CROSS JOIN heures_prestables
+            WHERE start BETWEEN startDate AND endDate
+            AND project_id = ANY(projects)
+            ORDER BY wt.user_id, wt.start
+        ),
+        Category AS (
+            SELECT c.id_category categoryId, c.name categoryName, l.name libelleName, l.id_libele libeleId
+            FROM "Libele" l
+            INNER JOIN "Category" c ON l.category_id = c.id_category
+            WHERE l.id_libele = libelle_renumeration
+        )
+        SELECT
+            wt.project_id ProjectId,
+            c.categoryId,
+            c.libeleId,
+            p.name ProjectName,
+            c.categoryName Category,
+            c.libelleName Libelle,
+            null Organisme,
+            null Motif,
+            DATE(wt.start) "date",
+            SUM(wt.cout) as cout
+        FROM worktimes wt
+        INNER JOIN "Project" p ON wt.project_id = p.id_project
+        CROSS JOIN Category c
+        WHERE libelle_renumeration = ANY(libelles)
+        GROUP BY wt.project_id, c.categoryId,c.libeleId, p.name, c.categoryName,c.libelleName,DATE(wt.start), wt.project_id, wt.user_id
+        UNION ALL
+        SELECT
+            d.project_id ProjectId,
+            c.id_category categoryId,
+            l.id_libele libeleId,
+            p.name ProjectName,
+            c.name AS Category,
+            l.name AS Libele,
+            o.name AS Organisme,
+            d.motif AS Motif,
+            DATE(d.date_facturation) AS "date",
+            d.montant AS Montant
+        FROM "Depense" d
+        INNER JOIN "Project" p ON d.project_id = p.id_project
+        LEFT JOIN "Libele" l ON d.libele_id = l.id_libele
+        LEFT JOIN "Category" c ON l.category_id = c.id_category
+        LEFT JOIN "Organisme" o ON o.id_organisme = d.organisme_id
+        WHERE d.date_facturation BETWEEN startDate AND endDate
+        AND d.libele_id = ANY(libelles)
+        AND d.project_id = ANY(projects)
+        UNION ALL
+        SELECT
+            r.project_id ProjectId,
+            c.id_category categoryId,
+            l.id_libele libeleId,
+            p.name ProjectName,
+            c.name AS Category,
+            l.name AS Libele,
+            o.name AS Organisme,
+            r.motif AS Motif,
+            DATE(r.date_facturation) AS "date",
+            r.montant AS Montant
+        FROM "Rentree" r
+        INNER JOIN "Project" p ON r.project_id = p.id_project
+        LEFT JOIN "Libele" l ON r.libele_id = l.id_libele
+        LEFT JOIN "Category" c ON l.category_id = c.id_category
+        LEFT JOIN "Organisme" o ON o.id_organisme = r.organisme_id
+        WHERE r.date_facturation BETWEEN startDate AND endDate
+        AND r.libele_id = ANY(libelles)
+        AND r.project_id = ANY(projects)
+        ORDER BY ProjectId, categoryId, libeleId, date;
+    END;
+$$ LANGUAGE plpgsql;
