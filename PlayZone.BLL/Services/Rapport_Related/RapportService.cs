@@ -47,7 +47,7 @@ public class RapportService : IRapportService
         }
 
         return this.Generate(
-            new CounterRapport(rapportWorktimes.Select(rw => rw.ToRazor())),
+            new CounterRapportView(rapportWorktimes.Select(rw => rw.ToRazor())),
             "CounterRapportView.cshtml",
             "Rapport des compteurs d'absenses"
         );
@@ -58,8 +58,8 @@ public class RapportService : IRapportService
         IEnumerable<TimesRapport> rapportProjects = this._wrr.GetTotalDaysProject(start, end).Select(w => w.ToModel());
 
         return this.Generate(
-            new TotalDaysByProjectRapport(rapportProjects.Select(rp => rp.ToRazor())),
-            "TotalDaysByProjectRapport.cshtml",
+            new TimesRapportView(rapportProjects.Select(rp => rp.ToRazor())),
+            "TimesRapportView.cshtml",
             "Heures Préstées par Projet"
         );
     }

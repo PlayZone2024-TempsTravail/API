@@ -1,6 +1,6 @@
-﻿namespace PlayZone.BLL.Models.Rapport_Related;
+﻿namespace PlayZone.Razor.Models;
 
-public class WorktimeProject
+public class TimesRapport
 {
     public string ProjectId { get; set; }
     public string ProjectName { get; set; }

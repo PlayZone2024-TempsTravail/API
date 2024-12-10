@@ -1,6 +1,6 @@
-﻿namespace PlayZone.Razor.Models;
+﻿namespace PlayZone.BLL.Models.Rapport_Related;
 
-public class TotalDaysByProjectModel
+public class TimesRapport
 {
     public string ProjectId { get; set; }
     public string ProjectName { get; set; }
