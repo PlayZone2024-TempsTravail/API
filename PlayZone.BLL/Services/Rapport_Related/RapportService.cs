@@ -32,10 +32,32 @@ public class RapportService : IRapportService
         return this._pdfGenerator.Execute(html, title);
     }
 
+    public byte[] GetProjectRapport(ProjectRapport pr)
+    {
+        IEnumerable<ExtractProjectRapport> projectRapports = this._wrr.GetProjectRapport(pr.ToEntity()).Select(epr => epr.ToModel());
+
+        return this.Generate(
+            new ProjectRapportView(projectRapports.Select(pr => pr.ToRazor())),
+            "ProjectRapportView.cshtml",
+            "Rapport de comptes des projets"
+        );
+    }
+
+    public byte[] GetTimesRapport(DateTime start, DateTime end)
+    {
+        IEnumerable<TimesRapport> rapportProjects = this._wrr.GetTimesRapport(start, end).Select(w => w.ToModel());
+
+        return this.Generate(
+            new TimesRapportView(rapportProjects.Select(rp => rp.ToRazor())),
+            "TimesRapportView.cshtml",
+            "Heures Préstées par Projet"
+        );
+    }
+
     public byte[] GetCounterRapport()
     {
         List<CounterRapport> rapportWorktimes = [];
-        foreach (var wk in this._wrr.GetAll())
+        foreach (var wk in this._wrr.GetCounterRapport())
         {
             CounterRapport? prw = rapportWorktimes.FirstOrDefault(u => u.Name == wk.Name);
             if (prw is null)
@@ -50,17 +72,6 @@ public class RapportService : IRapportService
             new CounterRapportView(rapportWorktimes.Select(rw => rw.ToRazor())),
             "CounterRapportView.cshtml",
             "Rapport des compteurs d'absenses"
-        );
-    }
-
-    public byte[] GetTimesRapport(DateTime start, DateTime end)
-    {
-        IEnumerable<TimesRapport> rapportProjects = this._wrr.GetTotalDaysProject(start, end).Select(w => w.ToModel());
-
-        return this.Generate(
-            new TimesRapportView(rapportProjects.Select(rp => rp.ToRazor())),
-            "TimesRapportView.cshtml",
-            "Heures Préstées par Projet"
         );
     }
 }

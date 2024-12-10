@@ -1,6 +1,6 @@
 ﻿namespace PlayZone.DAL.Entities.Rapport_Related;
 
-public class WorktimeRapport
+public class CounterRapport
 {
     public int IdUser { get; set; }
     public string Name { get; set; }

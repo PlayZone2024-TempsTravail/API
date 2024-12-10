@@ -1,11 +1,13 @@
-﻿namespace PlayZone.Razor.Views;
+﻿using PlayZone.Razor.Models;
+
+namespace PlayZone.Razor.Views;
 
 
-public class PdfTemplate
+public class ProjectRapportView
 {
     public IEnumerable<Category> mesdepenses = [];
 
-    public PdfTemplate()
+    public ProjectRapportView(IEnumerable<ProjectRapport> rapports)
     {
         mesdepenses = new List<Category>
         {
