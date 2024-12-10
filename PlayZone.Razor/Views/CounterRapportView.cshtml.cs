@@ -3,12 +3,12 @@ using PlayZone.Razor.Models;
 
 namespace PlayZone.Razor.Views;
 
-public class WorktimeRapport : PageModel
+public class CounterRapportView : PageModel
 {
-    public readonly IEnumerable<WorktimeRapportRazorModel> WorktimeRapports;
+    public readonly IEnumerable<Models.CounterRapport> WorktimeRapports;
     public readonly List<string> Colonnes = new List<string>();
 
-    public WorktimeRapport(IEnumerable<WorktimeRapportRazorModel> worktimeRapports)
+    public CounterRapportView(IEnumerable<Models.CounterRapport> worktimeRapports)
     {
         this.WorktimeRapports = worktimeRapports;
         this.Colonnes = new List<string>();

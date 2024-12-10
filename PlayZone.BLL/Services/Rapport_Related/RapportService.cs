@@ -5,7 +5,6 @@ using PlayZone.BLL.Models.Rapport_Related;
 using PlayZone.DAL.Interfaces.Rapport_Related;
 using PlayZone.Razor.Services;
 using PlayZone.Razor.Views;
-using WorktimeProject = PlayZone.BLL.Models.Rapport_Related.WorktimeProject;
 
 namespace PlayZone.BLL.Services.Rapport_Related;
 
@@ -33,31 +32,30 @@ public class RapportService : IRapportService
         return this._pdfGenerator.Execute(html, title);
     }
 
-    public byte[] GetWorktimeCounterRapport()
+    public byte[] GetCounterRapport()
     {
-        List<PreparedWorktimeRapport> rapportWorktimes = new List<PreparedWorktimeRapport>();
+        List<CounterRapport> rapportWorktimes = [];
         foreach (var wk in this._wrr.GetAll())
         {
-            PreparedWorktimeRapport? prw = rapportWorktimes.FirstOrDefault(u => u.Name == wk.Name);
+            CounterRapport? prw = rapportWorktimes.FirstOrDefault(u => u.Name == wk.Name);
             if (prw is null)
             {
-                prw = new PreparedWorktimeRapport(wk.Name);
+                prw = new CounterRapport(wk.Name);
                 rapportWorktimes.Add(prw);
             }
-
             prw.Counters[wk.category] = wk.Count;
         }
 
         return this.Generate(
-            new WorktimeRapport(rapportWorktimes.Select(rw => rw.ToRazor())),
-            "WorktimeRapport.cshtml",
+            new CounterRapport(rapportWorktimes.Select(rw => rw.ToRazor())),
+            "CounterRapportView.cshtml",
             "Rapport des compteurs d'absenses"
         );
     }
 
-    public byte[] GetWorktimeProjectRapport(DateTime start, DateTime end)
+    public byte[] GetTimesRapport(DateTime start, DateTime end)
     {
-        IEnumerable<WorktimeProject> rapportProjects = this._wrr.GetTotalDaysProject(start, end).Select(w => w.ToModel());
+        IEnumerable<TimesRapport> rapportProjects = this._wrr.GetTotalDaysProject(start, end).Select(w => w.ToModel());
 
         return this.Generate(
             new TotalDaysByProjectRapport(rapportProjects.Select(rp => rp.ToRazor())),
