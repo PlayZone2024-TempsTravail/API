@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
@@ -16,21 +15,22 @@ namespace PlayZone.API.Controllers.Budget_Related
     {
         private readonly IPrevisionBudgetLibeleService _previsionBudgetLibeleService;
 
-        public PrevisionBudgetLibeleController(IPrevisionBudgetLibeleService _previsionBudgetLibeleService)
+        public PrevisionBudgetLibeleController(IPrevisionBudgetLibeleService previsionBudgetLibeleService)
         {
-            this._previsionBudgetLibeleService = _previsionBudgetLibeleService;
+            this._previsionBudgetLibeleService = previsionBudgetLibeleService;
         }
 
         [HttpGet("project/{projectId:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrevisionBudgetLibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetByProject(int projectId)
         {
             try
             {
-                IEnumerable<PrevisionBudgetLibeleDTO> previsionBudgetLibeleServices = this._previsionBudgetLibeleService.GetByIdProject(projectId)
+                IEnumerable<PrevisionBudgetLibeleDTO> previsionBudgetLibeleServices = this._previsionBudgetLibeleService
+                    .GetByIdProject(projectId)
                     .Select(pbc => pbc.ToDTO());
                 return this.Ok(previsionBudgetLibeleServices);
             }
@@ -42,7 +42,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet("id/{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PrevisionBudgetLibeleDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -63,7 +63,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPost]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_PREVISION_DEPENSE)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PrevisionBudgetLibeleDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] PrevisionBudgetLibeleCreateDTO pbl)
@@ -82,7 +82,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPut("{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_PREVISION_DEPENSE)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -105,7 +105,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpDelete("{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.DELETE_PREVISION_DEPENSE)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -22,7 +22,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet("project/{projectId:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrevisionBudgetCategoryDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllByProject(int projectId)
@@ -41,7 +41,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpGet("id/{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.SHOW_PROJECTS)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PrevisionBudgetCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -62,7 +62,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPost]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_PREVISION_CATEGORY)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PrevisionBudgetCategoryDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] PrevisionBudgetCategoryCreateDTO pbc)
@@ -81,7 +81,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpPut("{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_PREVISION_CATEGORY)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -104,7 +104,7 @@ namespace PlayZone.API.Controllers.Budget_Related
 
         [HttpDelete("{id:int}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.DELETE_PREVISION_CATEGORY)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

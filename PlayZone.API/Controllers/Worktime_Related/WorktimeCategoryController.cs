@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
@@ -22,14 +23,16 @@ namespace PlayZone.API.Controllers.Worktime_Related
 
         [HttpGet]
         [Authorize]
-        [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE)]
+        [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WorktimeCategoryDTO>))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
         {
             try
             {
-                IEnumerable<WorktimeCategoryDTO> worktimeCategories = this._worktimeCategoryService.GetAll().Select(w => w.ToDTO());
+                IEnumerable<WorktimeCategoryDTO> worktimeCategories =
+                    this._worktimeCategoryService.GetAll().Select(w => w.ToDTO());
                 return this.Ok(worktimeCategories);
             }
             catch (Exception)
@@ -40,14 +43,27 @@ namespace PlayZone.API.Controllers.Worktime_Related
 
         [HttpGet("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE)]
+        [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
         {
             try
             {
-                WorktimeCategoryDTO worktimeCategory = this._worktimeCategoryService.GetById(id).ToDTO();
+                if (!this.User.HasClaim("Permission", Permission.PERSO_CONSULTER_POINTAGE) &&
+                    !this.User.HasClaim("Permission", Permission.ALL_CONSULTER_POINTAGES))
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                WorktimeCategoryDTO? worktimeCategory = this._worktimeCategoryService.GetById(id)?.ToDTO();
+                if (worktimeCategory == null)
+                {
+                    return this.BadRequest("Worktime Category Not Found");
+                }
+
                 return this.Ok(worktimeCategory);
             }
             catch (Exception)
@@ -58,40 +74,57 @@ namespace PlayZone.API.Controllers.Worktime_Related
 
         [HttpPost]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_WORKTIMECATEGORY)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WorktimeCategoryDTO))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] WorktimeCategoryCreateFormDTO worktimeCategory)
         {
+            if (!this.User.HasClaim("Permission", Permission.PERSO_CONSULTER_POINTAGE) &&
+                !this.User.HasClaim("Permission", Permission.ALL_CONSULTER_POINTAGES))
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             int resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModel());
             if (resultId > 0)
             {
                 WorktimeCategoryDTO wc = this._worktimeCategoryService.GetById(resultId)!.ToDTO();
                 return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, wc);
             }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError, resultId);
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_WORKTIMECATEGORY)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryUpdateFormDTO))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] WorktimeCategoryUpdateFormDTO worktimeCategory)
         {
+            if (!this.User.HasClaim("Permission", Permission.PERSO_CONSULTER_POINTAGE) &&
+                !this.User.HasClaim("Permission", Permission.ALL_CONSULTER_POINTAGES))
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             WorktimeCategory updatedWorktimeCategory = worktimeCategory.ToModel();
             updatedWorktimeCategory.IdWorktimeCategory = id;
             if (this._worktimeCategoryService.Update(updatedWorktimeCategory))
             {
                 return this.Ok();
             }
+
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpDelete("{id}")]
         [Authorize]
-        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+        [PermissionAuthorize(Permission.EDIT_WORKTIMECATEGORY)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WorktimeCategoryDTO))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)
         {

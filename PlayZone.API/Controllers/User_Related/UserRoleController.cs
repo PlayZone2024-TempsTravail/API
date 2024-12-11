@@ -47,7 +47,8 @@ namespace PlayZone.API.Controllers.User_Related
         {
             try
             {
-                IEnumerable<UserRoleDTO> userRoleDtos = this._userRoleService.GetByUser(idUser).Select(ur => ur.ToDTO());
+                IEnumerable<UserRoleDTO> userRoleDtos =
+                    this._userRoleService.GetByUser(idUser).Select(ur => ur.ToDTO());
                 return this.Ok(userRoleDtos);
             }
             catch (Exception)

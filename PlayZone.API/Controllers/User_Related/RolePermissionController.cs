@@ -22,7 +22,7 @@ public class RolePermissionController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RolePermissionDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAll()
@@ -41,14 +41,15 @@ public class RolePermissionController : ControllerBase
 
     [HttpGet("{idRole}")]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<string>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetByRole(int idRole)
     {
         try
         {
-            IEnumerable<string> rolePermissions = this._rolePermissionService.GetByRole(idRole).Select(rp => rp.PermissionId);
+            IEnumerable<string> rolePermissions =
+                this._rolePermissionService.GetByRole(idRole).Select(rp => rp.PermissionId);
             return this.Ok(rolePermissions);
         }
         catch (Exception)
@@ -59,7 +60,7 @@ public class RolePermissionController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create(RolePermissionDTO rolePermissionFormDto)
@@ -83,8 +84,9 @@ public class RolePermissionController : ControllerBase
 
     [HttpPatch]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(RolePermissionUpdateDTO userRoleUpdateDto)
     {
@@ -106,12 +108,13 @@ public class RolePermissionController : ControllerBase
         {
             /* ignored */
         }
+
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
     [HttpDelete]
     [Authorize]
-    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [PermissionAuthorize(Permission.MODIFIER_ROLE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(RolePermissionDTO rolePermissionDto)
