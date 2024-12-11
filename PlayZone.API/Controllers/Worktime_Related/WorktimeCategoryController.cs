@@ -52,12 +52,6 @@ namespace PlayZone.API.Controllers.Worktime_Related
         {
             try
             {
-                if (!this.User.HasClaim("Permission", Permission.PERSO_CONSULTER_POINTAGE) &&
-                    !this.User.HasClaim("Permission", Permission.ALL_CONSULTER_POINTAGES))
-                {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
-                }
-
                 WorktimeCategoryDTO? worktimeCategory = this._worktimeCategoryService.GetById(id)?.ToDTO();
                 if (worktimeCategory == null)
                 {
@@ -80,12 +74,6 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] WorktimeCategoryCreateFormDTO worktimeCategory)
         {
-            if (!this.User.HasClaim("Permission", Permission.PERSO_CONSULTER_POINTAGE) &&
-                !this.User.HasClaim("Permission", Permission.ALL_CONSULTER_POINTAGES))
-            {
-                return this.StatusCode(StatusCodes.Status403Forbidden);
-            }
-
             int resultId = this._worktimeCategoryService.Create(worktimeCategory.ToModel());
             if (resultId > 0)
             {
@@ -104,12 +92,6 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Update(int id, [FromBody] WorktimeCategoryUpdateFormDTO worktimeCategory)
         {
-            if (!this.User.HasClaim("Permission", Permission.PERSO_CONSULTER_POINTAGE) &&
-                !this.User.HasClaim("Permission", Permission.ALL_CONSULTER_POINTAGES))
-            {
-                return this.StatusCode(StatusCodes.Status403Forbidden);
-            }
-
             WorktimeCategory updatedWorktimeCategory = worktimeCategory.ToModel();
             updatedWorktimeCategory.IdWorktimeCategory = id;
             if (this._worktimeCategoryService.Update(updatedWorktimeCategory))
