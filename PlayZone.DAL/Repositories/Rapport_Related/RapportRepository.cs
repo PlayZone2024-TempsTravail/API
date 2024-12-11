@@ -1,14 +1,15 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using PlayZone.DAL.Entities.Rapport_Related;
 using PlayZone.DAL.Interfaces.Rapport_Related;
 
 namespace PlayZone.DAL.Repositories.Rapport_Related;
 
-public class WorktimeRapportRepository : IWorktimeRapportRepository
+public class RapportRepository : IRapportRepository
 {
     private readonly NpgsqlConnection _connection;
-    public WorktimeRapportRepository(NpgsqlConnection connection)
+    public RapportRepository(NpgsqlConnection connection)
     {
         this._connection = connection;
     }
@@ -40,6 +41,24 @@ public class WorktimeRapportRepository : IWorktimeRapportRepository
             enddate = pr.DateEnd.ToString("yyyy-MM-dd"),
             projects = pr.Projects,
             libelles = pr.Libelles
+        });
+    }
+
+    public IEnumerable<SocialRapport> GetSocialRapport(DateTime start, DateTime end)
+    {
+        const string query = @"
+            SELECT
+                date,
+                period,
+                ""userId"" AS userId,
+                nom_complet AS nomComplet,
+                activite
+            FROM get_social_rapport(TO_DATE(@startdate, 'YYYY-MM-DD'),TO_DATE(@enddate, 'YYYY-MM-DD'));
+        ";
+        return this._connection.Query<SocialRapport>(query, new
+        {
+            startdate = start.ToString("yyyy-MM-dd"),
+            enddate = end.ToString("yyyy-MM-dd"),
         });
     }
 

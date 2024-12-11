@@ -33,28 +33,28 @@ public class RapportController : ControllerBase
         );
     }
 
-    // [HttpGet("times")]
-    // [Authorize]
-    // [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // public IActionResult TimesRapport(DateTime start, DateTime end)
-    // {
-    //     return this.File(
-    //         this._rapportService.GetTimesRapport(start, end),
-    //         "application/pdf",
-    //         "TimesRapport.pdf",
-    //         true
-    //     );
-    // }
-
-    [HttpGet("times")]
+    [HttpPost("social")]
     [Authorize]
     [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult TimesRapport(DateTime start, DateTime end)
+    public IActionResult SocialRapport(DateRapportDTO dto)
     {
         return this.File(
-            this._rapportService.GetTimesRapport(start, end),
+            this._rapportService.GetSocialRapport(dto.start, dto.end),
+            "application/pdf",
+            "TimesRapport.pdf",
+            true
+        );
+    }
+
+    [HttpPost("times")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult TimesRapport(DateRapportDTO dto)
+    {
+        return this.File(
+            this._rapportService.GetTimesRapport(dto.start, dto.end),
             "application/pdf",
             "TimesRapport.pdf",
             true

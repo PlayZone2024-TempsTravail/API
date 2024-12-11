@@ -114,7 +114,7 @@ builder.Services.AddScoped<ILibeleRepository, LibeleRepository>();
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 //Injection des repositories DAL - Rapport_Related
-builder.Services.AddScoped<IWorktimeRapportRepository, WorktimeRapportRepository>();
+builder.Services.AddScoped<IRapportRepository, RapportRepository>();
 
 /*-----------------------------------------*/
 

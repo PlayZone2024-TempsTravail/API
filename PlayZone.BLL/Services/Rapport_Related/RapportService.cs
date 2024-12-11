@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DinkToPdf;
+using Microsoft.Extensions.Logging;
 using PlayZone.BLL.Interfaces.Rapport_Related;
 using PlayZone.BLL.Mappers.Rapport_Related;
 using PlayZone.BLL.Models.Rapport_Related;
@@ -10,26 +11,26 @@ namespace PlayZone.BLL.Services.Rapport_Related;
 
 public class RapportService : IRapportService
 {
-    private readonly IWorktimeRapportRepository _wrr;
+    private readonly IRapportRepository _wrr;
     private readonly PdfGenerator _pdfGenerator;
     private readonly RazorViewRendererService _razorViewRendererService;
     private readonly ILogger<RapportService> _logger;
 
     public RapportService(
-        IWorktimeRapportRepository worktimeRapportRepository,
+        IRapportRepository rapportRepository,
         RazorViewRendererService razorViewRendererService,
         PdfGenerator pdfGenerator, ILogger<RapportService> logger)
     {
-        this._wrr = worktimeRapportRepository;
+        this._wrr = rapportRepository;
         this._razorViewRendererService = razorViewRendererService;
         this._pdfGenerator = pdfGenerator;
         this._logger = logger;
     }
 
-    private byte[] Generate<T>(T model, string view, string? title = null)
+    private byte[] Generate<T>(T model, string view, string? title = null, Orientation orientation = Orientation.Portrait)
     {
         string html = this._razorViewRendererService.RenderViewToStringAsync(view, model).Result;
-        return this._pdfGenerator.Execute(html, title);
+        return this._pdfGenerator.Execute(html, title, orientation);
     }
 
     public byte[] GetProjectRapport(ProjectRapport pr)
@@ -40,6 +41,18 @@ public class RapportService : IRapportService
             new ProjectRapportView(projectRapports.Select(pr => pr.ToRazor())),
             "ProjectRapportView.cshtml",
             "Rapport de comptes des projets"
+        );
+    }
+
+    public byte[] GetSocialRapport(DateTime start, DateTime end)
+    {
+        IEnumerable<SocialRapport> socialRapports = this._wrr.GetSocialRapport(start, end).Select(s => s.ToModel());
+
+        return this.Generate(
+            new SocialRapportView(socialRapports.Select(s => s.ToRazor()), this._logger),
+            "SocialRapportView.cshtml",
+            $"Pointage du {start:dd MMMM yyyy} au {end:dd MMMM yyyy}",
+            Orientation.Landscape
         );
     }
 

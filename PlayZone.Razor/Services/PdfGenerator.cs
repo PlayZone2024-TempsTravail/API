@@ -11,12 +11,12 @@ public class PdfGenerator
         this._converter = converter;
     }
 
-    public byte[] Execute(string html, string? title = null)
+    public byte[] Execute(string html, string? title = null, Orientation orientation = Orientation.Portrait)
     {
         GlobalSettings globalSettings = new GlobalSettings
         {
             ColorMode = ColorMode.Color,
-            Orientation = Orientation.Portrait,
+            Orientation = orientation,
             PaperSize = PaperKind.A4,
             Margins = new MarginSettings { Top = 10, Bottom = 10, Left = 10, Right = 10 }
         };
