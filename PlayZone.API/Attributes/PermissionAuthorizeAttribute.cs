@@ -17,12 +17,12 @@ public class PermissionAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         List<string> userPerm = context.HttpContext.User.Claims.Where(c => c.Type == "Permissions").Select(c => c.Value).ToList();
 
-        bool isAuthorized = true;
-        for (int i = 0; isAuthorized && i < this.Permissions.Length; i++)
+        bool isAuthorized = false;
+        foreach (string permission in this.Permissions)
         {
-            if (!userPerm.Any(up => up == this.Permissions[i]))
+            if (userPerm.Any(u => u == permission))
             {
-                isAuthorized = false;
+                isAuthorized = true;
             }
         }
 

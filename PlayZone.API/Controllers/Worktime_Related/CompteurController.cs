@@ -23,9 +23,13 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [Authorize]
         [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompteurAbsenceDTO>))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAbsenceByUser(int idUser)
         {
+            if (!WorktimeController.CheckHasPermissionWorktime(this.User, idUser))
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+
             try
             {
                 IEnumerable<CompteurAbsenceDTO> compteurs =
@@ -42,9 +46,13 @@ namespace PlayZone.API.Controllers.Worktime_Related
         [Authorize]
         [PermissionAuthorize([Permission.PERSO_CONSULTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES])]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompteurProjetDTO>))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetProjectByUser(int idUser)
         {
+            if (!WorktimeController.CheckHasPermissionWorktime(this.User, idUser))
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+
             try
             {
                 IEnumerable<CompteurProjetDTO> compteur =

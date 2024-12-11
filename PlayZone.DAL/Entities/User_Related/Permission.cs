@@ -12,6 +12,8 @@ public class Permission
     public const string EDIT_USER_SALAIRE = "EDITER_USER_SALAIRE";
 
     /* Permissions pour les pointages */
+    public const string EDIT_WORKTIMECATEGORY = "MODIFIER_CATEGORIE_POINTAGE";
+
     public const string PERSO_CONSULTER_POINTAGE = "PERSO_CONSULTER_POINTAGE";
     public const string PERSO_AJOUTER_POINTAGE = "PERSO_AJOUTER_POINTAGE";
     public const string PERSO_MODIFIER_POINTAGE = "PERSO_MODIFIER_POINTAGE";
@@ -83,6 +85,8 @@ public static class PermissionManager
         { Permission.MODIFIER_UTILISATEUR, "Modifier un utilisateur" },
         { Permission.EDIT_COMPTEUR, "Modifier un compteur" },
         { Permission.EDIT_USER_SALAIRE, "Modifier le salaire d'un utilisateur" },
+
+        { Permission.EDIT_WORKTIMECATEGORY, "Edition des catégorie de pointage" },
 
         { Permission.PERSO_CONSULTER_POINTAGE, "Soi-même: Voir son calendrier de pointage" },
         { Permission.PERSO_AJOUTER_POINTAGE, "Soi-même: Encoder un pointage" },

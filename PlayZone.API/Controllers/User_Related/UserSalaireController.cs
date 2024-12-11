@@ -59,8 +59,6 @@ public class UserSalaireController : ControllerBase
             /* ignored */
         }
 
-        {
-            return this.StatusCode(StatusCodes.Status500InternalServerError);
-        }
+        return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
