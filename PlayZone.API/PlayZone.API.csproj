@@ -14,24 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
-      <Folder Include="Controllers\Configuration_Related\" />
-      <Folder Include="Controllers\User_Related\" />
-      <Folder Include="Controllers\Worktime_Related\" />
-      <ProjectReference Include="..\PlayZone.Razor\PlayZone.Razor.csproj" />
+        <Folder Include="Controllers\Configuration_Related\" />
+        <Folder Include="Controllers\User_Related\" />
+        <Folder Include="Controllers\Worktime_Related\" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
-      <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+        <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
+        <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+        <ProjectReference Include="..\PlayZone.Razor\PlayZone.Razor.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\TemplateRapport\PdfTemplate.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-    <None Remove="Lib\libwkhtmltox.dll" />
-  </ItemGroup>
-
 </Project>
