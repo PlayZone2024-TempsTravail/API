@@ -57,6 +57,7 @@ builder.Services.AddScoped<IUserSalaireService, UserSalaireService>();
 //Injection des services BLL - Worktime_Related
 builder.Services.AddScoped<IWorktimeService, WorktimeService>();
 builder.Services.AddScoped<IWorktimeCategoryService, WorktimeCategoryService>();
+builder.Services.AddScoped<ICompteurService, CompteurService>();
 
 //Injection des services BLL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetLibeleService, PrevisionBudgetLibeleService>();
@@ -98,6 +99,7 @@ builder.Services.AddScoped<IUserSalaireRepository, UserSalaireRepository>();
 //Injection des repositories DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
 builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
+builder.Services.AddScoped<ICompteurRepository, CompteurRepository>();
 
 //Injection des repositories DAL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetLibeleRepository, PrevisionBudgetLibeleRepository>();

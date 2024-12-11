@@ -10,7 +10,8 @@ public static class UserRoleMapper
         return new Models.UserRole
         {
             RoleId = ur.RoleId,
-            UserId = ur.UserId
+            UserId = ur.UserId,
+            RoleName = ur.RoleName
         };
     }
 
@@ -19,7 +20,18 @@ public static class UserRoleMapper
         return new UserRoleDTO
         {
             RoleId = ur.RoleId,
+            UserId = ur.UserId,
+            RoleName = ur.RoleName
+        };
+    }
+
+    public static Models.UserRole ToModel(this UserRoleCreateDTO ur)
+    {
+        return new Models.UserRole
+        {
+            RoleId = ur.RoleId,
             UserId = ur.UserId
         };
     }
+
 }

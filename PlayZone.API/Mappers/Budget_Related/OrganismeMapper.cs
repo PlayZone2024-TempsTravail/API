@@ -14,7 +14,7 @@ public static class OrganismeMapper
         };
     }
 
-    public static Models.Organisme ToModels(this OrganismeDTO organisme)
+    public static Models.Organisme ToModel(this OrganismeDTO organisme)
     {
         return new Models.Organisme
         {
@@ -23,7 +23,7 @@ public static class OrganismeMapper
         };
     }
 
-    public static Models.Organisme ToModels(this OrganismeCreateFormDTO organisme)
+    public static Models.Organisme ToModel(this OrganismeCreateFormDTO organisme)
     {
         return new Models.Organisme
         {
@@ -31,7 +31,7 @@ public static class OrganismeMapper
         };
     }
 
-    public static Models.Organisme ToModels(this OrganismeUpdateFormDTO organisme)
+    public static Models.Organisme ToModel(this OrganismeUpdateFormDTO organisme)
     {
         return new Models.Organisme
         {

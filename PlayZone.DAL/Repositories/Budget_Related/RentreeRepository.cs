@@ -42,9 +42,9 @@ public class RentreeRepository : IRentreeRepository
                 ""date_facturation"" AS ""DateFacturation"",
                 ""motif"" AS ""Motif""
             FROM ""Rentree""
-            WHERE ""organisme_id"" = @OrganismeId;
+            WHERE ""project_id"" = @IdProject;
         ";
-        return this._connection.Query<Rentree>(query, new { OrganismeId = id });
+        return this._connection.Query<Rentree>(query, new { IdProject = id });
     }
 
     public Rentree? GetById(int id)

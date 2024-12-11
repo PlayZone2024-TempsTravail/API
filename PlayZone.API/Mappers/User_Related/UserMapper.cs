@@ -15,6 +15,8 @@ public static class UserMapper
             Email = user.Email,
             //Password = user.Password,
             IsActive = user.IsActive,
+            UserRoles = user.UserRoles.Select(ur => ur.ToDTO()),
+            UserSalaires = user.UserSalaires.Select(us => us.ToDTO()),
         };
     }
 

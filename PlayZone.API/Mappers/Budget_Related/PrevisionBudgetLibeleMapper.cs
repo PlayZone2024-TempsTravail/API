@@ -11,7 +11,10 @@ public static class PrevisionBudgetLibeleMapper
         {
             IdPrevisionBudgetLibele = previsionBudgetLibele.IdPrevisionBudgetLibele,
             IdProject = previsionBudgetLibele.IdProject,
-            IdLibele = previsionBudgetLibele.IdLibele,
+            CategoryId = previsionBudgetLibele.CategoryId,
+            CategoryName = previsionBudgetLibele.CategoryName,
+            LibeleId = previsionBudgetLibele.LibeleId,
+            LibeleName = previsionBudgetLibele.LibeleName,
             Date = previsionBudgetLibele.Date,
             Motif = previsionBudgetLibele.Motif,
             Montant = previsionBudgetLibele.Montant
@@ -24,7 +27,7 @@ public static class PrevisionBudgetLibeleMapper
         {
             IdPrevisionBudgetLibele = previsionBudgetLibeleDTO.IdPrevisionBudgetLibele,
             IdProject = previsionBudgetLibeleDTO.IdProject,
-            IdLibele = previsionBudgetLibeleDTO.IdLibele,
+            LibeleId = previsionBudgetLibeleDTO.LibeleId,
             Date = previsionBudgetLibeleDTO.Date,
             Motif = previsionBudgetLibeleDTO.Motif,
             Montant = previsionBudgetLibeleDTO.Montant
@@ -36,7 +39,7 @@ public static class PrevisionBudgetLibeleMapper
         return new Models.PrevisionBudgetLibele
         {
             IdProject = previsionBudgetLibeleCreateDTO.IdProject,
-            IdLibele = previsionBudgetLibeleCreateDTO.IdLibele,
+            LibeleId = previsionBudgetLibeleCreateDTO.IdLibele,
             Date = previsionBudgetLibeleCreateDTO.Date,
             Motif = previsionBudgetLibeleCreateDTO.Motif,
             Montant = previsionBudgetLibeleCreateDTO.Montant
@@ -48,7 +51,7 @@ public static class PrevisionBudgetLibeleMapper
         return new Models.PrevisionBudgetLibele
         {
             IdProject = previsionBudgetLibeleUpdateDTO.IdProject,
-            IdLibele = previsionBudgetLibeleUpdateDTO.IdLibele,
+            LibeleId = previsionBudgetLibeleUpdateDTO.IdLibele,
             Date = previsionBudgetLibeleUpdateDTO.Date,
             Motif = previsionBudgetLibeleUpdateDTO.Motif,
             Montant = previsionBudgetLibeleUpdateDTO.Montant

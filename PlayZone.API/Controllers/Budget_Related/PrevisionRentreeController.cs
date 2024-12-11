@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
 using PlayZone.API.Mappers.Budget_Related;
 using PlayZone.BLL.Interfaces.Budget_Related;
+using PlayZone.DAL.Entities.User_Related;
 using Models = PlayZone.BLL.Models.Budget_Related;
 
 namespace PlayZone.API.Controllers.Budget_Related;
@@ -19,6 +21,8 @@ public class PrevisionRentreeController : ControllerBase
     }
 
     [HttpGet("{projectId:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrevisionRentreeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetbyProject(int projectId)
@@ -36,6 +40,8 @@ public class PrevisionRentreeController : ControllerBase
     }
 
     [HttpGet("projets/{idPrevisionRentree:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PrevisionRentreeDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -43,10 +49,10 @@ public class PrevisionRentreeController : ControllerBase
     {
         try
         {
-            PrevisionRentreeDTO previsionRentree = this._previsionRentreeService.GetById(idPrevisionRentree).ToDTO();
+            PrevisionRentreeDTO? previsionRentree = this._previsionRentreeService.GetById(idPrevisionRentree)?.ToDTO();
             if (previsionRentree != null)
                 return this.Ok(previsionRentree);
-            return this.NotFound("La prevision de rentree n'existe pas.");
+            return this.NotFound("La prevision de rentree n'existe pas");
         }
         catch (Exception)
         {
@@ -56,6 +62,8 @@ public class PrevisionRentreeController : ControllerBase
 
 
     [HttpPost]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] PrevisionRentreeCreateDTO previsionRentree)
@@ -76,6 +84,8 @@ public class PrevisionRentreeController : ControllerBase
 
 
     [HttpPut]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int idPrevisionRentree, [FromBody] PrevisionRentreeUpdateDTO previsionRentree)
@@ -94,14 +104,16 @@ public class PrevisionRentreeController : ControllerBase
     }
 
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{idPrevisionRentree:int}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Delete(int id)
+    public IActionResult Delete(int idPrevisionRentree)
     {
         try
         {
-            return this.Ok(this._previsionRentreeService.Delete(id));
+            return this.Ok(this._previsionRentreeService.Delete(idPrevisionRentree));
         }
         catch (Exception)
         {

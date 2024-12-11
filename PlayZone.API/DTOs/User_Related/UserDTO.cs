@@ -9,6 +9,9 @@ public class UserDTO
     public string? Prenom { get; set; }
     public string? Email { get; set; }
     public bool IsActive { get; set; }
+
+    public IEnumerable<UserRoleDTO> UserRoles { get; set; }
+    public IEnumerable<UserSalaireDTO> UserSalaires { get; set; }
 }
 
 public class UserLoginFormDTO

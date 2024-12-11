@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Attributes;
 
 public class PermissionAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
-    private string[] Permissions { get; }
+    public string[] Permissions { get; }
 
     public PermissionAuthorizeAttribute(params string[] permissions)
     {
@@ -14,9 +15,6 @@ public class PermissionAuthorizeAttribute : Attribute, IAuthorizationFilter
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        // Pour info, ca marche ☜(ﾟヮﾟ☜)
-        // IRoleService test = context.HttpContext.RequestServices.GetRequiredService<PlayZone.BLL.Interfaces.User_Related.IRoleService>();
-
         List<string> userPerm = context.HttpContext.User.Claims.Where(c => c.Type == "Permissions").Select(c => c.Value).ToList();
 
         bool isAuthorized = true;

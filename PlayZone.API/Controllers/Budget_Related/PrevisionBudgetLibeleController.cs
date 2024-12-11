@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
@@ -21,6 +22,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet("project/{projectId:int}")]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrevisionBudgetLibeleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -39,6 +41,8 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpGet("id/{id:int}")]
+        [Authorize]
+        [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PrevisionBudgetLibeleDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -58,6 +62,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpPost]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PrevisionBudgetLibeleDTO))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -76,6 +81,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpPut("{id:int}")]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,6 +104,7 @@ namespace PlayZone.API.Controllers.Budget_Related
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

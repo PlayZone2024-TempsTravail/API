@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.User_Related;
@@ -20,6 +21,7 @@ namespace PlayZone.API.Controllers.User_Related
 
 
         [HttpGet]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserRoleDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,6 +39,7 @@ namespace PlayZone.API.Controllers.User_Related
         }
 
         [HttpGet("{idUser:int}")]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<int>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -44,7 +47,7 @@ namespace PlayZone.API.Controllers.User_Related
         {
             try
             {
-                IEnumerable<int> userRoleDtos = this._userRoleService.GetByUser(idUser);
+                IEnumerable<UserRoleDTO> userRoleDtos = this._userRoleService.GetByUser(idUser).Select(ur => ur.ToDTO());
                 return this.Ok(userRoleDtos);
             }
             catch (Exception)
@@ -54,15 +57,16 @@ namespace PlayZone.API.Controllers.User_Related
         }
 
         [HttpPost]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Create(UserRoleDTO userRoleDto)
+        public IActionResult Create(UserRoleCreateDTO userRoleCreateDto)
         {
             try
             {
-                UserRoleDTO ur = this._userRoleService.Create(userRoleDto.ToModel()).ToDTO();
-                if (userRoleDto.RoleId == ur.RoleId && userRoleDto.UserId == ur.UserId)
+                UserRoleDTO ur = this._userRoleService.Create(userRoleCreateDto.ToModel()).ToDTO();
+                if (userRoleCreateDto.RoleId == ur.RoleId && userRoleCreateDto.UserId == ur.UserId)
                 {
                     return this.Ok();
                 }
@@ -76,14 +80,15 @@ namespace PlayZone.API.Controllers.User_Related
         }
 
         [HttpDelete]
+        [Authorize]
         [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Delete(UserRoleDTO userRoleDto)
+        public IActionResult Delete(UserRoleDeleteDTO userRoleDeleteDto)
         {
             try
             {
-                if (this._userRoleService.Delete(userRoleDto.RoleId, userRoleDto.UserId))
+                if (this._userRoleService.Delete(userRoleDeleteDto.RoleId, userRoleDeleteDto.UserId))
                 {
                     return this.Ok();
                 }

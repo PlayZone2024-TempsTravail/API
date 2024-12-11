@@ -18,9 +18,9 @@ public class UserRoleService : IUserRoleService
         return this._userRoleRepository.GetAll().Select(ur => ur.ToModel());
     }
 
-    public IEnumerable<int> GetByUser(int idUser)
+    public IEnumerable<UserRole> GetByUser(int idUser)
     {
-        return this._userRoleRepository.GetByUser(idUser);
+        return this._userRoleRepository.GetByUser(idUser).Select(ur => ur.ToModel());
     }
 
     public UserRole Create(UserRole userRole)

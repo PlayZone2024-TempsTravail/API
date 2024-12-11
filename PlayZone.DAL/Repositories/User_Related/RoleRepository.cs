@@ -19,8 +19,11 @@ public class RoleRepository : IRoleRepository
         const string query = @"
             SELECT
                 ""id_role"" AS IdRole,
-                ""name""
-            FROM ""Role"";
+                ""name"",
+                ""isRemovable"",
+                ""isVisible""
+            FROM ""Role""
+            ORDER BY ""id_role"";
         ";
         return this._connection.Query<Role>(query);
     }
@@ -30,7 +33,9 @@ public class RoleRepository : IRoleRepository
         const string query = @"
             SELECT
                 ""id_role"" AS IdRole,
-                ""name""
+                ""name"",
+                ""isRemovable"",
+                ""isVisible""
             FROM ""Role""
             WHERE ""id_role"" = @Id;
         ";

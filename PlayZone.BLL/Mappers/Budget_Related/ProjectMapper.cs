@@ -9,15 +9,19 @@ public static class ProjectMapper
     {
         return new Entities.Project
         {
-            Name = project.Name,
             IdProject = project.IdProject,
+            IsActive = project.IsActive,
+            Name = project.Name,
+            OrganismeId = project.OrganismeId,
+            OrganismeName = project.OrganismeName,
+            Color = project.Color,
+            MontantBudget = project.MontantBudget,
             DateDebutProjet = project.DateDebutProjet,
             DateFinProjet = project.DateFinProjet,
-            Color = project.Color,
-            OrganismeId = project.OrganismeId,
-            ChargerDeProjetId = project.ChargerDeProjetId,
-            MontantBudget = project.MontantBudget,
-            IsActive = project.IsActive
+            ChargeDeProjetId = project.ChargeDeProjetId,
+            ChargeDeProjetName = project.ChargeDeProjetName,
+            PrevisionDepenseActuelle = project.PrevisionDepenseActuelle,
+            DepenseReelActuelle = project.DepenseReelActuelle
         };
     }
 
@@ -25,15 +29,29 @@ public static class ProjectMapper
     {
         return new Project
         {
-            Name = project.Name,
             IdProject = project.IdProject,
+            IsActive = project.IsActive,
+            Name = project.Name,
+            OrganismeId = project.OrganismeId,
+            OrganismeName = project.OrganismeName,
+            Color = project.Color,
+            MontantBudget = project.MontantBudget,
             DateDebutProjet = project.DateDebutProjet,
             DateFinProjet = project.DateFinProjet,
-            Color = project.Color,
-            OrganismeId = project.OrganismeId,
-            ChargerDeProjetId = project.ChargerDeProjetId,
-            MontantBudget = project.MontantBudget,
-            IsActive = project.IsActive
+            ChargeDeProjetId = project.ChargeDeProjetId,
+            ChargeDeProjetName = project.ChargeDeProjetName,
+            PrevisionDepenseActuelle = project.PrevisionDepenseActuelle,
+            DepenseReelActuelle = project.DepenseReelActuelle
+        };
+    }
+
+    public static ProjectShort ToModel(this Entities.ProjectShort entity)
+    {
+        return new ProjectShort
+        {
+            IdProject = entity.IdProject,
+            IsActive = entity.IsActive,
+            Name = entity.Name
         };
     }
 

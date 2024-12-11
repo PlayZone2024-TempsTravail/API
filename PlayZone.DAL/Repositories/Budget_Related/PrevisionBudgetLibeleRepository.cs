@@ -18,13 +18,18 @@ public class PrevisionBudgetLibeleRepository : IPrevisionBudgetLibeleRepository
     {
         const string query = @"
             SELECT
-                ""id_prevision_budget_libele"" AS ""IdPrevisionBudgetLibele"" ,
-                ""project_id"" AS ""IdProject"",
-                ""libele_id"" AS ""IdLibele"",
-                ""date"" AS ""Date"",
-                ""motif"" AS ""Motif"",
-                ""montant"" AS ""Montant""
-            FROM ""Prevision_Budget_Libele""
+                pb.""id_prevision_budget_libele"" AS ""IdPrevisionBudgetLibele"" ,
+                pb.""project_id"" AS ""IdProject"",
+                l.category_id AS ""CategoryId"",
+                c.name AS ""CategoryName"",
+                pb.""libele_id"" AS ""LibeleId"",
+                l.name AS ""LibeleName"",
+                pb.""date"" AS ""Date"",
+                pb.""motif"" AS ""Motif"",
+                pb.""montant"" AS ""Montant""
+            FROM ""Prevision_Budget_Libele"" pb
+            INNER JOIN ""Libele"" l ON pb.libele_id = l.id_libele
+            INNER JOIN ""Category"" c ON l.category_id = c.id_category
             WHERE ""project_id"" = @IdProject;
         ";
         return this._connection.Query<PrevisionBudgetLibele>(query, new { IdProject = IdProject });
@@ -34,13 +39,18 @@ public class PrevisionBudgetLibeleRepository : IPrevisionBudgetLibeleRepository
     {
         const string query = @"
             SELECT
-                ""id_prevision_budget_libele"" AS ""IdPrevisionBudgetLibele"" ,
-                ""project_id"" AS ""IdProject"",
-                ""libele_id"" AS ""IdLibele"",
-                ""date"" AS ""Date"",
-                ""motif"" AS ""Motif"",
-                ""montant"" AS ""Montant""
-            FROM ""Prevision_Budget_Libele""
+                pb.""id_prevision_budget_libele"" AS ""IdPrevisionBudgetLibele"" ,
+                pb.""project_id"" AS ""IdProject"",
+                l.category_id AS ""CategoryId"",
+                c.name AS ""CategoryName"",
+                pb.""libele_id"" AS ""LibeleId"",
+                l.name AS ""LibeleName"",
+                pb.""date"" AS ""Date"",
+                pb.""motif"" AS ""Motif"",
+                pb.""montant"" AS ""Montant""
+            FROM ""Prevision_Budget_Libele"" pb
+            INNER JOIN ""Libele"" l ON pb.libele_id = l.id_libele
+            INNER JOIN ""Category"" c ON l.category_id = c.id_category
             WHERE ""id_prevision_budget_libele"" = @id;
         ";
         return this._connection.QuerySingleOrDefault<PrevisionBudgetLibele>(query, new { id = id });
@@ -68,7 +78,7 @@ public class PrevisionBudgetLibeleRepository : IPrevisionBudgetLibeleRepository
         int resultId = this._connection.QuerySingle<int>(query, new
         {
             IdProject = previsionBudgetLibele.IdProject,
-            IdLibele = previsionBudgetLibele.IdLibele,
+            IdLibele = previsionBudgetLibele.LibeleId,
             Date = previsionBudgetLibele.Date,
             Motif = previsionBudgetLibele.Motif,
             Montant = previsionBudgetLibele.Montant,

@@ -95,11 +95,21 @@ public class WorktimeRepository : IWorktimeRepository
             ""end"" = @End,
             ""category_id"" = @CategoryId,
             ""project_id"" = @ProjectId,
-            ""user_id"" = @UserId
+            ""user_id"" = @UserId,
+            ""isOnSite"" = @IsOnSite
         WHERE
             ""id_WorkTime"" = @IdWorktime;
-    ";
-    return this._connection.Execute(query, worktime) > 0;
+        ";
+        return this._connection.Execute(query, new
+        {
+            Start = worktime.Start,
+            End = worktime.End,
+            CategoryId = worktime.CategoryId,
+            ProjectId = (worktime.ProjectId == 0) ? null : worktime.ProjectId,
+            UserId = worktime.UserId,
+            IsOnSite = worktime.IsOnSite,
+            IdWorktime = worktime.IdWorktime
+        }) > 0;
     }
     public int Create(Worktime worktime)
     {

@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlayZone.API.Attributes;
 using PlayZone.API.DTOs.Budget_Related;
 using PlayZone.API.Mappers.Budget_Related;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Models.Budget_Related;
+using PlayZone.DAL.Entities.User_Related;
 
 namespace PlayZone.API.Controllers.Budget_Related;
 
@@ -17,9 +20,11 @@ public class OrganismeController : ControllerBase
         this._organismeService = organismeService;
     }
 
+    [HttpGet]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet]
     public IActionResult GetAll()
     {
         try
@@ -34,9 +39,11 @@ public class OrganismeController : ControllerBase
         }
     }
 
+    [HttpGet("fournisseursFirst")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet("fournisseursFirst")]
     public IActionResult GetAllFournisseursFirst()
     {
         try
@@ -50,9 +57,11 @@ public class OrganismeController : ControllerBase
         }
     }
 
+    [HttpGet("clientsFirst")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrganismeDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpGet("clientsFirst")]
     public IActionResult GetAllClientsFirst()
     {
         try
@@ -67,6 +76,8 @@ public class OrganismeController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganismeDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetById(int id)
@@ -83,11 +94,13 @@ public class OrganismeController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrganismeCreateFormDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] OrganismeCreateFormDTO organisme)
     {
-        int resultId = this._organismeService.Create(organisme.ToModels());
+        int resultId = this._organismeService.Create(organisme.ToModel());
         if (resultId > 0)
         {
             return this.CreatedAtAction(nameof(this.GetById), new { id = resultId }, organisme);
@@ -96,11 +109,13 @@ public class OrganismeController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganismeUpdateFormDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Update(int id, [FromBody] OrganismeUpdateFormDTO organisme)
     {
-        Organisme updatedOrganisme = organisme.ToModels();
+        Organisme updatedOrganisme = organisme.ToModel();
         updatedOrganisme.IdOrganisme = id;
         if (this._organismeService.Update(updatedOrganisme))
         {
@@ -110,6 +125,8 @@ public class OrganismeController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
+    [PermissionAuthorize(Permission.DEBUG_PERMISSION)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganismeDTO))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int id)

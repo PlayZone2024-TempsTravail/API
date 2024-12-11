@@ -18,10 +18,13 @@ public class LibeleRepository : ILibeleRepository
     {
         const string query = @"
                 SELECT
-                    ""id_libele"" AS ""IdLibele"",
-                    ""category_id"" AS ""IdCategory"",
-                    ""name"" AS ""Name""
-                FROM ""Libele"";
+                    c.""isIncome"" IsIncome,
+                    c.id_category IdCategory,
+                    c.name CategoryName,
+                    l.id_libele IdLibele,
+                    l.name LibeleName
+                FROM ""Libele"" l
+                INNER JOIN ""Category"" c on C.id_category = l.category_id;
             ";
         return this._connection.Query<Libele>(query);
     }
@@ -30,13 +33,30 @@ public class LibeleRepository : ILibeleRepository
     {
         const string query = @"
                 SELECT
-                    ""id_libele"" AS ""IdLibele"",
-                    ""category_id"" AS ""IdCategory"",
-                    ""name"" AS ""Name""
-                FROM ""Libele""
+                    c.""isIncome"",
+                    c.id_category categoryId,
+                    c.name categoryName,
+                    l.id_libele libeleId,
+                    l.name libeleName
+                FROM ""Libele"" l
+                INNER JOIN ""Category"" c on C.id_category = l.category_id
                 WHERE ""id_libele"" = @IdLibele;
             ";
         return this._connection.QuerySingleOrDefault<Libele>(query, new { IdLibele = id });
+    }
+
+    public IEnumerable<TreeLibele> GetAllWithCategories()
+    {
+        const string query = @"
+                SELECT
+                    CONCAT('c-', c.id_category) categoryId,
+                    c.name categoryName,
+                    CONCAT('l-', l.id_libele) libeleId,
+                    l.name libeleName
+                FROM ""Libele"" l
+                INNER JOIN public.""Category"" C on C.id_category = l.category_id;
+        ";
+        return this._connection.Query<TreeLibele>(query);
     }
 
     public int Create(Libele libele)
@@ -55,7 +75,7 @@ public class LibeleRepository : ILibeleRepository
         int resultId = this._connection.QuerySingle<int>(query, new
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            Name = libele.LibeleName
         });
 
         return resultId;
@@ -72,7 +92,7 @@ public class LibeleRepository : ILibeleRepository
         int affectedRows = this._connection.Execute(query, new
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name,
+            Name = libele.LibeleName,
             IdLibele = libele.IdLibele
         });
         return affectedRows > 0;

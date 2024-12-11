@@ -10,7 +10,10 @@ public static class PrevisionRentreeMapper
         return new PrevisionRentreeDTO
         {
             IdPrevisionRentree = previsionRentree.IdPrevisionRentree,
+            CategoryId = previsionRentree.CategoryId,
+            CategoryName = previsionRentree.CategoryName,
             LibeleId = previsionRentree.LibeleId,
+            LibeleName = previsionRentree.LibeleName,
             ProjectId = previsionRentree.ProjectId,
             OrganismeId = previsionRentree.OrganismeId,
             Date = previsionRentree.Date,

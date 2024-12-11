@@ -1,46 +1,59 @@
 ﻿using PlayZone.API.DTOs.Budget_Related;
-using Libele = PlayZone.BLL.Models.Budget_Related.Libele;
+using Models = PlayZone.BLL.Models.Budget_Related;
 
 
 namespace PlayZone.API.Mappers.Budget_Related;
 
 public static class LibeleMapper
 {
-    public static LibeleDTO ToDTO(this Libele libele)
+    public static LibeleDTO ToDTO(this Models.Libele libele)
     {
         return new LibeleDTO
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
-    public static Libele ToModels(this LibeleDTO libele)
+    public static Models.Libele ToModel(this LibeleDTO libele)
     {
-        return new Libele
+        return new Models.Libele
         {
             IdLibele = libele.IdLibele,
+            LibeleName = libele.LibeleName,
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            CategoryName = libele.CategoryName,
+            IsIncome = libele.IsIncome
         };
     }
 
-    public static Libele ToModels(this LibeleCreateFormDTO libele)
+    public static Models.Libele ToModel(this LibeleCreateFormDTO libele)
     {
-        return new Libele
+        return new Models.Libele
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            LibeleName = libele.Name
         };
     }
 
-    public static Libele ToModels(this LibeleUpdateFormDTO libele)
+    public static Models.Libele ToModel(this LibeleUpdateFormDTO libele)
     {
-        return new Libele
+        return new Models.Libele
         {
             IdCategory = libele.IdCategory,
-            Name = libele.Name
+            LibeleName = libele.Name
+        };
+    }
+
+    public static TreeLibeleDTO ToDTO(this Models.TreeLibele libele)
+    {
+        return new TreeLibeleDTO
+        {
+            key = libele.LibeleId,
+            label = libele.LibeleName
         };
     }
 }
