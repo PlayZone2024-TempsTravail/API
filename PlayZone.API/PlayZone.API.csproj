@@ -14,15 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
-      <Folder Include="Controllers\Configuration_Related\" />
-      <Folder Include="Controllers\User_Related\" />
-      <Folder Include="Controllers\Budget_Related\" />
+        <Folder Include="Controllers\Configuration_Related\" />
+        <Folder Include="Controllers\User_Related\" />
+        <Folder Include="Controllers\Worktime_Related\" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
-      <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+        <ProjectReference Include="..\PlayZone.BLL\PlayZone.BLL.csproj" />
+        <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
+        <ProjectReference Include="..\PlayZone.Razor\PlayZone.Razor.csproj" />
     </ItemGroup>
-
 </Project>

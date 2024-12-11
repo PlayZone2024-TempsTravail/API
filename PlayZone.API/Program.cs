@@ -1,5 +1,9 @@
 using System.Text;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
@@ -7,20 +11,25 @@ using Npgsql;
 using PlayZone.API.Services;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Interfaces.Configuration_Related;
+using PlayZone.BLL.Interfaces.Rapport_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.Budget_Related;
 using PlayZone.BLL.Services.Configuration_Related;
+using PlayZone.BLL.Services.Rapport_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.BLL.Services.Worktime_Related;
 using PlayZone.DAL.Interfaces.Budget_Related;
 using PlayZone.DAL.Interfaces.Configuration_Related;
+using PlayZone.DAL.Interfaces.Rapport_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.DAL.Interfaces.Worktime_Related;
 using PlayZone.DAL.Repositories.Budget_Related;
 using PlayZone.DAL.Repositories.Configuration_Related;
+using PlayZone.DAL.Repositories.Rapport_Related;
 using PlayZone.DAL.Repositories.User_Related;
 using PlayZone.DAL.Repositories.Worktime_Related;
+using PlayZone.Razor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -60,16 +69,26 @@ builder.Services.AddScoped<IRentreeService, RentreeService>();
 builder.Services.AddScoped<IDepenseService, DepenseService>();
 builder.Services.AddScoped<IOrganismeService, OrganismeService>();
 builder.Services.AddScoped<ILibeleService, LibeleService>();
+builder.Services.AddSingleton<IConverter, SynchronizedConverter>(_ => new SynchronizedConverter(new PdfTools()));
 
 //Injection des services BLL - Configuration_Related
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
+//Injection des services BLL - Rapport_Related
+builder.Services.AddScoped<IRapportService, RapportService>();
+
 //Injection des services API
 builder.Services.AddScoped<JwtService>();
 
+//Injection des services pour Razor
+builder.Services.AddSingleton<IRazorViewEngine, RazorViewEngine>();
+builder.Services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+builder.Services.AddSingleton<RazorViewRendererService>();
+builder.Services.AddSingleton<PdfGenerator>();
+
 /*-----------------------------------------*/
 
-//Injection des services DAL - User_Related
+//Injection des repositories DAL - User_Related
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
@@ -77,12 +96,12 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<ICompteurWorktimeCategoryRepository, CompteurWorktimeCategoryRepository>();
 builder.Services.AddScoped<IUserSalaireRepository, UserSalaireRepository>();
 
-//Injection des services DAL - Worktime_Related
+//Injection des repositories DAL - Worktime_Related
 builder.Services.AddScoped<IWorktimeRepository, WorktimeRepository>();
 builder.Services.AddScoped<IWorktimeCategoryRepository, WorktimeCategoryRepository>();
 builder.Services.AddScoped<ICompteurRepository, CompteurRepository>();
 
-//Injection des services DAL - Budget_Related
+//Injection des repositories DAL - Budget_Related
 builder.Services.AddScoped<IPrevisionBudgetLibeleRepository, PrevisionBudgetLibeleRepository>();
 builder.Services.AddScoped<IPrevisionBudgetCategoryRepository, PrevisionBudgetCategoryRepository>();
 builder.Services.AddScoped<IPrevisionRentreeRepository, PrevisionRentreeRepository>();
@@ -93,13 +112,18 @@ builder.Services.AddScoped<IDepenseRepository, DepenseRepository>();
 builder.Services.AddScoped<IOrganismeRepository, OrganismeRepository>();
 builder.Services.AddScoped<ILibeleRepository, LibeleRepository>();
 
-//Injection des services DAL - Configuration_Related
+//Injection des repositories DAL - Configuration_Related
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+
+//Injection des repositories DAL - Rapport_Related
+builder.Services.AddScoped<IRapportRepository, RapportRepository>();
 
 /*-----------------------------------------*/
 
-
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
@@ -194,6 +218,8 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseRouting();
 
 app.UseAuthorization();
 
