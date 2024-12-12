@@ -95,7 +95,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] UserCreateFormDTO user)
     {
-        int resultId = this._userService.Create(user.ToModel());
+        int resultId = this._userService.Create(user.ToModel()).Result;
         if (resultId > 0)
         {
             UserDTO u = this._userService.GetById(resultId)!.ToDTO();
@@ -128,6 +128,29 @@ public class UserController : ControllerBase
         return this.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
+
+    [HttpPut("resetpassword/{idUser:int}")]
+    // [Authorize]
+    // [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> NewPassword(int idUser)
+    {
+        try
+        {
+            if (await this._userService.ResetPassword(idUser))
+            {
+                return this.Ok();
+            }
+            return this.BadRequest();
+        }
+        catch (Exception e)
+        {
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
     [HttpDelete("{idUser:int}")]
     [Authorize]
     [PermissionAuthorize(Permission.SUPPRIMER_UTILISATEUR)]
@@ -144,4 +167,5 @@ public class UserController : ControllerBase
             return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
+
 }

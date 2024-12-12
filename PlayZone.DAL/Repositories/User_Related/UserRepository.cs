@@ -124,6 +124,21 @@ namespace PlayZone.DAL.Repositories.User_Related
             return affectedRows > 0;
         }
 
+        public bool ResetPassword(User user)
+        {
+            const string query = @"
+                UPDATE ""User"" SET
+                    ""password"" = @Password
+                WHERE ""id_user"" = @IdUser;
+            ";
+            int affectedRows = this._connection.Execute(query, new
+            {
+                user.IdUser,
+                user.Password
+            });
+            return affectedRows > 0;
+        }
+
         public bool Delete(int id)
         {
             const string query = @"

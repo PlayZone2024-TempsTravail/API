@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using DinkToPdf;
 using DinkToPdf.Contracts;
@@ -9,13 +11,16 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using PlayZone.API.Services;
+using PlayZone.BLL.Helpers;
 using PlayZone.BLL.Interfaces.Budget_Related;
 using PlayZone.BLL.Interfaces.Configuration_Related;
+using PlayZone.BLL.Interfaces.Mail_Related;
 using PlayZone.BLL.Interfaces.Rapport_Related;
 using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.BLL.Interfaces.Worktime_Related;
 using PlayZone.BLL.Services.Budget_Related;
 using PlayZone.BLL.Services.Configuration_Related;
+using PlayZone.BLL.Services.Mail_Related;
 using PlayZone.BLL.Services.Rapport_Related;
 using PlayZone.BLL.Services.User_Related;
 using PlayZone.BLL.Services.Worktime_Related;
@@ -42,6 +47,28 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     return new NpgsqlConnection(connectionString);
 });
 
+builder.Services.AddScoped((s) => new SmtpClient
+{
+    // Host = builder.Configuration.GetSection("smtp")["Host"]!,
+    // Port = Convert.ToInt32(builder.Configuration.GetSection("smtp")["Port"]),
+    // EnableSsl = true,
+    // UseDefaultCredentials = false,
+    // Credentials = new NetworkCredential
+    // {
+    //     UserName = builder.Configuration.GetSection("smtp")["Email"],
+    //     Password = builder.Configuration.GetSection("smtp")["Password"]
+    // }
+
+    Host = "ssl0.ovh.net",
+    Port = 587,
+    EnableSsl = true,
+    UseDefaultCredentials = false,
+    Credentials = new NetworkCredential
+    {
+        UserName = "playzone@technobel.pro",
+        Password = "Playzone2024="
+    }
+});
 
 /*-----------------------------------------*/
 
@@ -76,6 +103,12 @@ builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
 //Injection des services BLL - Rapport_Related
 builder.Services.AddScoped<IRapportService, RapportService>();
+
+//Injection des services BLL - Mail_Related
+builder.Services.AddScoped<IMailService, MailService>();
+
+//Injection des helpers BLL - PasswordHelper
+builder.Services.AddScoped<PasswordHelper>();
 
 //Injection des services API
 builder.Services.AddScoped<JwtService>();

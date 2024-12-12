@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlayZone.API.DTOs.User_Related;
 using PlayZone.API.Mappers.User_Related;
 using PlayZone.API.Services;
+using PlayZone.BLL.Exceptions;
 using PlayZone.BLL.Interfaces.User_Related;
 
 namespace PlayZone.API.Controllers.User_Related;
@@ -37,9 +38,13 @@ public class AuthController : ControllerBase
 
             return this.NotFound("les crédentials de login sont incorrect");
         }
-        catch (Exception ex)
+        catch (LoginException e)
         {
-            return this.BadRequest(ex.Message);
+            return this.BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return this.StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using PlayZone.BLL.Interfaces.User_Related;
+﻿using PlayZone.BLL.Helpers;
+using PlayZone.BLL.Interfaces.User_Related;
 using PlayZone.DAL.Interfaces.User_Related;
 using PlayZone.BLL.Mappers.User_Related;
-using PlayZone.BLL.Models.User_Related;
-
+using User = PlayZone.BLL.Models.User_Related.User;
 
 namespace PlayZone.BLL.Services.User_Related;
 
@@ -11,16 +11,19 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IUserRoleRepository _userRoleRepository;
     private readonly IUserSalaireRepository _userSalaireRepository;
+    private readonly PasswordHelper _passwordHelper;
 
     public UserService(
         IUserRepository userRepository,
         IUserRoleRepository userRoleRepository,
-        IUserSalaireRepository userSalaireRepository
+        IUserSalaireRepository userSalaireRepository,
+        PasswordHelper passwordHelper
     )
     {
         this._userRepository = userRepository;
         this._userRoleRepository = userRoleRepository;
         this._userSalaireRepository = userSalaireRepository;
+        this._passwordHelper = passwordHelper;
     }
 
     public IEnumerable<User> GetAll()
@@ -51,13 +54,13 @@ public class UserService : IUserService
         return this._userRepository.GetByEmail(email)?.ToModel();
     }
 
-    public int Create(User user)
+    public async Task<int> Create(User user)
     {
-        // TODO
-        string passwordAuto = "Test1234=";
-        user.Password = passwordAuto;
-
-        return this._userRepository.Create(user.ToEntity());
+        string password = this._passwordHelper.GeneratePassword();
+        user.Password = this._passwordHelper.GenerateHash(user.Email, password);
+        int idUser = this._userRepository.Create(user.ToEntity());
+        await this._passwordHelper.New(user.Email, user.Nom, user.Prenom, password);
+        return idUser;
     }
 
     public bool Update(User user)
@@ -69,5 +72,21 @@ public class UserService : IUserService
     {
         this._userRepository.Delete(idUser);
         return this._userRepository.GetById(idUser)?.IsActive == false;
+    }
+
+    public async Task<bool> ResetPassword(int idUser)
+    {
+        User? user = this._userRepository.GetById(idUser)?.ToModel();
+        if (user == null)
+            return false;
+
+        string password = this._passwordHelper.GeneratePassword();
+        user.Password = this._passwordHelper.GenerateHash(user.Email, password);
+        if (this._userRepository.ResetPassword(user.ToEntity()))
+        {
+            await this._passwordHelper.New(user.Email, user.Nom, user.Prenom, password);
+            return true;
+        }
+        return false;
     }
 }
