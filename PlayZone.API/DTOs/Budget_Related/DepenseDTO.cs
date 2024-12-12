@@ -29,7 +29,7 @@ public class UpdateDepenseDTO
     public int ProjectId { get; set; }
     public int OrganismeId {get; set;}
     public int Montant { get; set; }
-    public DateTime DateIntervention { get; set; }
+    public DateTime? DateIntervention { get; set; }
     public DateTime DateFacturation { get; set; }
     public string Motif { get; set; }
 }
