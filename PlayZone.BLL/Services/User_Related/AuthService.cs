@@ -24,12 +24,10 @@ public class AuthService : IAuthService
 
     public User? Login(User user)
     {
-        User userDb = this._userRepository.Login(user.Email)?.ToModel() ?? throw new LoginException();
-
-        string emailDb = userDb.Email.ToLower();
         string emailInput = user.Email.ToLower();
+        User? userDb = this._userRepository.Login(emailInput)?.ToModel();
 
-        if (emailDb == emailInput && userDb.Password == this._passwordHelper.GenerateHash(emailInput, user.Password))
+        if (userDb != null && userDb.Password == this._passwordHelper.GenerateHash(emailInput, user.Password))
         {
             return userDb;
         }

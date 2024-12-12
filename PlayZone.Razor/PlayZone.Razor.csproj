@@ -31,6 +31,13 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="Lib\libwkhtmltox.so">
+            <Link>libwkhtmltox.so</Link>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\PlayZone.DAL\PlayZone.DAL.csproj" />
     </ItemGroup>
 

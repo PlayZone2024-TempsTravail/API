@@ -619,7 +619,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION get_TotalDays_By_Project(startDate TIMESTAMP, endDate TIMESTAMP)
+CREATE FUNCTION get_TotalDays_By_Project(startDate TIMESTAMP WITHOUT TIME ZONE, endDate TIMESTAMP WITHOUT TIME ZONE)
 RETURNS TABLE (
     "ProjectId"     VARCHAR,
     "ProjectName"   VARCHAR,
@@ -657,5 +657,18 @@ BEGIN
     LEFT JOIN work w ON p.id_project = w.projectId
     GROUP BY p.id_project, p.name
     ORDER BY TotalDays DESC NULLS LAST;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION get_TotalDays_By_Project(startDate TIMESTAMP WITH TIME ZONE, endDate TIMESTAMP WITH TIME ZONE)
+RETURNS TABLE (
+    "ProjectId"     VARCHAR,
+    "ProjectName"   VARCHAR,
+    "TotalDays"     DECIMAL
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT *
+    FROM get_TotalDays_By_Project(startDate::timestamp, endDate::timestamp);
 END;
 $$ LANGUAGE plpgsql;

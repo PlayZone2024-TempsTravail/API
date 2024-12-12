@@ -82,7 +82,7 @@ public class DepenseRepository : IDepenseRepository
             depense.IdDepense,
             depense.LibeleId,
             depense.ProjectId,
-            OrganismeId = (depense.OrganismeId == 0) ? (int?)null : 0,
+            OrganismeId = (depense.OrganismeId == 0) ? (int?)null : depense.OrganismeId,
             depense.Montant,
             depense.DateIntervention,
             depense.DateFacturation,
