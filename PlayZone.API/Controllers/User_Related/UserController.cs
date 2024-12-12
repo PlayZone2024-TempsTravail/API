@@ -147,7 +147,7 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            return this.StatusCode(StatusCodes.Status500InternalServerError);
+            return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 

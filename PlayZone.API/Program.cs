@@ -47,29 +47,6 @@ builder.Services.AddTransient<NpgsqlConnection>(service =>
     return new NpgsqlConnection(connectionString);
 });
 
-builder.Services.AddScoped((s) => new SmtpClient
-{
-    // Host = builder.Configuration.GetSection("smtp")["Host"]!,
-    // Port = Convert.ToInt32(builder.Configuration.GetSection("smtp")["Port"]),
-    // EnableSsl = true,
-    // UseDefaultCredentials = false,
-    // Credentials = new NetworkCredential
-    // {
-    //     UserName = builder.Configuration.GetSection("smtp")["Email"],
-    //     Password = builder.Configuration.GetSection("smtp")["Password"]
-    // }
-
-    Host = "ssl0.ovh.net",
-    Port = 587,
-    EnableSsl = true,
-    UseDefaultCredentials = false,
-    Credentials = new NetworkCredential
-    {
-        UserName = "playzone@technobel.pro",
-        Password = "Playzone2024="
-    }
-});
-
 /*-----------------------------------------*/
 
 //Injection des services BLL - User_Related
