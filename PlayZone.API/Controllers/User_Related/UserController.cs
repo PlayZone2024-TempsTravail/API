@@ -130,8 +130,8 @@ public class UserController : ControllerBase
 
 
     [HttpPut("resetpassword/{idUser:int}")]
-    // [Authorize]
-    // [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
+    [Authorize]
+    [PermissionAuthorize(Permission.MODIFIER_UTILISATEUR)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

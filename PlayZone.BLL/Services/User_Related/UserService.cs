@@ -56,6 +56,7 @@ public class UserService : IUserService
 
     public async Task<int> Create(User user)
     {
+        user.Email = user.Email.ToLower();
         string password = this._passwordHelper.GeneratePassword();
         user.Password = this._passwordHelper.GenerateHash(user.Email, password);
         int idUser = this._userRepository.Create(user.ToEntity());

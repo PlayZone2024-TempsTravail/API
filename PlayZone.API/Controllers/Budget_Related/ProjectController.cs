@@ -41,7 +41,7 @@ public class ProjectController : ControllerBase
 
     [HttpGet("short")]
     [Authorize]
-    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
+    [PermissionAuthorize(Permission.PERSO_AJOUTER_POINTAGE, Permission.SHOW_PROJECTS, Permission.ALL_CONSULTER_POINTAGES)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProjectShortDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAllShort()
@@ -61,7 +61,7 @@ public class ProjectController : ControllerBase
 
     [HttpGet("short/{idUser:int}")]
     [Authorize]
-    [PermissionAuthorize(Permission.SHOW_PROJECTS)]
+    [PermissionAuthorize(Permission.SHOW_PROJECTS, Permission.PERSO_AJOUTER_POINTAGE, Permission.ALL_CONSULTER_POINTAGES)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProjectShortDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetAllShort(int idUser)
