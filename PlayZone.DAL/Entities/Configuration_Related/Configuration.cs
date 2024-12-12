@@ -1,0 +1,8 @@
+﻿namespace PlayZone.DAL.Entities.Configuration_Related;
+
+public class Configuration
+{
+    public int IdConfiguration { get; set; }
+    public string? ParameterName { get; set; }
+    public string? ParameterValue { get; set; }
+}

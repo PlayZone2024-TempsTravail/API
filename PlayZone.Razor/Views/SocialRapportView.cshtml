@@ -1,0 +1,111 @@
+@using PlayZone.Razor.Models
+@using PlayZone.Razor.Views
+@using SocialRapport = PlayZone.DAL.Entities.Rapport_Related.SocialRapport
+@model PlayZone.Razor.Views.SocialRapportView
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de planning</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .wk {
+            background-color: #aeaaa9;
+        }
+
+        th:nth-child(1), td:nth-child(1) {
+            white-space: nowrap;
+            padding: 2px;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            white-space: nowrap;
+            padding: 2px;
+        }
+
+        th:nth-child(n+3), td:nth-child(n+3) {
+            width: 30px;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    @foreach (User user in @Model.Users)
+    {
+        <table>
+            <thead>
+            <th colspan="2"></th>
+                @foreach (int day in @Model.Days)
+                {
+                    <th>@day</th>
+                }
+            </thead>
+            <tbody>
+                <tr>
+                    <th rowspan="2">@user.NomComplet</th>
+                    <th>Matin</th>
+                    @foreach (Journee val in user.Matins)
+                    {
+                        if (@val.IsWK)
+                        {
+                            <td class="wk"></td>
+                        }
+                        else
+                        {
+                            <td>@val.Activite</td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    <th>Après-midi</th>
+                    @foreach (Journee val in user.Soirs)
+                    {
+                        if (@val.IsWK)
+                        {
+                            <td class="wk"></td>
+                        }
+                        else
+                        {
+                            <td>@val.Activite</td>
+                        }
+                    }
+                </tr>
+
+            </tbody>
+        </table>
+    }
+</body>
+</html>
+
+
