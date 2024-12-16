@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Suppresion de la librairie libwkhtmltox pour alléger le repository, à télécharger depuis  https://github.com/rdvojmoc/DinkToPdf/tree/master/v0.12.4/64%20bit
+libwkhtmltox.*
