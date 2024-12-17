@@ -130,9 +130,7 @@ public static class PermissionManager
 
         { Permission.EDIT_CONFIGURATION, "Modifier la configuration" },
 
-        {Permission.SHOW_RAPPORT, "Voir les rapports" },
-
-        { Permission.DEBUG_PERMISSION, "DEV !!!!: Permisions passe-partout" },
+        {Permission.SHOW_RAPPORT, "Voir les rapports" }
     };
 
     public static IEnumerable<object> PermissionsList => _dic.Select(pair =>
