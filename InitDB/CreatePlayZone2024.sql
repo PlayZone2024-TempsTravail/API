@@ -293,11 +293,11 @@ CREATE TABLE "Prevision_Rentree" (
 );
 
 CREATE FUNCTION calculate_interval_worktime("start" timestamp, "end" timestamp)
-    RETURNS INT AS $$
+    RETURNS INT LANGUAGE plpgsql AS $$
 BEGIN
     RETURN CEIL(EXTRACT(EPOCH FROM AGE("end", "start")) / 3600);
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE VIEW V_GetProjects AS
 SELECT
@@ -342,7 +342,7 @@ RETURNS TABLE (
     "month_year" TEXT,
     "cumulative_montant_prevision" NUMERIC,
     "cumulative_montant_reel" NUMERIC
-) AS $$
+) LANGUAGE plpgsql AS $$
 BEGIN
     RETURN QUERY
         WITH inOut_prevision AS (
@@ -365,43 +365,45 @@ BEGIN
               AND d.date <= NOW()
             GROUP BY "date"
         ),
-         inOut_Reel AS (
-             SELECT TO_CHAR(r.date_facturation, 'MM-YYYY') "date", SUM(r.montant) montant
-             FROM "Rentree" r
-                      INNER JOIN "Libele" l ON r.libele_id = l.id_libele
-                      INNER JOIN "Category" c ON l.category_id = c.id_category
-             WHERE project_id = id
-               AND r.date_facturation <= NOW()
-             GROUP BY "date"
-         ),
-         generate_date AS (
-             SELECT DISTINCT TO_CHAR(generate_series(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
-             FROM "Project"
-             WHERE id_project = id
-         ),
-         group_combinations AS (
-             SELECT
-                 gd."date",
-                 COALESCE(p.montant, 0) AS montant_previ,
-                 null AS montant_reel
-             FROM generate_date gd
-                      LEFT JOIN  inOut_prevision p ON p.date = gd.date
-             UNION
-             SELECT
-                 gd."date",
-                 null,
-                 COALESCE(r.montant, 0)
-             FROM generate_date gd
-                      LEFT JOIN  inOut_Reel r ON r.date = gd.date
-         ),
-         avengers_assemble AS (
-             SELECT
-                 date,
-                 SUM(montant_previ) as montant_previ,
-                 SUM(montant_reel) as montant_reel
-             FROM group_combinations
-             GROUP BY date
-         )
+    inOut_Reel AS (
+        SELECT TO_CHAR(r.date_facturation, 'MM-YYYY') "date", SUM(r.montant) montant
+        FROM "Rentree" r
+        INNER JOIN "Libele" l ON r.libele_id = l.id_libele
+        INNER JOIN "Category" c ON l.category_id = c.id_category
+        WHERE project_id = id
+        AND r.date_facturation <= NOW()
+        GROUP BY "date"
+    ),
+    generate_date AS (
+        SELECT DISTINCT TO_CHAR(generate_series(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
+        FROM "Project"
+        WHERE id_project = id
+    ),
+    group_combinations AS (
+        SELECT
+            gd."date",
+            COALESCE(p.montant, 0) AS montant_previ,
+            null AS montant_reel
+        FROM generate_date gd
+        LEFT JOIN  inOut_prevision p ON p.date = gd.date
+
+        UNION
+
+        SELECT
+            gd."date",
+            null,
+            COALESCE(r.montant, 0)
+        FROM generate_date gd
+        LEFT JOIN  inOut_Reel r ON r.date = gd.date
+    ),
+    avengers_assemble AS (
+        SELECT
+            date,
+            SUM(montant_previ) as montant_previ,
+            SUM(montant_reel) as montant_reel
+        FROM group_combinations
+        GROUP BY date
+    )
     SELECT
         "date",
         SUM(montant_previ) OVER(ORDER BY "date") AS cumulative_montant_prevision,
@@ -409,14 +411,14 @@ BEGIN
     FROM avengers_assemble
     ORDER BY "date";
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION get_cumulative_depense(id INT)
 RETURNS TABLE (
     "month_year" TEXT,
     cumulative_montant_prevision NUMERIC,
     cumulative_montant_reel NUMERIC
-) AS $$
+) LANGUAGE plpgsql AS $$
 BEGIN
     RETURN QUERY
         WITH inOut_prevision AS (
@@ -439,51 +441,53 @@ BEGIN
               AND d.date <= NOW()
             GROUP BY "date"
         ),
-             inOut_Reel AS (
-                 SELECT TO_CHAR(d.date_facturation, 'MM-YYYY') "date", SUM(d.montant) montant
-                 FROM "Depense" d
-                          INNER JOIN "Libele" l ON d.libele_id = l.id_libele
-                          INNER JOIN "Category" c ON l.category_id = c.id_category
-                 WHERE project_id = id
-                   AND d.date_facturation <= NOW()
-                 GROUP BY "date"
-             ),
-             generate_date AS (
-                 SELECT DISTINCT TO_CHAR(generate_series(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
-                 FROM "Project"
-                 WHERE id_project = id
-             ),
-             group_combinations AS (
-                 SELECT
-                     gd."date",
-                     COALESCE(p.montant, 0) AS montant_previ,
-                     null AS montant_reel
-                 FROM generate_date gd
-                          LEFT JOIN  inOut_prevision p ON p.date = gd.date
-                 UNION
-                 SELECT
-                     gd."date",
-                     null,
-                     COALESCE(r.montant, 0)
-                 FROM generate_date gd
-                          LEFT JOIN  inOut_Reel r ON r.date = gd.date
-             ),
-             avengers_assemble AS (
-                 SELECT
-                     date,
-                     SUM(montant_previ) as montant_previ,
-                     SUM(montant_reel) as montant_reel
-                 FROM group_combinations
-                 GROUP BY date
-             )
+        inOut_Reel AS (
+            SELECT TO_CHAR(d.date_facturation, 'MM-YYYY') "date", SUM(d.montant) montant
+            FROM "Depense" d
+            INNER JOIN "Libele" l ON d.libele_id = l.id_libele
+            INNER JOIN "Category" c ON l.category_id = c.id_category
+            WHERE project_id = id
+            AND d.date_facturation <= NOW()
+            GROUP BY "date"
+        ),
+        generate_date AS (
+            SELECT DISTINCT TO_CHAR(generate_series(date_debut_projet, NOW(), '1 month'), 'MM-YYYY') AS "date"
+            FROM "Project"
+            WHERE id_project = id
+        ),
+        group_combinations AS (
+            SELECT
+                gd."date",
+                COALESCE(p.montant, 0) AS montant_previ,
+                null AS montant_reel
+            FROM generate_date gd
+            LEFT JOIN  inOut_prevision p ON p.date = gd.date
+
+            UNION
+
+            SELECT
+                gd."date",
+                null,
+                COALESCE(r.montant, 0)
+            FROM generate_date gd
+            LEFT JOIN  inOut_Reel r ON r.date = gd.date
+        ),
+        avengers_assemble AS (
+            SELECT
+                date,
+                SUM(montant_previ) as montant_previ,
+                SUM(montant_reel) as montant_reel
+            FROM group_combinations
+            GROUP BY date
+        )
         SELECT
             "date",
             SUM(montant_previ) OVER(ORDER BY "date") AS cumulative_montant_prevision,
             SUM(montant_reel) OVER(ORDER BY "date") AS cumulative_montant_reel
         FROM avengers_assemble
         ORDER BY "date";
-END;
-$$ LANGUAGE plpgsql;
+    END;
+$$;
 
 CREATE FUNCTION get_all_inOut_for_project(id INT, use_depenses BOOLEAN)
 RETURNS TABLE (
@@ -491,7 +495,7 @@ RETURNS TABLE (
     "Libele"    VARCHAR,
     "Date"      TEXT,
     "Montant"   DECIMAL
-) AS $$
+) LANGUAGE plpgsql AS $$
 BEGIN
     CREATE TEMP TABLE IF NOT EXISTS inOut (
         category VARCHAR,
@@ -543,7 +547,7 @@ BEGIN
     GROUP BY ac."date", ac.Category, ac.Libelle
     ORDER BY ac.Category, ac.Libelle, ac."date";
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION get_counters_for_user(id INT)
 RETURNS TABLE (
@@ -551,7 +555,7 @@ RETURNS TABLE (
     "Max"       DECIMAL,
     "Utilise"   DECIMAL,
     "Solde"     DECIMAL
-) AS $$
+) LANGUAGE plpgsql AS $$
 BEGIN
     RETURN QUERY
     WITH PrepareHeuresSup AS (
@@ -617,14 +621,14 @@ BEGIN
     FROM utilise u
     FULL JOIN cross_heuressup_compteur c ON u."id_workTime_category" = c.category_id;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION get_TotalDays_By_Project(startDate TIMESTAMP WITHOUT TIME ZONE, endDate TIMESTAMP WITHOUT TIME ZONE)
 RETURNS TABLE (
     "ProjectId"     VARCHAR,
     "ProjectName"   VARCHAR,
     "TotalDays"     DECIMAL
-) AS $$
+) LANGUAGE plpgsql AS $$
 BEGIN
     RETURN QUERY
     WITH work AS (
@@ -658,17 +662,252 @@ BEGIN
     GROUP BY p.id_project, p.name
     ORDER BY TotalDays DESC NULLS LAST;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION get_TotalDays_By_Project(startDate TIMESTAMP WITH TIME ZONE, endDate TIMESTAMP WITH TIME ZONE)
 RETURNS TABLE (
     "ProjectId"     VARCHAR,
     "ProjectName"   VARCHAR,
     "TotalDays"     DECIMAL
-) AS $$
+) LANGUAGE plpgsql AS $$
 BEGIN
     RETURN QUERY
-    SELECT *
-    FROM get_TotalDays_By_Project(startDate::timestamp, endDate::timestamp);
-END;
-$$ LANGUAGE plpgsql;
+        SELECT *
+        FROM get_TotalDays_By_Project(startDate::timestamp, endDate::timestamp);
+    END;
+$$;
+
+CREATE VIEW v_get_last_configuration as
+SELECT
+    c.id_configuration AS "IdConfiguration",
+    c.parameter_name   AS "ParameterName",
+    c.parameter_value  AS "ParameterValue"
+FROM "Configuration" c
+         INNER JOIN (
+    SELECT
+        "Configuration".parameter_name,
+        MAX("Configuration".date) AS date
+    FROM "Configuration"
+    GROUP BY "Configuration".parameter_name
+) d ON c.parameter_name::text = d.parameter_name::text AND c.date = d.date;
+
+CREATE VIEW v_get_all_counters as
+WITH cross_users AS (
+    SELECT
+        "User".id_user,
+        "User".prenom,
+        "User".nom,
+        "WorkTime_Category"."id_workTime_category",
+        "WorkTime_Category".abreviation
+    FROM "WorkTime_Category"
+    CROSS JOIN "User"
+    WHERE "WorkTime_Category"."id_workTime_category" <> 7
+),
+utilisation AS (
+    SELECT DISTINCT wr.user_id,
+        wc."id_workTime_category",
+        wc.abreviation,
+        COALESCE(sum(wr.hours), 0::numeric) AS count
+    FROM (
+        SELECT
+            w."id_WorkTime",
+            w.category_id,
+            w.project_id,
+            w.user_id,
+            ceil(EXTRACT(epoch FROM age(w."end", w.start)) / 3600::numeric) AS hours
+        FROM "WorkTime" w
+        WHERE EXTRACT(year FROM w.start) = EXTRACT(year FROM now())
+    ) wr
+    RIGHT JOIN "WorkTime_Category" wc ON wr.category_id = wc."id_workTime_category"
+    WHERE wr.category_id <> 7
+    GROUP BY wr.user_id, wc."id_workTime_category", wc.abreviation
+)
+SELECT
+    u.id_user                             AS iduser,
+    concat_ws(' '::text, u.prenom, u.nom) AS name,
+    u.abreviation                         AS category,
+    c.quantity::numeric - util.count      AS restant
+FROM cross_users u
+FULL JOIN "Compteur_WorkTime_Category" c ON c.user_id = u.id_user AND c."workTime_category_id" = u."id_workTime_category"
+LEFT JOIN utilisation util ON u.id_user = util.user_id AND u."id_workTime_category" = util."id_workTime_category";
+
+CREATE FUNCTION get_all_inout_for_selected_projects(startdate date, enddate date, projects integer[], libelles integer[])
+RETURNS TABLE(
+    "projectId" INTEGER,
+    "categoryId" INTEGER,
+    "libelleId" INTEGER,
+    "projectName" CHARACTER VARYING,
+    "categoryName" CHARACTER VARYING,
+    "libelleName" CHARACTER VARYING,
+    organisme CHARACTER VARYING,
+    motif CHARACTER VARYING,
+    date DATE,
+    montant NUMERIC
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    libelle_renumeration INT = 5;
+BEGIN
+    RETURN QUERY
+        WITH heures_prestables AS (
+            SELECT "ParameterValue"::dec AS heures
+            FROM v_get_last_configuration c
+            WHERE c."ParameterName" LIKE 'NOMBRE_HEURES_PRESTABLES_AN'
+        ),
+        worktimes AS (
+            SELECT
+                wt."id_WorkTime",
+                wt.user_id,
+                wt.project_id,
+                DATE(wt.start) AS "start",
+                ROUND((calculate_interval_worktime(wt.start, wt.end)/(heures_prestables.heures))*us.montant, 2) as cout
+            FROM "WorkTime" wt
+            INNER JOIN "UserSalaire" us ON wt.user_id = us.user_id AND wt.start >= us.date
+            CROSS JOIN heures_prestables
+            WHERE start BETWEEN startDate AND endDate
+            AND project_id = ANY(projects)
+            ORDER BY wt.user_id, wt.start
+        ),
+        Category AS (
+        SELECT
+            c.id_category categoryId,
+            c.name categoryName,
+            l.name libelleName,
+            l.id_libele libeleId
+        FROM "Libele" l
+        INNER JOIN "Category" c ON l.category_id = c.id_category
+        WHERE l.id_libele = libelle_renumeration
+        )
+        SELECT
+            wt.project_id ProjectId,
+            c.categoryId,
+            c.libeleId,
+            p.name ProjectName,
+            c.categoryName Category,
+            c.libelleName Libelle,
+            null Organisme,
+            null Motif,
+            DATE(wt.start) "date",
+            SUM(wt.cout) as cout
+        FROM worktimes wt
+        INNER JOIN "Project" p ON wt.project_id = p.id_project
+        CROSS JOIN Category c
+        WHERE libelle_renumeration = ANY(libelles)
+        GROUP BY wt.project_id, c.categoryId,c.libeleId, p.name, c.categoryName,c.libelleName,DATE(wt.start), wt.project_id, wt.user_id
+
+        UNION ALL
+
+        SELECT
+            d.project_id ProjectId,
+            c.id_category categoryId,
+            l.id_libele libeleId,
+            p.name ProjectName,
+            c.name AS Category,
+            l.name AS Libele,
+            o.name AS Organisme,
+            d.motif AS Motif,
+            DATE(d.date_facturation) AS "date",
+            d.montant AS Montant
+        FROM "Depense" d
+        INNER JOIN "Project" p ON d.project_id = p.id_project
+        LEFT JOIN "Libele" l ON d.libele_id = l.id_libele
+        LEFT JOIN "Category" c ON l.category_id = c.id_category
+        LEFT JOIN "Organisme" o ON o.id_organisme = d.organisme_id
+        WHERE d.date_facturation BETWEEN startDate AND endDate
+        AND d.libele_id = ANY(libelles)
+        AND d.project_id = ANY(projects)
+
+        UNION ALL
+
+        SELECT
+            r.project_id ProjectId,
+            c.id_category categoryId,
+            l.id_libele libeleId,
+            p.name ProjectName,
+            c.name AS Category,
+            l.name AS Libele,
+            o.name AS Organisme,
+            r.motif AS Motif,
+            DATE(r.date_facturation) AS "date",
+            r.montant AS Montant
+        FROM "Rentree" r
+        INNER JOIN "Project" p ON r.project_id = p.id_project
+        LEFT JOIN "Libele" l ON r.libele_id = l.id_libele
+        LEFT JOIN "Category" c ON l.category_id = c.id_category
+        LEFT JOIN "Organisme" o ON o.id_organisme = r.organisme_id
+        WHERE r.date_facturation BETWEEN startDate AND endDate
+          AND r.libele_id = ANY(libelles)
+          AND r.project_id = ANY(projects)
+        ORDER BY ProjectId, categoryId, libeleId, date;
+    END;
+$$;
+
+CREATE FUNCTION get_social_rapport(startdate DATE, enddate DATE)
+RETURNS TABLE(
+    date DATE,
+    period TEXT,
+    "userId" INTEGER,
+    nom_complet TEXT,
+    activite TEXT
+)
+LANGUAGE plpgsql AS $$
+BEGIN
+    RETURN QUERY
+        WITH generate_days AS (
+            SELECT generate_series(startDate, endDate, INTERVAL '1 day')::DATE AS "date"
+        ),
+        filtered_users AS (
+            SELECT id_user, nom, prenom
+            FROM "User"
+            WHERE "isActive" = TRUE
+        ),
+        worktimes AS (
+            SELECT
+                user_id,
+                category_id,
+                project_id,
+                w.start::TIMESTAMP,
+                "isOnSite",
+                CASE
+                    WHEN wc.abreviation IN ('RC', 'VIEC') THEN 'T'
+                    ELSE wc.abreviation
+                END symbole
+            FROM "WorkTime" w
+            INNER JOIN generate_days d ON w.start::DATE BETWEEN d."date" AND d."date"
+            INNER JOIN "WorkTime_Category" wc ON w.category_id = wc."id_workTime_category"
+        ),
+        periods AS (
+            SELECT
+                gd.date,
+                fu.id_user,
+                CONCAT_WS(' ', fu.prenom, fu.nom) AS nom_complet,
+                'matin' AS period,
+                COALESCE(wt.symbole, '?') AS symbole
+            FROM filtered_users fu
+            CROSS JOIN generate_days gd
+            LEFT JOIN worktimes wt ON gd.date = wt.start::date
+            AND EXTRACT(HOUR FROM wt.start) < 12
+
+            UNION ALL
+
+            SELECT
+                gd.date,
+                fu.id_user,
+                CONCAT_WS(' ', fu.prenom, fu.nom) AS nom_complet,
+                'apresmidi' AS period,
+                COALESCE(wt.symbole, '?') AS symbole
+            FROM filtered_users fu
+            CROSS JOIN generate_days gd
+            LEFT JOIN worktimes wt ON gd.date = wt.start::date
+            AND EXTRACT(HOUR FROM wt.start) >= 12
+        )
+        SELECT
+            p.date,
+            p.period,
+            p.id_user AS userId,
+            p.nom_complet,
+            p.symbole::TEXT AS activite
+        FROM periods p
+        ORDER BY p.date, p.id_user, p.period;
+    END;
+$$;
